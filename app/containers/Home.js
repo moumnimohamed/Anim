@@ -1,181 +1,229 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import TextStyled from "../components/TextStyled"
 import {
-    Dimensions,
-    ImageBackground,
-    View,
-    ScrollView,
-    Image,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
+  Dimensions,
+  ImageBackground,
+  View,
+  ScrollView,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
+import {AnimeIdol} from '../components/AnimeIdol';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {connect} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
-import {Button, Card} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Play from 'react-native-vector-icons/AntDesign';
 
+import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
+
+const screenWidth = Math.round(Dimensions.get('window').width);
 
 class Home extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            activeSlider: 0,
-            title: 0,
-        };
+  constructor(props) {
+    super(props);
+    this.state = {
+      activeSlider: 0,
+      title: 0,
+      show: false,
+    };
+  }
+
+  handleOpen = () => {
+    this.setState({show: true});
+  };
+
+  handleClose = () => {
+    this.setState({show: false});
+  };
+
+  componentWillUpdate() {
+    if (this.props.newAnimeFailure) {
+      this.setState({show: true});
     }
+  }
 
-    screenWidth = Math.round(Dimensions.get('window').width);
+  componentDidMount() {
+    this.props.getAnimRequest();
+  }
 
-    componentDidMount() {
-        this.props.getAnimRequest();
-    }
+  _renderItem({item, index}) {
+    return <AnimatedCard item={item} />;
+  }
 
-    _renderItem({item, index}) {
-        return <Image
-            key={index}
-            style={styles.image}
-            source={{uri: item.img}}
-        />;
-    }
+  render() {
+    const anim =
+      this.props.newAnime && this.props.newAnime.length > 0
+        ? this.props.newAnime[this.state.activeSlider]
+        : {};
+    return (
+      <ScrollView >
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#FFFFFF', '#89C13D']}
+          style={styles.linearGradient}>
+          <ImageBackground source={{uri: anim.img}} style={{width: '100%'}}>
+            <LinearGradient
+              colors={['#ffffff00', '#fff','#fff']}
+              style={styles.linearGradient}>
+              <View style={{marginTop: 80, marginBottom: 40, }}>
+                <Carousel
+                  layout={'default'}
+                  data={this.props.newAnime}
+                  renderItem={this._renderItem}
+                  sliderWidth={screenWidth}
+                  itemWidth={screenWidth - 140}
+                  onSnapToItem={index => this.setState({activeSlider: index})}
+                />
+              </View>
+            </LinearGradient>
+          </ImageBackground>
+         {/*  آخر الحلقات المضافة */}
+         <TextStyled title={" آخر الحلقات المضافة"}/>
+          <View style={{position: 'relative'}}>
+            <View style={styles.view}>
+              <Image
+                style={styles.animImage}
+                source={require('../images/onepiese.png')}
+              />
+            </View>
 
-    render() {
-
-        const anim = this.props.newAnime && this.props.newAnime.length > 0 ? this.props.newAnime[this.state.activeSlider] : {};
-        return (
-
-            <ScrollView>
-
-                {/*<ImageBackground source={{uri: anim.img}}*/}
-                {/*                 style={{width: '100%', height: '100%'}}>*/}
-
-
-                        <View style={{marginTop: 80, marginBottom: 40}}>
-
-                            <Carousel
-                                layout={'default'}
-                                data={this.props.newAnime}
-                                renderItem={this._renderItem}
-                                sliderWidth={this.screenWidth}
-                                itemWidth={this.screenWidth - 140}
-                                onSnapToItem={(index) => this.setState({activeSlider: index})}
-                            />
-                            <Card style={{
-                                marginLeft: 30,
-                                marginRight: 30,
-                                marginTop: 0,
-                                zIndex: 0,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor:"fff000",
-                                boxShadow:0,
-                                border:0
-                            }}>
-                                <Card.Content>
-
-                                    <Text style={styles.title}>{anim.title}</Text>
-                                    <View style={{flexDirection: 'row', marginTop: 10}}>
-                                        <Icon style={styles.icon} name="star" size={15} color="#900"/>
-                                        <Icon name="star" style={styles.icon} size={15} color="#900"/>
-                                        <Icon name="star" style={styles.icon} size={15} color="#900"/>
-                                        <Icon name="star" style={styles.icon} size={15} color="#900"/>
-                                    </View>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginTop: 10,
-
-                                        }}>
-                                        <TouchableOpacity>
-                                            <Icon name="arrow-left" size={10} color="black"/>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.playBtn}>
-                                            <Play name="playcircleo" size={40} color="black"/>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity>
-                                            <Icon name="arrow-right" size={10} color="black"/>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <Button
-                                        style={styles.button}
-                                        mode="contained"
-                                        onPress={() => console.log('Pressed')}>
-                                        معلومات
-                                    </Button>
-                                </Card.Content>
-
-                            </Card>
-                        </View>
-
-
-                {/*</ImageBackground>*/}
-                <ScrollView
-                    horizontal={true}
-                     showsHorizontalScrollIndicator={false}
-                >
-                    {this.props.newAnime.slice(0, 10).map((anim,index) =>
-                        <PlayCard item={anim} key={index} />
-                    )}
-                </ScrollView>
+            <ScrollView
+              style={{paddingLeft: 80, flex: 1}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {this.props.newAnime &&
+                this.props.newAnime
+                  .slice(0, 10)
+                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
             </ScrollView>
-        );
-    }
+          </View>
+
+         {/* آخر الأنميات المضافة */}
+         <TextStyled title={"آخر الأنميات المضافة"}/>
+
+          <View style={{position: 'relative'}}>
+            <View style={styles.view}>
+              <Image
+                style={styles.animImage}
+                source={require('../images/hero.png')}
+              />
+            </View>
+
+            <ScrollView
+              style={{paddingLeft: 80, flex: 1}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {this.props.newAnime &&
+                this.props.newAnime
+                  .slice(0, 10)
+                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
+            </ScrollView>
+          </View>
+        {/*أفضل مسلسلات أنمي*/}
+        <TextStyled title={"أفضل مسلسلات أنمي"}/>
+        <View style={{position: 'relative'}}>
+            <View style={styles.view}>
+              <Image
+                style={styles.animImage}
+                source={require('../images/naruto.png')}
+              />
+            </View>
+
+            <ScrollView
+              style={{paddingLeft: 80, flex: 1}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {this.props.newAnime &&
+                this.props.newAnime
+                  .slice(0, 10)
+                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
+            </ScrollView>
+          </View>
+        
+        
+          {/*آخر أفلام الأنميات المضافة  */}
+          <TextStyled title={"آخر أفلام الأنميات المضافة"}/>
+
+          <View style={{position: 'relative'}}>
+            <View style={styles.view}>
+              <Image
+                style={styles.animImage}
+                source={require('../images/red.png')}
+              />
+            </View>
+
+            <ScrollView
+              style={{paddingLeft: 80, flex: 1}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {this.props.newAnime &&
+                this.props.newAnime
+                  .slice(0, 10)
+                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
+            </ScrollView>
+          </View>
+        
+        </LinearGradient>
+
+        <SCLAlert
+          theme="warning"
+          show={this.state.show}
+          title="Lorem"
+          subtitle="Lorem ipsum dolor">
+          <SCLAlertButton theme="warning" onPress={() => this.handleClose()}>
+            Done
+          </SCLAlertButton>
+        </SCLAlert>
+      </ScrollView>
+    );
+  }
 }
 
-const mapStateToProps = state => {
-    return {
-        newAnime:
-            state.newAnime && state.newAnime.payload
-                ? state.newAnime.payload
-                : [],
-    };
-};
 const styles = StyleSheet.create({
-    container: {
-        marginBottom: 20,
-        flex: 1,
-        alignItems: 'center',
-        borderRadius: 10,
-        padding: 10,
-        backgroundColor: 'white',
-        height: 450,
-    },
-    image: {
-        borderRadius: 10,
-        width: '100%',
-        height: 300,
-    },
-    title: {
-        textAlign: 'center',
-        marginTop: 10,
-    },
-    icon: {marginRight: 8, marginLeft: 8, color: 'black'},
-    playBtn: {
-        alignItems: 'center',
+  container: {
+    marginBottom: 20,
+    flex: 1,
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 10,
+    backgroundColor: 'white',
+    height: 450,
+  },
 
-        borderRadius: 40,
-        marginLeft: 40,
-        marginRight: 40,
-    },
-    button: {
-        marginTop: 10,
-        backgroundColor: 'black',
-        color: 'white',
-        borderRadius: 20,
-    },
-    linearGradient: {},
+  view: {
+    flex: 1,
+    marginRight: -60,
+    marginLeft: -40,
+    width: screenWidth / 2,
+    height: screenWidth - 140,
+    position: 'absolute',
+  },
+  animImage: {
+    width: null,
+    height: null,
+    flex: 1,
+  },
+  linearGradient: {},
 });
 
+const mapStateToProps = state => {
+  return {
+    newAnime:
+      state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
+
+    newAnimeFailure: state.newAnime.error,
+  };
+};
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getAnimRequest: data => dispatch(getNewRequest(data)),
-    };
+  return {
+    getAnimRequest: data => dispatch(getNewRequest(data)),
+  };
 };
 
 export default connect(

@@ -45,6 +45,7 @@ export const getNewAnimes = (state = initialState, action) => {
         success: true,
       };
     case GET_ANIM_FAILURE:
+      console.log("ha payload",action.payload)
       return {
         ...state,
         fetching: false,
