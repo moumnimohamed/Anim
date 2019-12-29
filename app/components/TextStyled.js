@@ -11,7 +11,7 @@ return(
     <Text  style={{fontSize:17,color:"#89C13D" ,marginLeft:5}}>المزيد</Text>
     </View>
     <View style={{ alignItems:"center",flexDirection: 'row',}}>
-    <Text  style={{fontSize:24}}>{props.title}</Text>
+    <Text  style={ {color:"#535353",fontSize:24}}>{props.title}</Text>
     <Image
                style={{ marginLeft:5, width: 30,height: 30,}}
                 source={require('../images/logo.png')}

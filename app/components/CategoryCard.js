@@ -16,7 +16,7 @@ export class CategoryCard extends React.Component {
             <Card style={styles.view}>
            
              
-             <View style={{backgroundColor:Colorleft,margin:2,flex:1, borderRadius: 10,}}> 
+             <View style={{...styles.viewInside,backgroundColor:Colorleft,}}> 
              <Card.Content >
            
                 <Title style={{marginTop:screenWidth/9 ,textAlign:"center",color:"white"}}>{this.props.title}</Title>
@@ -40,8 +40,12 @@ const styles = StyleSheet.create({
          
         width:screenWidth/3,
         height: screenWidth/3,
-        borderRadius: 10,
-        overflow:"hidden"
+        borderRadius: screenWidth/3,
+        overflow:"hidden",
+        
+    },
+    viewInside:{
+        margin:2,flex:1, borderRadius: screenWidth/3,
     },
     playBtn:{
         position: 'absolute',

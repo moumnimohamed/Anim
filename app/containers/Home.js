@@ -1,22 +1,16 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import TextStyled from "../components/TextStyled"
-import { Chip } from 'react-native-paper';
-import {
-  Dimensions,
-  ImageBackground,
-  View,
-  ScrollView,
-  Image,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
+import { Chip,ActivityIndicator } from 'react-native-paper';
+import {Dimensions,ImageBackground,View,ScrollView,Image,Text,TouchableOpacity,StyleSheet,} from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
+import {FilmCard} from '../components/FilmCard';
 import {CategoryCard} from '../components/CategoryCard';
 import {getNewRequest} from '../redux/newAnimRedux';
+import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
+import {filmRequest} from '../redux/FilmRedux';
 import {connect} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 
@@ -51,6 +45,8 @@ class Home extends React.Component {
   componentDidMount() {
     this.props.getAnimRequest();
     this.props.getAnimeList();
+    this.props.aniEpisodeRequest();
+    this.props.filmRequest()
   }
 
   _renderItem({item, index}) {
@@ -58,12 +54,18 @@ class Home extends React.Component {
   }
 
   render() {
+    console.log("@@fils",this.props.films)
     const anim =
       this.props.newAnime && this.props.newAnime.length > 0
         ? this.props.newAnime[this.state.activeSlider]
         : {};
     return (
+      
       <ScrollView >
+         {/*  {this.props.fetching ?
+            <View style={styles.container}>
+      <ActivityIndicator animating={true} color={'#89C13D'} />
+      </View>} */}
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
@@ -97,12 +99,12 @@ class Home extends React.Component {
             </View>
 
             <ScrollView
-              style={{paddingLeft: 80, flex: 1}}
+              style={styles.ScrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {this.props.newAnime &&
-                this.props.newAnime
-                  .slice(0, 10)
+              {this.props.animeEpisodes &&
+                this.props.animeEpisodes
+                  .slice(0, 20)
                   .map((anim, index) => <PlayCard item={anim} key={index} />)}
             </ScrollView>
           </View>
@@ -118,26 +120,26 @@ class Home extends React.Component {
               />
             </View>
             <ScrollView
-              style={{paddingLeft: 80 , flex: 1}}
+              style={{paddingLeft: 10 , flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
               {this.props.categories &&
                 this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)}
             </ScrollView>
             <ScrollView
-              style={{paddingLeft: 80, flex: 1}}
+              style={styles.ScrollView}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
               {this.props.animeList &&
                 this.props.animeList
-                  .slice(0, 10)
+                  .slice(0, 20)
                   .map((anim, index) => <PlayCard item={anim} key={index} />)}
             </ScrollView>
           </View>
-        {/*أفضل مسلسلات أنمي*/}
+        {/*التصنيف*/}
         <TextStyled title={"التصنيف"}/>
         <View style={{position: 'relative'}}>
-            <View style={styles.view}>
+            <View style={{...styles.view,marginTop:-30}}>
               <Image
                 style={styles.animImage}
                 source={require('../images/naruto.png')}
@@ -145,17 +147,17 @@ class Home extends React.Component {
             </View>
 
             <ScrollView
-              style={{paddingLeft: 80,marginTop:50,marginBottom:50, flex: 1}}
+              style={{paddingLeft: 80,marginTop:20,marginBottom:40, flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
               {this.props.categories &&
-                this.props.categories.map((cat, index) => cat.title && <Chip key={index}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)}
+                this.props.categories.map((cat, index) => cat.title && <CategoryCard title={ cat.title} key={index} />  )}
             </ScrollView>
           </View>
         
         
           {/*آخر أفلام الأنميات المضافة  */}
-          <TextStyled title={"آخر أفلام الأنميات المضافة"}/>
+          <TextStyled title={"آخر أفلام"}/>
 
           <View style={{position: 'relative'}}>
             <View style={styles.view}>
@@ -164,20 +166,26 @@ class Home extends React.Component {
                 source={require('../images/red.png')}
               />
             </View>
-
             <ScrollView
-              style={{paddingLeft: 80, flex: 1}}
+              style={{paddingLeft: 10 , flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {this.props.newAnime &&
-                this.props.newAnime
-                  .slice(0, 10)
-                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
+            {this.props.filmCategories &&
+                this.props.filmCategories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)
+                }
+                </ScrollView>
+           
+            <ScrollView
+              style={styles.ScrollView}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {this.props.films &&
+                this.props.films.map((film, index) => <FilmCard item={film} key={index} />)}
             </ScrollView>
           </View>
         
         </LinearGradient>
-
+          
         <SCLAlert
           theme="warning"
           show={this.state.show}
@@ -194,23 +202,26 @@ class Home extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+     
     flex: 1,
+        flexDirection: 'column',
     alignItems: 'center',
-    borderRadius: 10,
-    padding: 10,
-    backgroundColor: 'white',
-    height: 450,
+    justifyContent:"center",
+    backgroundColor: 'red',
+     
+  },
+  ScrollView:{
+    paddingLeft: 40, flex: 1
   },
 
   view: {
     flex: 1,
-    
-    marginRight: -60,
-    marginLeft: -40,
-    width: screenWidth / 2,
-    height: screenWidth - 100,
+    marginLeft: -80,
+    width: screenWidth / 1.5,
+    height: screenWidth /1.5,
     position: 'absolute',
+     
+    bottom:0,
   },
   animImage: {
     width: null,
@@ -226,6 +237,9 @@ const mapStateToProps = state => {
     animeList:state.animeList && state.animeList.payload ? state.animeList.payload : [],
     categories :state.animeList && state.animeList.categories ? state.animeList.categories : [],
     newAnimeFailure: state.newAnime.error,
+    animeEpisodes:state.animeEpisodes && state.animeEpisodes.payload ? state.animeEpisodes.payload: [],
+    films: state.films && state.films.payload ? state.films.payload: [],
+    filmCategories: state.films && state.films.categories ? state.films.categories : [],
   };
 };
 
@@ -233,6 +247,8 @@ const mapDispatchToProps = dispatch => {
   return {
     getAnimRequest: data => dispatch(getNewRequest(data)),
     getAnimeList: data => dispatch(getAnimeListRequest(data)),
+    aniEpisodeRequest: data => dispatch(aniEpisodeRequest(data)),
+    filmRequest: data => dispatch(filmRequest(data)),
    
   };
 };
