@@ -1,6 +1,7 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import TextStyled from "../components/TextStyled"
+import { Chip } from 'react-native-paper';
 import {
   Dimensions,
   ImageBackground,
@@ -13,8 +14,9 @@ import {
 } from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
-import {AnimeIdol} from '../components/AnimeIdol';
+import {CategoryCard} from '../components/CategoryCard';
 import {getNewRequest} from '../redux/newAnimRedux';
+import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {connect} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 
@@ -48,6 +50,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.props.getAnimRequest();
+    this.props.getAnimeList();
   }
 
   _renderItem({item, index}) {
@@ -75,6 +78,7 @@ class Home extends React.Component {
                   layout={'default'}
                   data={this.props.newAnime}
                   renderItem={this._renderItem}
+                 
                   sliderWidth={screenWidth}
                   itemWidth={screenWidth - 140}
                   onSnapToItem={index => this.setState({activeSlider: index})}
@@ -113,19 +117,25 @@ class Home extends React.Component {
                 source={require('../images/hero.png')}
               />
             </View>
-
+            <ScrollView
+              style={{paddingLeft: 80 , flex: 1}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {this.props.categories &&
+                this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)}
+            </ScrollView>
             <ScrollView
               style={{paddingLeft: 80, flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {this.props.newAnime &&
-                this.props.newAnime
+              {this.props.animeList &&
+                this.props.animeList
                   .slice(0, 10)
                   .map((anim, index) => <PlayCard item={anim} key={index} />)}
             </ScrollView>
           </View>
         {/*أفضل مسلسلات أنمي*/}
-        <TextStyled title={"أفضل مسلسلات أنمي"}/>
+        <TextStyled title={"التصنيف"}/>
         <View style={{position: 'relative'}}>
             <View style={styles.view}>
               <Image
@@ -135,13 +145,11 @@ class Home extends React.Component {
             </View>
 
             <ScrollView
-              style={{paddingLeft: 80, flex: 1}}
+              style={{paddingLeft: 80,marginTop:50,marginBottom:50, flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {this.props.newAnime &&
-                this.props.newAnime
-                  .slice(0, 10)
-                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
+              {this.props.categories &&
+                this.props.categories.map((cat, index) => cat.title && <Chip key={index}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)}
             </ScrollView>
           </View>
         
@@ -197,10 +205,11 @@ const styles = StyleSheet.create({
 
   view: {
     flex: 1,
+    
     marginRight: -60,
     marginLeft: -40,
     width: screenWidth / 2,
-    height: screenWidth - 140,
+    height: screenWidth - 100,
     position: 'absolute',
   },
   animImage: {
@@ -213,9 +222,9 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    newAnime:
-      state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
-
+    newAnime:state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
+    animeList:state.animeList && state.animeList.payload ? state.animeList.payload : [],
+    categories :state.animeList && state.animeList.categories ? state.animeList.categories : [],
     newAnimeFailure: state.newAnime.error,
   };
 };
@@ -223,6 +232,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getAnimRequest: data => dispatch(getNewRequest(data)),
+    getAnimeList: data => dispatch(getAnimeListRequest(data)),
+   
   };
 };
 

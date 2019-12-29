@@ -36,6 +36,8 @@ target 'Anim' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'RNTextGradientView', :path => '../node_modules/react-native-text-gradient'
+
   target 'AnimTests' do
     inherit! :search_paths
     # Pods for testing

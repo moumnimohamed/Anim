@@ -12,7 +12,7 @@ export class PlayCard extends React.Component {
             resizeMode="contain"
             style={styles.image} source={{uri: this.props.item.img}} />
                <TouchableOpacity style={styles.playBtn}>
-          <Play name="playcircleo" size={40} color="black" />
+          <Play name="playcircleo" size={40} color="black" style={{backgroundColor:"white",borderRadius:20}} />
                </TouchableOpacity>
            </View>
         );
