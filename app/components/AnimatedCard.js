@@ -3,13 +3,32 @@ import { StyleSheet, Text, View, TouchableOpacity, Image} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Play from 'react-native-vector-icons/AntDesign';
 import {Button, Card} from 'react-native-paper';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Heart from 'react-native-vector-icons/AntDesign';
 export class AnimatedCard extends React.Component {
   render() {
     return (
 
 
-      <View>
+      <View  style={{shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 2.62,
+      
+      elevation: 4,}}>
+
+<View style={styles.Btncontainer} >
+            <TouchableOpacity  onClick={()=>{console.log("ddddd")}} style={styles.btn}>
+          <Heart name="hearto" size={20} color="black"  />
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.btn}>
+          <FontAwesome name="send-o" size={20} color="black"  />
+               </TouchableOpacity>
+           
+</View>
         
     
         <Image
@@ -27,6 +46,10 @@ export class AnimatedCard extends React.Component {
                                 boxShadow:0,
                                 border:5
                             }}>
+
+
+
+
                                 <Card.Content>
 
                                     <Text style={styles.title}>{this.props.item.title}</Text>
@@ -67,6 +90,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: '100%',
     height: 300,
+    
 },
 title: {
     textAlign: 'center',
@@ -86,4 +110,27 @@ button: {
     color: 'white',
     borderRadius: 20,
 },
+Btncontainer:{
+  position: 'absolute',
+  top: 0,
+  right:0 ,
+  bottom: 0,
+  display:"flex",
+   flexDirection:"row-reverse"
+    
+
+},
+btn:{
+   
+   
+  padding:8,
+  shadowOffset: {
+    width: 0,
+    height: 2,
+},
+shadowOpacity: 0.23,
+shadowRadius: 2.62,
+
+elevation: 4,
+}
 });

@@ -2,11 +2,11 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import TextStyled from "../components/TextStyled"
 import { Chip,ActivityIndicator } from 'react-native-paper';
-import {Dimensions,ImageBackground,View,ScrollView,Image,Text,TouchableOpacity,StyleSheet,} from 'react-native';
+import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,} from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
-import {CategoryCard} from '../components/CategoryCard';
+import CategoryCard from '../components/CategoryCard';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
@@ -67,16 +67,15 @@ class Home extends React.Component {
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
         <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#FFFFFF', '#89C13D']}
-          style={styles.linearGradient}>
+          colors={['#FFFFFF', '#fff']}
+          >
           <ImageBackground source={{uri: anim.img}} style={{width: '100%'}}>
             <LinearGradient
               colors={['#ffffff00', '#fff','#fff']}
               style={styles.linearGradient}>
               <View style={{marginTop: 80, marginBottom: 40, }}>
                 <Carousel
+                 
                   layout={'default'}
                   data={this.props.newAnime}
                   renderItem={this._renderItem}
@@ -119,13 +118,13 @@ class Home extends React.Component {
                 source={require('../images/hero.png')}
               />
             </View>
-            <ScrollView
+           {/* <ScrollView
               style={{paddingLeft: 10 , flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-              {this.props.categories &&
-                this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)}
-            </ScrollView>
+               this.props.categories &&
+                this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)*/}
+            {/*  </ScrollView> */}
             <ScrollView
               style={styles.ScrollView}
               horizontal={true}
@@ -138,22 +137,15 @@ class Home extends React.Component {
           </View>
         {/*التصنيف*/}
         <TextStyled title={"التصنيف"}/>
-        <View style={{position: 'relative'}}>
-            <View style={{...styles.view,marginTop:-30}}>
-              <Image
-                style={styles.animImage}
-                source={require('../images/naruto.png')}
-              />
-            </View>
-
+       
             <ScrollView
-              style={{paddingLeft: 80,marginTop:20,marginBottom:40, flex: 1}}
+              style={{ marginTop:20,marginBottom:20, flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
               {this.props.categories &&
                 this.props.categories.map((cat, index) => cat.title && <CategoryCard title={ cat.title} key={index} />  )}
             </ScrollView>
-          </View>
+          
         
         
           {/*آخر أفلام الأنميات المضافة  */}
@@ -166,22 +158,25 @@ class Home extends React.Component {
                 source={require('../images/red.png')}
               />
             </View>
-            <ScrollView
+           {/* <ScrollView
               style={{paddingLeft: 10 , flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
-            {this.props.filmCategories &&
+            this.props.filmCategories &&
                 this.props.filmCategories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)
-                }
+                
                 </ScrollView>
-           
-            <ScrollView
-              style={styles.ScrollView}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {this.props.films &&
-                this.props.films.map((film, index) => <FilmCard item={film} key={index} />)}
-            </ScrollView>
+           */}
+          
+            <FlatList
+        data={this.props.films}
+        style={styles.ScrollView}
+              horizontal 
+        renderItem={({ item }) => <FilmCard item={item}  />}
+        keyExtractor={item => item.title}
+      />
+
+
           </View>
         
         </LinearGradient>
@@ -211,7 +206,9 @@ const styles = StyleSheet.create({
      
   },
   ScrollView:{
-    paddingLeft: 40, flex: 1
+    
+    paddingLeft: 80,  
+     overflow:"visible"
   },
 
   view: {
