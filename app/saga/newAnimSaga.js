@@ -21,7 +21,7 @@ export function* getNewAnimes(action) {
   try {
     const response = yield getRoomsApi(); // fetch page
     
-
+    console.log("response ");
     if (response.status === 200) {
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
@@ -36,7 +36,7 @@ export function* getNewAnimes(action) {
       var myData = Object.keys(liList).map(key => {
         return liList[key];
       });
-      // console.log(' mydata : ', myData);
+       console.log(' mydata : ', myData);
 
       yield put(actionsAndType.getNewSuccess(myData));
     } else {

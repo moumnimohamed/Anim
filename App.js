@@ -1,6 +1,6 @@
 import React from 'react';
 import {Provider} from 'react-redux';
-import Home from './app/containers/Home';
+import Navigator from './app/navigation/Navigation';
 import {store} from './app/redux/index';
 import {Provider as PaperProvider} from 'react-native-paper';
 
@@ -9,7 +9,7 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <PaperProvider>
-          <Home />
+          <Navigator/>
         </PaperProvider>
       </Provider>
     );

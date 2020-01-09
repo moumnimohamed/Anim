@@ -2,7 +2,7 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import TextStyled from "../components/TextStyled"
 import { Chip,ActivityIndicator } from 'react-native-paper';
-import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,} from 'react-native';
+import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView} from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
@@ -17,11 +17,16 @@ import Carousel from 'react-native-snap-carousel';
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
-
+const screenHeight = Math.round(Dimensions.get('window').height);
 class Home extends React.Component {
+   
+   
+  
+
   constructor(props) {
     super(props);
     this.state = {
+      activeImage:"",
       activeSlider: 0,
       title: 0,
       show: false,
@@ -36,44 +41,60 @@ class Home extends React.Component {
     this.setState({show: false});
   };
 
-  componentWillUpdate() {
+  componentDidUpdate() {
+
+    this.allImages=[];
     if (this.props.newAnimeFailure) {
       this.setState({show: true});
     }
   }
 
-  componentDidMount() {
+  openImage =(index)=> {
+    this.allImages[index].measure((x,y,width,height,pageX,pageY)=>{
+
+    }
+    )
+  }
+
+  componentDidMount () {
+
+    console.log("@@componentDidMount", this.props.newAnime)
     this.props.getAnimRequest();
     this.props.getAnimeList();
     this.props.aniEpisodeRequest();
-    this.props.filmRequest()
+    this.props.filmRequest();
   }
 
   _renderItem({item, index}) {
-    return <AnimatedCard item={item} />;
+    return  item.img &&  <AnimatedCard item={item}  />;
   }
 
   render() {
-    console.log("@@fils",this.props.films)
-    const anim =
+    
+    /* const anim =
       this.props.newAnime && this.props.newAnime.length > 0
         ? this.props.newAnime[this.state.activeSlider]
-        : {};
+        : {}; */
     return (
-      
-      <ScrollView >
-         {/*  {this.props.fetching ?
+      <SafeAreaView style={{flex:1}}>
+      <ScrollView style={{flex:1}}>
+     { this.props.fetching ? <View style={styles.ActivityIndicator}><ActivityIndicator animating={true} color={'#89C13D'} /></View>
+     
+     :
+     <React.Fragment>
+{/*  {this.props.fetching ?
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
-        <LinearGradient
+      <LinearGradient
           colors={['#FFFFFF', '#fff']}
           >
-          <ImageBackground source={{uri: anim.img}} style={{width: '100%'}}>
+         {/*  <ImageBackground source={{uri: anim.img}} style={{width: '100%'}}>
+          </ImageBackground> */}
             <LinearGradient
-              colors={['#ffffff00', '#fff','#fff']}
+              colors={['#ffffff00','#fff']}
               style={styles.linearGradient}>
-              <View style={{marginTop: 80, marginBottom: 40, }}>
+              <View style={{marginTop:40, marginBottom: 40, }}>
                 <Carousel
                  
                   layout={'default'}
@@ -82,11 +103,11 @@ class Home extends React.Component {
                  
                   sliderWidth={screenWidth}
                   itemWidth={screenWidth - 140}
-                  onSnapToItem={index => this.setState({activeSlider: index})}
+                 // onSnapToItem={index => this.setState({activeSlider: index})}
                 />
               </View>
             </LinearGradient>
-          </ImageBackground>
+         
          {/*  آخر الحلقات المضافة */}
          <TextStyled title={" آخر الحلقات المضافة"}/>
           <View style={{position: 'relative'}}>
@@ -97,15 +118,15 @@ class Home extends React.Component {
               />
             </View>
 
-            <ScrollView
+            <FlatList
               style={styles.ScrollView}
               horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {this.props.animeEpisodes &&
-                this.props.animeEpisodes
-                  .slice(0, 20)
-                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
-            </ScrollView>
+              showsHorizontalScrollIndicator={false}
+              data={ this.props.animeEpisodes.slice(0, 20)}
+              renderItem={({ item }) => <PlayCard item={item}   />}
+        keyExtractor={item => item.title}
+              />
+             
           </View>
 
          {/* آخر الأنميات المضافة */}
@@ -125,26 +146,29 @@ class Home extends React.Component {
                this.props.categories &&
                 this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)*/}
             {/*  </ScrollView> */}
-            <ScrollView
+            <FlatList
               style={styles.ScrollView}
               horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {this.props.animeList &&
-                this.props.animeList
-                  .slice(0, 20)
-                  .map((anim, index) => <PlayCard item={anim} key={index} />)}
-            </ScrollView>
+              showsHorizontalScrollIndicator={false}
+              data={this.props.animeList.slice(0, 20)}
+              renderItem={({ item }) => <PlayCard item={item}   />}
+        keyExtractor={item => item.title}
+              
+              />
+               
           </View>
         {/*التصنيف*/}
         <TextStyled title={"التصنيف"}/>
        
-            <ScrollView
+            <FlatList
               style={{ marginTop:20,marginBottom:20, flex: 1}}
               horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {this.props.categories &&
-                this.props.categories.map((cat, index) => cat.title && <CategoryCard title={ cat.title} key={index} />  )}
-            </ScrollView>
+              showsHorizontalScrollIndicator={false}
+              data={this.props.categories}
+              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  />}
+        keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
+        />
+              
           
         
         
@@ -180,17 +204,13 @@ class Home extends React.Component {
           </View>
         
         </LinearGradient>
-          
-        <SCLAlert
-          theme="warning"
-          show={this.state.show}
-          title="Lorem"
-          subtitle="Lorem ipsum dolor">
-          <SCLAlertButton theme="warning" onPress={() => this.handleClose()}>
-            Done
-          </SCLAlertButton>
-        </SCLAlert>
-      </ScrollView>
+       
+      
+     </React.Fragment>
+     }
+     </ScrollView>
+     </SafeAreaView>
+         
     );
   }
 }
@@ -226,10 +246,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   linearGradient: {},
+
+  ActivityIndicator:{
+     height:screenHeight,
+    backgroundColor:"white",
+    zIndex:12,
+justifyContent:"center",
+ flex:1
+  }
 });
 
 const mapStateToProps = state => {
   return {
+    fetching:state.newAnime.fetching || state.animeList.fetching || state.animeEpisodes.fetching, 
     newAnime:state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
     animeList:state.animeList && state.animeList.payload ? state.animeList.payload : [],
     categories :state.animeList && state.animeList.categories ? state.animeList.categories : [],
