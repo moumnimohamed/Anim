@@ -65,7 +65,7 @@ class Home extends React.Component {
     this.props.filmRequest();
   }
 
-  _renderItem({item, index}) {
+  _renderItem({item}) {
     return  item.img &&  <AnimatedCard item={item}  />;
   }
 
@@ -76,8 +76,8 @@ class Home extends React.Component {
         ? this.props.newAnime[this.state.activeSlider]
         : {}; */
     return (
-      <SafeAreaView style={{flex:1}}>
-      <ScrollView style={{flex:1}}>
+      <SafeAreaView style={{ backgroundColor:"#f8f5fa"}}>
+      <ScrollView  >
      { this.props.fetching ? <View style={styles.ActivityIndicator}><ActivityIndicator animating={true} color={'#89C13D'} /></View>
      
      :
@@ -86,27 +86,26 @@ class Home extends React.Component {
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
-      <LinearGradient
-          colors={['#FFFFFF', '#fff']}
-          >
+       
          {/*  <ImageBackground source={{uri: anim.img}} style={{width: '100%'}}>
           </ImageBackground> */}
-            <LinearGradient
-              colors={['#ffffff00','#fff']}
-              style={styles.linearGradient}>
-              <View style={{marginTop:40, marginBottom: 40, }}>
+             
+              <View >
                 <Carousel
-                 
+                  inactiveSlideOpacity={1}
                   layout={'default'}
                   data={this.props.newAnime}
                   renderItem={this._renderItem}
-                 
+                  slideStyle={styles.slide}
+                  containerCustomStyle={{ flex: 1 }}
+          slideStyle={{ marginTop :screenHeight/6 ,marginBottom:20}}
                   sliderWidth={screenWidth}
-                  itemWidth={screenWidth - 140}
+                  itemWidth={screenWidth -100}
+
                  // onSnapToItem={index => this.setState({activeSlider: index})}
                 />
               </View>
-            </LinearGradient>
+             
          
          {/*  آخر الحلقات المضافة */}
          <TextStyled title={" آخر الحلقات المضافة"}/>
@@ -203,8 +202,6 @@ class Home extends React.Component {
 
           </View>
         
-        </LinearGradient>
-       
       
      </React.Fragment>
      }
@@ -245,7 +242,9 @@ const styles = StyleSheet.create({
     height: null,
     flex: 1,
   },
-  linearGradient: {},
+  slide:{
+overflow:"visible"
+  },
 
   ActivityIndicator:{
      height:screenHeight,

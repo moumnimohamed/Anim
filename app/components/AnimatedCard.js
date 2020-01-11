@@ -4,79 +4,51 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Play from 'react-native-vector-icons/AntDesign';
 import {Button, Card} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Heart from 'react-native-vector-icons/AntDesign';
 export class AnimatedCard extends React.Component {
   render() {
     return (
 
 
-      <View  style={{shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 2.62,
-      
-      elevation: 4,}}>
-
-<View style={styles.Btncontainer} >
-            <TouchableOpacity  onClick={()=>{console.log("ddddd")}} style={styles.btn}>
-          <Heart name="hearto" size={20} color="black"  />
-               </TouchableOpacity>
-               <TouchableOpacity style={styles.btn}>
-          <FontAwesome name="send-o" size={20} color="black"  />
-               </TouchableOpacity>
-           
-</View>
+      <View  style={styles.container}>
+ 
         
-    
+       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
           source={{uri: this.props.item.img}}
         />
-         <View style={{
-                                marginLeft: 30,
-                                marginRight: 30,
-                                marginTop: 0,
-                                zIndex: 0,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                backgroundColor:"fff000",
-                                boxShadow:0,
-                                border:5
-                            }}>
-
-
-
-
-                                <Card.Content>
-
-                                    <Text style={styles.title}>{this.props.item.title}</Text>
-                                    <View
-                                        style={{
-                                            flexDirection: 'row',
-                                            alignItems: 'center',
-                                            marginTop: 10,
-
-                                        }}>
-                                        <TouchableOpacity>
-                                            <Icon name="arrow-left" size={10} color="black"/>
+        <TouchableOpacity style={styles.playBtn}>
+                                            <Play name="play" size={50} color="#89C13D"/>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.playBtn}>
-                                            <Play name="playcircleo" size={40} color="black"/>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity>
-                                            <Icon name="arrow-right" size={10} color="black"/>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <Button
-                                        style={styles.button}
-                                        mode="contained"
-                                        onPress={() => console.log('Pressed')}>
-                                      <Text style={{fontFamily:"JF Flat"}}> معلومات</Text>
-                                    </Button>
-                                </Card.Content>
+</View>
+         <View style={styles.info}>
+
+         <View style={styles.socialBtns}>
+         <TouchableOpacity style={styles.btn}>
+          <Heart name="hearto" size={20} color="black"  />
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.btn}>
+          <FontAwesome name="send" size={20} color="black"  />
+               </TouchableOpacity>
+               <View style={styles.likeNumber}>
+               <TouchableOpacity >
+          <AntDesign name="like2" size={20} color="black"  />
+               </TouchableOpacity>
+              <Text style={{marginLeft:1}}>+1</Text> 
+               </View>
+         </View>
+
+<Text style={styles.title}>{this.props.item.title}</Text>
+                                
+                                     
+
+                           <View style={styles.linkContainer}>
+                         
+   <Text style={styles.link}>Overview</Text> 
+   <Text style={styles.link}>episodes</Text> 
+                           </View>
 
                             </View>
   </View>
@@ -85,52 +57,102 @@ export class AnimatedCard extends React.Component {
 }
 
 const styles = StyleSheet.create({
+
+  container:{
+     
+    overflow:"visible",
+     marginLeft:3,
+     marginRight:3,
+    overflow: "visible",
+    borderRadius:20,
    
+     backgroundColor:"white",
+     shadowColor: "#000",
+     shadowOffset: {
+       width: 0,
+       height: 2,
+     },
+     shadowOpacity: 0.25,
+     shadowRadius: 3.84,
+     height:"90%",
+     elevation: 5,
+  },
+
+  imageContainer:
+  {
+
+    top:-40,
+    width:"80%",height:300, 
+   
+  borderRadius: 10,
+   overflow:"hidden", 
+  display:"flex",
+  justifyContent:"center",
+  backgroundColor:"white",
+  shadowColor: "#000",
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  shadowOpacity: 0.25,
+  shadowRadius: 3.84,
+  alignSelf:"center",
+  elevation: 5,
+  },  
+
+
   image: {
-    borderRadius: 10,
-    width: '100%',
-    height: 300,
+    flex:1,
+    width: null,
+    height: null,
+    
+
+},
+info:{
+  
+  width:"80%",
+    alignSelf:"center",
+     top:-25,
     
 },
 title: {
     textAlign: 'center',
-    marginTop: 10,
+     top:10,
 },
 icon: {marginRight: 8, marginLeft: 8, color: 'black'},
 playBtn: {
-    alignItems: 'center',
-
-    borderRadius: 40,
-    marginLeft: 40,
-    marginRight: 40,
+position:"absolute",
+alignSelf:"center"
 },
-button: {
-    marginTop: 10,
-    backgroundColor: 'black',
-    color: 'white',
-    borderRadius: 20,
-},
-Btncontainer:{
-  position: 'absolute',
-  top: 0,
-  right:0 ,
-  bottom: 0,
-  display:"flex",
-   flexDirection:"row-reverse"
+linkContainer: {
+    marginTop: 20,
+    marginBottom: 0,
+   flexDirection:"row",
+   justifyContent:"space-around",
     
-
+   
 },
+ link:{
+  borderBottomColor: '#89C13D',
+  borderBottomWidth: 2,
+  marginBottom: 30,
+  color:"#707070"
+ },
+socialBtns:{
+  flexDirection:"row",
+},
+ 
 btn:{
-   
-   
-  padding:8,
-  shadowOffset: {
-    width: 0,
-    height: 2,
+ marginRight:10
 },
-shadowOpacity: 0.23,
-shadowRadius: 2.62,
-
-elevation: 4,
+likeNumber:{
+  flexDirection:"row",
+  flex:1,
+   justifyContent:"flex-end",
 }
+
+
+
+
+ 
 });
