@@ -4,13 +4,14 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator  } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Home from "../containers/Home"
+import AnimeDetail from "../containers/AnimeDetail"
 import Heart from 'react-native-vector-icons/AntDesign';
  
 const SearchStackNavigator = createStackNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
-      title:   <Image
+      headerTitle:   <Image
       style={{ width: 40,height: 40,}}
       source={require('../images/logo.png')}
     />,
@@ -24,6 +25,14 @@ const SearchStackNavigator = createStackNavigator({
      
     },
      
+  },
+  AnimeDetail: {
+    screen: AnimeDetail,
+    navigationOptions: {
+      title:"",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
   },
   
 })

@@ -18,6 +18,12 @@ import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
+
+const horizontalMargin = 30;
+const slideWidth = 200;
+ 
+const itemWidth = slideWidth + horizontalMargin * 2;
+
 class Home extends React.Component {
    
    
@@ -49,28 +55,27 @@ class Home extends React.Component {
     }
   }
 
-  openImage =(index)=> {
-    this.allImages[index].measure((x,y,width,height,pageX,pageY)=>{
-
-    }
-    )
-  }
+     
 
   componentDidMount () {
 
-    console.log("@@componentDidMount", this.props.newAnime)
+    
     this.props.getAnimRequest();
     this.props.getAnimeList();
     this.props.aniEpisodeRequest();
     this.props.filmRequest();
   }
 
-  _renderItem({item}) {
-    return  item.img &&  <AnimatedCard item={item}  />;
-  }
+   
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: "madona",
+    };
+  };
 
   render() {
-    
+     
     /* const anim =
       this.props.newAnime && this.props.newAnime.length > 0
         ? this.props.newAnime[this.state.activeSlider]
@@ -95,12 +100,13 @@ class Home extends React.Component {
                   inactiveSlideOpacity={1}
                   layout={'default'}
                   data={this.props.newAnime}
-                  renderItem={this._renderItem}
+                  renderItem={({item,index})=> {return item.img ? <AnimatedCard item={item}  navigate={()=>{this.props.navigation.navigate('AnimeDetail', { index: index,title:item.title })} } /> : null ;
+ } }
                   slideStyle={styles.slide}
                   containerCustomStyle={{ flex: 1 }}
           slideStyle={{ marginTop :screenHeight/6 ,marginBottom:20}}
                   sliderWidth={screenWidth}
-                  itemWidth={screenWidth -100}
+                  itemWidth={itemWidth}
 
                  // onSnapToItem={index => this.setState({activeSlider: index})}
                 />
@@ -257,7 +263,8 @@ justifyContent:"center",
 
 const mapStateToProps = state => {
   return {
-    fetching:state.newAnime.fetching || state.animeList.fetching || state.animeEpisodes.fetching, 
+    fetching:state.newAnime.fetching ,
+    //|| state.animeList.fetching || state.animeEpisodes.fetching, 
     newAnime:state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
     animeList:state.animeList && state.animeList.payload ? state.animeList.payload : [],
     categories :state.animeList && state.animeList.categories ? state.animeList.categories : [],

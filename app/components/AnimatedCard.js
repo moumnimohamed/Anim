@@ -8,6 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Heart from 'react-native-vector-icons/AntDesign';
 export class AnimatedCard extends React.Component {
   render() {
+     
     return (
 
 
@@ -19,7 +20,7 @@ export class AnimatedCard extends React.Component {
           style={styles.image}
           source={{uri: this.props.item.img}}
         />
-        <TouchableOpacity style={styles.playBtn}>
+        <TouchableOpacity style={styles.playBtn} onPress={this.props.navigate}>
                                             <Play name="play" size={50} color="#89C13D"/>
                                         </TouchableOpacity>
 </View>

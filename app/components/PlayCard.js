@@ -7,6 +7,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export class PlayCard extends React.Component {
 
+  
+
     render() {
         return (
            <View  style={styles.view} >
