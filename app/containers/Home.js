@@ -13,6 +13,8 @@ import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {filmRequest} from '../redux/FilmRedux';
 import {connect} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
+ 
+
 
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
 
@@ -76,10 +78,10 @@ class Home extends React.Component {
 
   render() {
      
-    /* const anim =
+    const anim =
       this.props.newAnime && this.props.newAnime.length > 0
         ? this.props.newAnime[this.state.activeSlider]
-        : {}; */
+        : {}; 
     return (
       <SafeAreaView style={{ backgroundColor:"#f8f5fa"}}>
       <ScrollView  >
@@ -91,9 +93,12 @@ class Home extends React.Component {
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
-       
-         {/*  <ImageBackground source={{uri: anim.img}} style={{width: '100%'}}>
-          </ImageBackground> */}
+      
+          <ImageBackground blurRadius={1} source={{uri: anim.img}} style={{width: '100%'}}>
+          <LinearGradient
+        
+          colors={['#ffffff00','#f8f5fa']}
+           > 
              
               <View >
                 <Carousel
@@ -108,9 +113,11 @@ class Home extends React.Component {
                   sliderWidth={screenWidth}
                   itemWidth={itemWidth}
 
-                 // onSnapToItem={index => this.setState({activeSlider: index})}
+                 onSnapToItem={index => this.setState({activeSlider: index})}
                 />
               </View>
+              </LinearGradient>
+              </ImageBackground> 
              
          
          {/*  آخر الحلقات المضافة */}

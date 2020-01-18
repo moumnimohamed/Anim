@@ -4,6 +4,7 @@ import axios from 'axios';
 import * as actionsAndType from '../redux/filmDetailRedux';
 import { act } from 'react-test-renderer';
 import Reactotron from 'reactotron-react-native'
+import reactotron from 'reactotron-react-native';
  
 
 /** function that returns an axios call */
@@ -36,7 +37,7 @@ export function* getAnimeDetail (action) {
        
           const cat=[];
            
-          cat.push( $(".details-section .details-content-info ul li:nth-child(3) label").text() )
+         // cat.push( $(".details-section .details-content-info ul li:nth-child(3) label").text() )
 
              $(".details-section .details-content-info ul li:nth-child(3) a").map((_, elm) => 
             {
@@ -57,21 +58,51 @@ export function* getAnimeDetail (action) {
                
               }
           );  
+
+          //STREAMING LINKS
+          href =[];
+          $(".embed-player-tabs .nav li").map((_, elm) => 
+          {
+            href.push( {text:$(elm).text(),link:$(elm).attr('hrefa')}) 
+          
+            }
+        );  
  
+// related film
+         
+
+        const relatedF = [];
+        $('.col-list-padding > .hovereffect').map((_, hover) => {
+          relatedF.push(
+            {
+          // map to an list of objects
+          title: $('h2', hover).text(),
+          img: $('.img-responsive', hover).attr('src'),
+          link: $('a', hover).attr('href'),
+        }
+        )
+      }
+        );
+      
+       
+
+         console.log("related FILM",relatedF)
+
         const objectAnim =  [
         { 
            
-          Published :[
+          published :[
                       $(".details-section .details-content-info ul li:nth-child(1) label").text(),
                       $(".details-section .details-content-info ul li:nth-child(1) span").text()
                      ],
-          Duration :[
+          duration :[
             $(".details-section .details-content-info ul li:nth-child(2) label").text(),
             $(".details-section .details-content-info ul li:nth-child(2) span").text()
            ],
-          Category: cat,
-             
+          category: cat,
           story:story,
+         streamLinks :href,
+         relatedF :relatedF
          
         }
           ]
