@@ -8,7 +8,9 @@ export class FilmCard extends React.Component {
 
     render() {
         return (
-           <View  style={styles.view} >
+           <TouchableOpacity 
+           activeOpacity={.9} 
+           onPress={this.props.navigate}  style={styles.view} >
         <Image
             ImageResizeMode ={"contain"}
             style={styles.image} source={{uri: this.props.item.img}} />
@@ -21,7 +23,7 @@ export class FilmCard extends React.Component {
           <FontAwesome name="send-o" size={15} color="black"  />
                </TouchableOpacity>
 </View>
-           </View>
+           </TouchableOpacity>
         );
     }
 }

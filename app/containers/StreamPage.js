@@ -3,12 +3,16 @@ import React from "react"
 import { View ,StyleSheet} from 'react-native';
 
 export default class StreamPage extends React.Component {
+
+    
+
     render() {
+      console.log("str",this.props.navigation.state.params.link)
   
       return (
       
           <WebView
-            source={{uri: "https://anime2001.com/embed_player/?url=https%3A%2F%2Fletsupload.co%2Fplugins%2Fmediaplayer%2Fsite%2F_embed.php%3Fu%3D1tctq&h=238f5a5de80a467c64f068bb10eefd86"}}
+            source={{uri: this.props.navigation.state.params.link}}
              
           />
          

@@ -51,10 +51,10 @@ class Home extends React.Component {
 
   componentDidUpdate() {
 
-    this.allImages=[];
+    /* this.allImages=[];
     if (this.props.newAnimeFailure) {
       this.setState({show: true});
-    }
+    } */
   }
 
      
@@ -69,12 +69,7 @@ class Home extends React.Component {
   }
 
    
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: "madona",
-    };
-  };
+ 
 
   render() {
      
@@ -105,7 +100,7 @@ class Home extends React.Component {
                   inactiveSlideOpacity={1}
                   layout={'default'}
                   data={this.props.newAnime}
-                  renderItem={({item,index})=> {return item.img ? <AnimatedCard item={item}  navigate={()=>{this.props.navigation.navigate('AnimeDetail', { index: index,title:item.title })} } /> : null ;
+                  renderItem={({item,index})=> {return item.img ? <AnimatedCard item={item}  navigate={()=>{this.props.navigation.navigate('FilmDetail', { index: index,title:item.title })} } /> : null ;
  } }
                   slideStyle={styles.slide}
                   containerCustomStyle={{ flex: 1 }}
@@ -205,11 +200,12 @@ class Home extends React.Component {
            */}
           
             <FlatList
-        data={this.props.films}
+        data={this.props.films.slice(0, 20)}
         style={styles.ScrollView}
               horizontal 
-        renderItem={({ item }) => <FilmCard item={item}  />}
-        keyExtractor={item => item.title}
+              showsHorizontalScrollIndicator={false}
+        renderItem={({ item,index }) => item.img && <FilmCard item={item}  navigate={()=>{this.props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
+        keyExtractor={(item,index) => index.toString()}
       />
 
 

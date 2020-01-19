@@ -5,7 +5,7 @@ import { createStackNavigator  } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Home from "../containers/Home"
 import StreamPage from "../containers/StreamPage"
-import AnimeDetail from "../containers/AnimeDetail"
+import FilmDetail from "../containers/FilmDetail"
 import Heart from 'react-native-vector-icons/AntDesign';
  
 const SearchStackNavigator = createStackNavigator({
@@ -27,8 +27,8 @@ const SearchStackNavigator = createStackNavigator({
     },
      
   },
-  AnimeDetail: {
-    screen: AnimeDetail,
+  FilmDetail: {
+    screen: FilmDetail,
     navigationOptions: {
       title:"",
       headerTintColor: '#fff',

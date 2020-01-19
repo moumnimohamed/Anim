@@ -12,20 +12,22 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 
-class AnimeDetail extends React.Component {
+class FilmDetail extends React.Component {
 
 
+    animeName=this.props.navigation.state.params.title;
+      anime=  this.props.films.filter(film => film.title===this.props.navigation.state.params.title)[0]
+     
   componentDidMount = () => {
 
   
 
-    const animeName=this.props.navigation.state.params.title;
+    
 
-    const anime=  this.props.newAnime[this.props.navigation.state.params.index]
-       console.log("anime.link",anime.link)
+      console.log("anime....",this.anime)
 
-       if(animeName.includes("فيلم")){
-        this.props.filmDetailRequest(anime.link)
+       if(this.animeName.includes("فيلم")){
+        this.props.filmDetailRequest(this.anime.link)
        }else{
          console.log("is anime episode")
        }
@@ -37,8 +39,8 @@ class AnimeDetail extends React.Component {
 
 render(){
   reactotron.log("ha awis",this.props.filmDetail)
-      const animeIndex=  this.props.navigation.state.params.index
-      const anime=  this.props.newAnime[animeIndex]
+      
+     
 
       const cat = this.props.filmDetail  && this.props.filmDetail.length > 0 ? this.props.filmDetail[0]["category"] :""
       const story = this.props.filmDetail  && this.props.filmDetail.length > 0 ? this.props.filmDetail[0]["story"] :[]
@@ -53,7 +55,7 @@ render(){
 
       <ScrollView  style={ styles.scroll}>
 
-           <ImageBackground  blurRadius={1}  source={{uri:anime.img}} style={styles.bkg}>
+           <ImageBackground  blurRadius={1}  source={{uri:this.anime.img}} style={styles.bkg}>
          
         <View style={styles.viewDATA}>
        
@@ -61,7 +63,7 @@ render(){
         <Image
          ImageResizeMode ={"contain"}
           style={styles.image}
-          source={{uri: anime.img}}
+          source={{uri: this.anime.img}}
         />
         </View>
 
@@ -173,8 +175,10 @@ backgroundVideo: {
 
 const mapStateToProps = state => {
     return {
-         filmDetail :state.filmDetail.payload ? state.filmDetail.payload : [],
-        newAnime:state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
+       
+        
+        films: state.films && state.films.payload ? state.films.payload: [],
+          filmDetail :state.filmDetail.payload ? state.filmDetail.payload : [],
     };
   };
   
@@ -189,5 +193,5 @@ const mapStateToProps = state => {
   export default connect(
       mapStateToProps,
       mapDispatchToProps,
-  )(AnimeDetail);
+  )(FilmDetail);
   
