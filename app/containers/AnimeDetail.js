@@ -1,6 +1,7 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import   {detailRequest} from '../redux/filmDetailRedux';
+import Video from 'react-native-video';
 
 import { Chip } from 'react-native-paper';
 import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView} from 'react-native';
@@ -48,6 +49,8 @@ render(){
       reactotron.log("ha streamLinks",streamLinks)
     return(
         <SafeAreaView style={styles.container}>
+         
+
       <ScrollView  style={ styles.scroll}>
 
            <ImageBackground  blurRadius={1}  source={{uri:anime.img}} style={styles.bkg}>
@@ -61,12 +64,8 @@ render(){
           source={{uri: anime.img}}
         />
         </View>
-        
-        { 
-          streamLinks.map( (video,i )=> 
-                {    return  (video && video.text ?     <Playeroo key={i} video={video}/> : null) }
-              )}
-       
+
+         
       
          
 
@@ -89,7 +88,11 @@ render(){
                 {    return  ( p && p.text ?   <Text key={i} style={{padding:20,color:"#9A999A"}}>{p.text}</Text> : null) }
               )}
              
-              <Playeroo t={"dd"}/>
+              { 
+          streamLinks.map( (video,i )=> 
+                {    return  (video && video.text ?     <Playeroo key={i} video={video}  navigate={()=>{this.props.navigation.navigate('streamPage', { link:video.link })} }/> : null) }
+              )}
+              
         
 
         </View>
@@ -121,9 +124,10 @@ const styles = StyleSheet.create({
   },
   
 viewDATA : {
-  marginTop:200,
+  /*  marginTop:200,*/
   paddingTop:90,
   backgroundColor:"#FFF",
+  overflow:"hidden",
 
 width:screenWidth ,
 borderTopLeftRadius:screenWidth/2,
@@ -155,6 +159,14 @@ elevation: 13,
      
     width:"100%", 
     height:"100%",
+},
+backgroundVideo: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  bottom: 0,
+  right: 0,
+  
 },
 })
 

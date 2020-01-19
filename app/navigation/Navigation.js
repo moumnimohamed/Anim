@@ -4,6 +4,7 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator  } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Home from "../containers/Home"
+import StreamPage from "../containers/StreamPage"
 import AnimeDetail from "../containers/AnimeDetail"
 import Heart from 'react-native-vector-icons/AntDesign';
  
@@ -35,6 +36,15 @@ const SearchStackNavigator = createStackNavigator({
     },
   },
   
+  streamPage :{
+    screen: StreamPage,
+    navigationOptions: {
+      title:"stream",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+
 })
 
 const TabNavigator = createBottomTabNavigator({

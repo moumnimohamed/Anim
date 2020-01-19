@@ -17,7 +17,7 @@ export function Playeroo  (props) {
          > 
          
 
-<TouchableOpacity style={styles.btn}>
+<TouchableOpacity style={styles.btn} onPress={props.navigate}>
           <Play name="play" size={20} color="white"  />
                </TouchableOpacity>
          
