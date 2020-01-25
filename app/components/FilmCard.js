@@ -4,7 +4,14 @@ import {Image, Dimensions, View, StyleSheet, TouchableOpacity} from 'react-nativ
 import Heart from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-paper';
+
+
 export class FilmCard extends React.Component {
+
+
+    
+  screenWidth = Math.round(Dimensions.get('window').width);
+
 
     render() {
         return (
@@ -42,7 +49,7 @@ shadowRadius: 2.62,
 elevation: 4,
         marginTop:10,
         marginBottom:10,
-        marginLeft:20,
+        marginHorizontal:screenWidth/20,
         width:screenWidth/2.5,
         height: screenWidth/2,
     backgroundColor:"white",

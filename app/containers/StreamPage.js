@@ -1,4 +1,4 @@
-/* import {WebView}  from "react-native-webview" */
+import {WebView}  from "react-native-webview"
 import React from "react"
 import { Text,View , Platform, StyleSheet,Dimensions} from 'react-native';
 import Orientation from 'react-native-orientation';
@@ -95,13 +95,19 @@ export default class StreamPage extends React.Component {
     render() {
       console.log("str",this.props.navigation.state.params.link)
   
+   /* mega :  in webview 
+   Let's Upload :  viedo player after fetch
+   */
+
       return (
-       /*  <WebView
-            source={{uri: "https://anime2001.com/embed_player/?url=https%3A%2F%2Fletsupload.co%2Fplugins%2Fmediaplayer%2Fsite%2F_embed.php%3Fu%3D1tctq&h=238f5a5de80a467c64f068bb10eefd86"}}
-            allowsFullscreenVideo={true}
-          /> */
-           
-          <View style={styles.container}>
+        <View style={styles.container}>
+        <WebView
+        source={{uri: "https://mega.nz/embed#!T08DFQgL!6wjwvCOv_XmDkYWD4p7YXk9o8DJA9_nFwsDxq9ZcbE4"}}
+        allowsFullscreenVideo={true}
+        allowsInlineMediaPlayback={true}
+      />
+           </View>
+        /*   <View style={styles.container}>
         <Video
           onEnd={this.onEnd}
           onLoad={this.onLoad}
@@ -113,7 +119,7 @@ export default class StreamPage extends React.Component {
           onFullScreen={this.state.isFullScreen}
           fullscreen={true}
      
-          source={{ uri: 'https://cdn17.letsupload.co/1tctq/[Anime2001.com]_OPM14S_V2_[HD].mp4?download_token=a7dd35b0f1463ee5efea4546b384edcd63c0d89affa18887e682cb0f0ea4d0a3' }}
+          source={{ uri: 'https://mega.nz/embed#!T08DFQgL!6wjwvCOv_XmDkYWD4p7YXk9o8DJA9_nFwsDxq9ZcbE4' }}
           style={styles.mediaPlayer}
           volume={10}
         />
@@ -131,7 +137,7 @@ export default class StreamPage extends React.Component {
           toolbar={this.renderToolbar()}
         />
       </View>
-          
+           */
       );
     }
   }
