@@ -26,13 +26,8 @@ class FilmDetail extends React.Component {
 
       console.log("anime....",this.anime)
 
-       if(this.animeName.includes("فيلم")){
+        
         this.props.filmDetailRequest(this.anime.link)
-       }else{
-         console.log("is anime episode")
-       }
-
-    
 
   }
    

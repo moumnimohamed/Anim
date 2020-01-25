@@ -2,7 +2,7 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import TextStyled from "../components/TextStyled"
 import { Chip,ActivityIndicator } from 'react-native-paper';
-import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView} from 'react-native';
+import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView, Alert} from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
@@ -100,7 +100,11 @@ class Home extends React.Component {
                   inactiveSlideOpacity={1}
                   layout={'default'}
                   data={this.props.newAnime}
-                  renderItem={({item,index})=> {return item.img ? <AnimatedCard item={item}  navigate={()=>{this.props.navigation.navigate('FilmDetail', { index: index,title:item.title })} } /> : null ;
+                  renderItem={({item,index})=> {return item.img ? <AnimatedCard item={item}  navigate={()=>{
+                    item.title.includes("فيلم") ?
+                      this.props.navigation.navigate('FilmDetail', { index: index,title:item.title })
+                    : alert("it episode")
+                    } } /> : null ;
  } }
                   slideStyle={styles.slide}
                   containerCustomStyle={{ flex: 1 }}
@@ -180,7 +184,7 @@ class Home extends React.Component {
         
         
           {/*آخر أفلام الأنميات المضافة  */}
-          <TextStyled title={"آخر أفلام"}/>
+          <TextStyled title={"آخر أفلام"}   onClick={()=> { this.props.navigation.navigate('FilmAllList')}}/>
 
           <View style={{position: 'relative'}}>
             <View style={styles.view}>

@@ -6,6 +6,8 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 import Home from "../containers/Home"
 import StreamPage from "../containers/StreamPage"
 import FilmDetail from "../containers/FilmDetail"
+import FilmAllList from "../containers/FilmAllList"
+
 import Heart from 'react-native-vector-icons/AntDesign';
  
 const SearchStackNavigator = createStackNavigator({
@@ -45,11 +47,20 @@ const SearchStackNavigator = createStackNavigator({
     },
   },
 
+  FilmAllList :{
+    screen: FilmAllList,
+    navigationOptions: {
+      title:"FilmAllList",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
 })
 
 const TabNavigator = createBottomTabNavigator({
   Home: {
-    screen: SearchStackNavigator
+    screen: SearchStackNavigator,
+    navigationOptions: { tabBarVisible: false }
   },
    
 })
