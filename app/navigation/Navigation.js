@@ -7,6 +7,8 @@ import Home from "../containers/Home"
 import StreamPage from "../containers/StreamPage"
 import FilmDetail from "../containers/FilmDetail"
 import FilmAllList from "../containers/FilmAllList"
+import AnimeAllList from "../containers/AnimeAllList"
+import AnimeDetail from "../containers/AnimeDetail"
 
 import Heart from 'react-native-vector-icons/AntDesign';
  
@@ -37,6 +39,16 @@ const SearchStackNavigator = createStackNavigator({
       headerTransparent: true,
     },
   },
+
+  AnimeDetail: {
+    screen: AnimeDetail,
+    navigationOptions: {
+      title:"",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+  
   
   streamPage :{
     screen: StreamPage,
@@ -50,7 +62,15 @@ const SearchStackNavigator = createStackNavigator({
   FilmAllList :{
     screen: FilmAllList,
     navigationOptions: {
-      title:"FilmAllList",
+      title:"",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+  AnimeAllList :{
+    screen: AnimeAllList,
+    navigationOptions: {
+      title:"",
       headerTintColor: '#fff',
       headerTransparent: true,
     },

@@ -4,8 +4,10 @@ import {animeList } from '../redux/AnimeListRedux'
 import {aniEpisodes } from '../redux/AnimeEpisodes'
 import {animeDetail } from '../redux/filmDetailRedux'
 import {films } from '../redux/FilmRedux'
+import {DetailRedux} from '../redux/AnimeDetailRedux'
 import {watchAll } from '../saga/indexSaga'
 import createSagaMiddleware from 'redux-saga'
+
 import {isTSImportType} from '@babel/types';
     import('../config/ReactotronConfig').then(() => console.log('Reactotron Configured'))
     
@@ -17,7 +19,8 @@ const sagaMiddleware =createSagaMiddleware();
    animeList,
    animeEpisodes:aniEpisodes,
    films,
-   filmDetail :animeDetail
+   filmDetail :animeDetail,
+   animeDetail:DetailRedux
 });
 
 const composeEnhancers = (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;

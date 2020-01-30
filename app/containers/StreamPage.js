@@ -1,10 +1,9 @@
-import {WebView}  from "react-native-webview"
-import React from "react"
-import { Text,View , Platform, StyleSheet,Dimensions} from 'react-native';
-import Orientation from 'react-native-orientation';
-import Video from 'react-native-video';
-import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
-
+import React from "react";
+import { StyleSheet, Text, View } from 'react-native';
+import { PLAYER_STATES } from 'react-native-media-controls';
+import { WebView } from "react-native-webview";
+import cheerio from 'cheerio-without-node-native';
+import axios from "axios"
 export default class StreamPage extends React.Component {
 
   videoPlayer;
@@ -22,6 +21,27 @@ export default class StreamPage extends React.Component {
     };
   }
 
+
+   getVideoURL  = async (link) => {
+      axios({
+      method: 'get',
+      url: "https://anime2001.com/embed_player/?url=https%3A%2F%2Fgounlimited.to%2Fembed-5n3zo8lt3gu1.html&h=d0783360ee8c1c8a8e2a2a4813c9f8ad",
+    }).then(response => {
+        if (response.status === 200) {
+           console.warn("hahia!!",response.data)
+          const htmlString =  response.data;  
+          const $ = cheerio.load(htmlString); 
+          const liList = $('#vplayer .container video').attr('src') ;
+           
+       
+              console.log("voila !!!", )
+       
+        }
+      })
+      .catch(error => {
+          error;
+      });
+  }
   
   onSeek = seek => {
     //Handler for change in seekbar
@@ -85,8 +105,13 @@ export default class StreamPage extends React.Component {
     };
 
 
-    componentWillMount () {
-      Orientation.lockToLandscape();
+    componentDidMount () {
+     // Orientation.lockToLandscape();
+if (this.props.navigation.state.params.link) {
+  console.log("lala link",this.props.navigation.state.params.link)
+  this.getVideoURL(this.props.navigation.state.params.link)
+}
+     
     }
 
     
@@ -95,14 +120,20 @@ export default class StreamPage extends React.Component {
     render() {
       console.log("str",this.props.navigation.state.params.link)
   
-   /* mega :  in webview 
-   Let's Upload :  viedo player after fetch
+   /* mega      :  in webview 
+   Let's Upload : in webview 
+   4 shared: in webview 
+    go unlimeted show ads : in video player 
+    ok.ru: in webview 
+    vibbom : not working (loading)
+    fileUpload : in webview 
+    google drive : in webview 
    */
 
       return (
         <View style={styles.container}>
         <WebView
-        source={{uri: "https://mega.nz/embed#!T08DFQgL!6wjwvCOv_XmDkYWD4p7YXk9o8DJA9_nFwsDxq9ZcbE4"}}
+        source={{html :this.props.navigation.state.params.link}}
         allowsFullscreenVideo={true}
         allowsInlineMediaPlayback={true}
       />

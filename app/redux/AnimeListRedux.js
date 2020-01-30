@@ -52,7 +52,7 @@ export const animeList= (state = initialState, action) => {
       return {
         ...state,
         fetching: false,
-        payload: action.payload,
+        payload: [...state.payload , ...action.payload],
         error: false,
         success: true,
       };

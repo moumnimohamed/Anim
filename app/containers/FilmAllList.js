@@ -15,7 +15,7 @@ import {FilmCard} from '../components/FilmCard';
         data={props.films }
         style={styles.FlatList}
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <FilmCard item={item}  navigate={()=>{props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
+        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
         numColumns={2}
         keyExtractor={(item,index) => index.toString()}
       />

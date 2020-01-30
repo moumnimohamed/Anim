@@ -7,6 +7,7 @@ import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
 import CategoryCard from '../components/CategoryCard';
+import Loader from '../components/Loader';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
@@ -63,7 +64,7 @@ class Home extends React.Component {
 
     
     this.props.getAnimRequest();
-    this.props.getAnimeList();
+    this.props.getAnimeList(0);
     this.props.aniEpisodeRequest();
     this.props.filmRequest();
   }
@@ -80,7 +81,7 @@ class Home extends React.Component {
     return (
       <SafeAreaView style={{ backgroundColor:"#f8f5fa"}}>
       <ScrollView  >
-     { this.props.fetching ? <View style={styles.ActivityIndicator}><ActivityIndicator animating={true} color={'#89C13D'} /></View>
+     { this.props.fetching ? <Loader/>
      
      :
      <React.Fragment>
@@ -141,7 +142,7 @@ class Home extends React.Component {
           </View>
 
          {/* آخر الأنميات المضافة */}
-         <TextStyled title={"آخر الأنميات المضافة"}/>
+         <TextStyled title={"آخر الأنميات المضافة"} onClick={()=> { this.props.navigation.navigate('AnimeAllList')}}/>
 
           <View style={{position: 'relative'}}>
             <View style={styles.view}>
@@ -162,7 +163,7 @@ class Home extends React.Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={this.props.animeList.slice(0, 20)}
-              renderItem={({ item }) => <PlayCard item={item}   />}
+              renderItem={({ item }) => <FilmCard item={item}  showTitle={false} />}
         keyExtractor={item => item.title}
               
               />
@@ -208,7 +209,7 @@ class Home extends React.Component {
         style={styles.ScrollView}
               horizontal 
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <FilmCard item={item}  navigate={()=>{this.props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
+        renderItem={({ item,index }) => item.img && <FilmCard item={item}  showTitle={false} navigate={()=>{this.props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
         keyExtractor={(item,index) => index.toString()}
       />
 

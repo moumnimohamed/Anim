@@ -1,9 +1,9 @@
 import {call, put} from 'redux-saga/effects';
 import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
-import * as actionsAndType from '../redux/filmDetailRedux';
-import { act } from 'react-test-renderer';
+import * as actionsAndType from '../redux/AnimeDetailRedux';
 import Reactotron from 'reactotron-react-native'
+import reactotron from 'reactotron-react-native';
  
 
 /** function that returns an axios call */
@@ -23,8 +23,8 @@ function getAnimeDetailApi( link) {
     });
 }
 
-export function* getAnimeDetail (action) {
-    console.log("actiona",action)
+export function* getAnime_PeaceDetail (action) {
+    
   try {
     const response = yield call(getAnimeDetailApi,action.data); // fetch page
     
@@ -49,9 +49,9 @@ export function* getAnimeDetail (action) {
 
           const story=[];
            
-          story.push( $(".details-section .details-content-info ul li:nth-child(4) label").text() )
+          story.push( $(".details-section .details-content-info ul li:nth-child(6) label").text() )
 
-             $(".details-section .details-content-info ul li:nth-child(4) p").map((_, elm) => 
+             $(".details-section .details-content-info ul li:nth-child(6) p").map((_, elm) => 
             {
               story.push( {text:$(elm).text()}) 
                
@@ -60,10 +60,10 @@ export function* getAnimeDetail (action) {
 
           //STREAMING LINKS
           href =[];
-          $(".embed-player-tabs .nav li").map((_, elm) => 
+          $(".main-widget .eps-content-list li").map((_, elm) => 
           {
-            href.push( {text:$(elm).text(),link:$(elm).attr('hrefa')}) 
-          
+             href.push( {title: $('a', elm).text(),link: $('a', elm).attr('href') }) 
+           /* console.log("lala",$('a', elm).attr('href')) */
             }
         );  
  
@@ -94,11 +94,19 @@ export function* getAnimeDetail (action) {
                       $(".details-section .details-content-info ul li:nth-child(1) label").text(),
                       $(".details-section .details-content-info ul li:nth-child(1) span").text()
                      ],
-          duration :[
+          season :[
             $(".details-section .details-content-info ul li:nth-child(2) label").text(),
             $(".details-section .details-content-info ul li:nth-child(2) span").text()
            ],
           category: cat,
+          episodesNbr :[
+            $(".details-section .details-content-info ul li:nth-child(4) label").text(),
+            $(".details-section .details-content-info ul li:nth-child(4) span").text()
+           ],
+           status :[
+            $(".details-section .details-content-info ul li:nth-child(5) label").text(),
+            $(".details-section .details-content-info ul li:nth-child(5) span").text()
+           ],
           story:story,
          streamLinks :href,
          relatedF :relatedF
@@ -112,7 +120,7 @@ export function* getAnimeDetail (action) {
       });
        
       Reactotron.log("createOBJ",createOBJ)
-      yield put(actionsAndType.detailSuccess(createOBJ));
+      yield put(actionsAndType.animeDetailSuccess(createOBJ));
 
        
      
@@ -120,7 +128,7 @@ export function* getAnimeDetail (action) {
       
 
     } else {
-      yield put(actionsAndType.detailFailure(null));
+      yield put(actionsAndType.animeDetailFailure(null));
       console.log('non connection');
     }
   } catch (error) {

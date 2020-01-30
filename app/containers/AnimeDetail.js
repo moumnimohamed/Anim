@@ -1,6 +1,6 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {detailRequest} from '../redux/filmDetailRedux';
+import {animeDetailRequest} from '../redux/AnimeDetailRedux';
 
 import Play from 'react-native-vector-icons/AntDesign';
 import Star from 'react-native-vector-icons/FontAwesome';
@@ -24,23 +24,19 @@ import {Playeroo} from '../components/Playeroo';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
-class FilmDetail extends React.Component {
+class AnimeDetail extends React.Component {
   animeName = this.props.navigation.state.params.title;
-  anime = this.props.films.filter(
-    film => film.title === this.props.navigation.state.params.title,
+  anime = this.props.animeList.filter(
+    anime => anime.title === this.props.navigation.state.params.title,
   )[0];
 
   componentDidMount = () => {
-    console.log('anime....', this.anime);
-
-    this.props.filmDetailRequest(this.anime.link);
+    this.props.AnimeDetailRequest(this.anime.link);
   };
 
   render() {
-    reactotron.log('ha awis', this.props.filmDetail);
-
     const cat =
-      this.props.filmDetail && this.props.filmDetail.length > 0
+      this.props.Detail && this.props.filmDetail.length > 0
         ? this.props.filmDetail[0]['category']
         : '';
     const story =
@@ -60,20 +56,20 @@ class FilmDetail extends React.Component {
         ? this.props.filmDetail[0]['streamLinks']
         : [];
 
-    reactotron.log('ha streamLinks', streamLinks);
+    console.log('papaia', this.props.animeDetail);
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scroll}>
           <ImageBackground
             blurRadius={1}
-            source={{uri: this.anime.img ? this.anime.img : ""}}
+            source={{uri: this.anime.img ? this.anime.img : ''}}
             style={styles.bkg}>
             <View style={styles.viewDATA}>
               <View style={styles.imageContainer}>
                 <Image
                   ImageResizeMode={'contain'}
                   style={styles.image}
-                  source={{uri: this.anime.img ? this.anime.img : ""}}
+                  source={{uri: this.anime.img ? this.anime.img : ''}}
                 />
               </View>
 
@@ -235,15 +231,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    films: state.films && state.films.payload ? state.films.payload : [],
-    filmDetail: state.filmDetail.payload ? state.filmDetail.payload : [],
+    animeList:  state.animeList && state.animeList.payload ? state.animeList.payload : [],
+    animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    filmDetailRequest: data => dispatch(detailRequest(data)),
+    AnimeDetailRequest: data => dispatch(animeDetailRequest(data)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilmDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(AnimeDetail);

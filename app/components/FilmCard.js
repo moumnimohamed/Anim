@@ -1,10 +1,10 @@
 /* eslint-disable */
 import React from 'react';
-import {Image, Dimensions, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {Image, Dimensions,Text, View, StyleSheet, TouchableOpacity} from 'react-native';
 import Heart from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Button } from 'react-native-paper';
-
+ 
 
 export class FilmCard extends React.Component {
 
@@ -15,6 +15,8 @@ export class FilmCard extends React.Component {
 
     render() {
         return (
+             
+             
            <TouchableOpacity 
            activeOpacity={.9} 
            onPress={this.props.navigate}  style={styles.view} >
@@ -30,9 +32,13 @@ export class FilmCard extends React.Component {
           <FontAwesome name="send-o" size={15} color="black"  />
                </TouchableOpacity>
 </View>
+{ this.props.showTitle && <Text style={styles.title}>{this.props.item.title}</Text>}
            </TouchableOpacity>
+           
         );
     }
+    
+
 }
 const     screenWidth = Math.round(Dimensions.get('window').width);
 const styles = StyleSheet.create({
@@ -49,7 +55,7 @@ shadowRadius: 2.62,
 elevation: 4,
         marginTop:10,
         marginBottom:10,
-        marginHorizontal:screenWidth/20,
+        marginHorizontal:screenWidth/24,
         width:screenWidth/2.5,
         height: screenWidth/2,
     backgroundColor:"white",
@@ -74,7 +80,7 @@ elevation: 4,
     Btncontainer:{
         position: 'absolute',
         top: screenWidth/5,
-        left:-18 ,
+        right:-13 ,
         bottom: 0,
          zIndex:9,
          overflow:"visible",
@@ -94,5 +100,19 @@ elevation: 4,
         
         elevation: 4,
         
+    },
+    title:{
+        position:"absolute" ,bottom:0,
+        color:"white",
+        textAlign:"left",
+        
+        fontWeight:"bold",
+ 
+      textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 1,
+    textShadowColor: '#000',
+         paddingLeft:20,
+         paddingBottom:20
     }
+    
 });
