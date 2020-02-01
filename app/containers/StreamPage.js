@@ -107,10 +107,10 @@ export default class StreamPage extends React.Component {
 
     componentDidMount () {
      // Orientation.lockToLandscape();
-if (this.props.navigation.state.params.link) {
+/* if (this.props.navigation.state.params.link) {
   console.log("lala link",this.props.navigation.state.params.link)
   this.getVideoURL(this.props.navigation.state.params.link)
-}
+} */
      
     }
 
@@ -133,7 +133,7 @@ if (this.props.navigation.state.params.link) {
       return (
         <View style={styles.container}>
         <WebView
-        source={{html :this.props.navigation.state.params.link}}
+        source={{uri :this.props.navigation.state.params.link}}
         allowsFullscreenVideo={true}
         allowsInlineMediaPlayback={true}
       />

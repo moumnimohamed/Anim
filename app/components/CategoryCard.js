@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {Dimensions,StyleSheet, View,Text,Image} from "react-native"
+import {Dimensions,StyleSheet, View,Text,TouchableOpacity,Image} from "react-native"
 import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import { LinearTextGradient } from "react-native-text-gradient";
 import {connect} from 'react-redux';
-
+ 
    class CategoryCard extends React.Component {
 
     
@@ -27,7 +27,7 @@ import {connect} from 'react-redux';
  
         return (
             
-            <View style={styles.view}>
+            <TouchableOpacity style={styles.view} onPress={()=>this.props.navigate()}>
            <LinearGradient
            
           colors={[Colorleft, Colorright]}
@@ -56,7 +56,7 @@ import {connect} from 'react-redux';
             
             
            </LinearGradient>
-          </View>
+          </TouchableOpacity>
          
     
            
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         margin:10,
          
         width:screenWidth/3,
-        height: screenWidth/3,
+        height: screenWidth/5,
         borderRadius: 10,
         overflow:"hidden",
         

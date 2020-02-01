@@ -3,7 +3,7 @@
 import {SafeAreaView,FlatList,StyleSheet} from 'react-native';
 import React from "react"
 import {connect} from 'react-redux';
- 
+import CategoryCard from '../components/CategoryCard';
 import {FilmCard} from '../components/FilmCard';
 
 
@@ -12,10 +12,18 @@ import {FilmCard} from '../components/FilmCard';
     return(
         <SafeAreaView style={styles.container}>
         <FlatList
+              style={{ marginLeft:5,marginTop:10,marginBottom:10 }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={props.categories}
+              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.navigate('ByCategory',{title:item.title,type:"film"})}}/>}
+        keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
+        />
+        <FlatList
         data={props.films }
         style={styles.FlatList}
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
+        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.navigate('FilmDetail', {  item:item })} } />}
         numColumns={2}
         keyExtractor={(item,index) => index.toString()}
       />
@@ -40,7 +48,8 @@ const mapStateToProps = state => {
     return {
       
       films: state.films && state.films.payload ? state.films.payload: [],
-      
+      categories :state.films && state.films.categories ? state.films.categories : [],
+   
     };
   };
   

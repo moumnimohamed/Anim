@@ -29,8 +29,6 @@ const itemWidth = slideWidth + horizontalMargin * 2;
 
 class Home extends React.Component {
    
-   
-  
 
   constructor(props) {
     super(props);
@@ -103,8 +101,8 @@ class Home extends React.Component {
                   data={this.props.newAnime}
                   renderItem={({item,index})=> {return item.img ? <AnimatedCard item={item}  navigate={()=>{
                     item.title.includes("فيلم") ?
-                      this.props.navigation.navigate('FilmDetail', { index: index,title:item.title })
-                    : alert("it episode")
+                      this.props.navigation.navigate('FilmDetail', { index: index,item:item  })
+                    :this.props.navigation.navigate('AnimeDetail', { index: index, item:item })
                     } } /> : null ;
  } }
                   slideStyle={styles.slide}
@@ -163,23 +161,16 @@ class Home extends React.Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={this.props.animeList.slice(0, 20)}
-              renderItem={({ item }) => <FilmCard item={item}  showTitle={false} />}
+              renderItem={({ item }) => <FilmCard item={item}  showTitle={false} navigate={()=>{this.props.navigation.navigate('AnimeDetail', {  item:item })} }/>}
         keyExtractor={item => item.title}
               
               />
                
           </View>
         {/*التصنيف*/}
-        <TextStyled title={"التصنيف"}/>
+        {/* <TextStyled title={"التصنيف"}/> */}
        
-            <FlatList
-              style={{ marginTop:20,marginBottom:20, flex: 1}}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={this.props.categories}
-              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  />}
-        keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
-        />
+          
               
           
         
@@ -209,7 +200,7 @@ class Home extends React.Component {
         style={styles.ScrollView}
               horizontal 
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <FilmCard item={item}  showTitle={false} navigate={()=>{this.props.navigation.navigate('FilmDetail', {  title:item.title })} } />}
+        renderItem={({ item,index }) => item.img && <FilmCard item={item}  showTitle={false} navigate={()=>{this.props.navigation.navigate('FilmDetail', {  item:item })} } />}
         keyExtractor={(item,index) => index.toString()}
       />
 
@@ -275,8 +266,7 @@ const mapStateToProps = state => {
     //|| state.animeList.fetching || state.animeEpisodes.fetching, 
     newAnime:state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],
     animeList:state.animeList && state.animeList.payload ? state.animeList.payload : [],
-    categories :state.animeList && state.animeList.categories ? state.animeList.categories : [],
-    newAnimeFailure: state.newAnime.error,
+     newAnimeFailure: state.newAnime.error,
     animeEpisodes:state.animeEpisodes && state.animeEpisodes.payload ? state.animeEpisodes.payload: [],
     films: state.films && state.films.payload ? state.films.payload: [],
     filmCategories: state.films && state.films.categories ? state.films.categories : [],

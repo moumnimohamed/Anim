@@ -9,7 +9,7 @@ import FilmDetail from "../containers/FilmDetail"
 import FilmAllList from "../containers/FilmAllList"
 import AnimeAllList from "../containers/AnimeAllList"
 import AnimeDetail from "../containers/AnimeDetail"
-
+import ByCategory from "../containers/ByCategory"
 import Heart from 'react-native-vector-icons/AntDesign';
  
 const SearchStackNavigator = createStackNavigator({
@@ -71,6 +71,14 @@ const SearchStackNavigator = createStackNavigator({
     screen: AnimeAllList,
     navigationOptions: {
       title:"",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+  ByCategory :{
+    screen: ByCategory,
+    navigationOptions: {
+      title:"ByCategory",
       headerTintColor: '#fff',
       headerTransparent: true,
     },

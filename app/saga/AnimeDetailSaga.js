@@ -3,7 +3,6 @@ import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
 import * as actionsAndType from '../redux/AnimeDetailRedux';
 import Reactotron from 'reactotron-react-native'
-import reactotron from 'reactotron-react-native';
  
 
 /** function that returns an axios call */
@@ -62,7 +61,7 @@ export function* getAnime_PeaceDetail (action) {
           href =[];
           $(".main-widget .eps-content-list li").map((_, elm) => 
           {
-             href.push( {title: $('a', elm).text(),link: $('a', elm).attr('href') }) 
+             href.push( {text: $('a', elm).text(),link: $('a', elm).attr('href') }) 
            /* console.log("lala",$('a', elm).attr('href')) */
             }
         );  
@@ -99,6 +98,7 @@ export function* getAnime_PeaceDetail (action) {
             $(".details-section .details-content-info ul li:nth-child(2) span").text()
            ],
           category: cat,
+
           episodesNbr :[
             $(".details-section .details-content-info ul li:nth-child(4) label").text(),
             $(".details-section .details-content-info ul li:nth-child(4) span").text()

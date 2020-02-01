@@ -25,10 +25,8 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 class FilmDetail extends React.Component {
-  animeName = this.props.navigation.state.params.title;
-  anime = this.props.films.filter(
-    film => film.title === this.props.navigation.state.params.title,
-  )[0];
+  animeName   = this.props.navigation.state.params.item.title;
+  anime =    this.props.navigation.state.params.item
 
   componentDidMount = () => {
     console.log('anime....', this.anime);
@@ -37,8 +35,7 @@ class FilmDetail extends React.Component {
   };
 
   render() {
-    reactotron.log('ha awis', this.props.filmDetail);
-
+     
     const cat =
       this.props.filmDetail && this.props.filmDetail.length > 0
         ? this.props.filmDetail[0]['category']
@@ -235,7 +232,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    films: state.films && state.films.payload ? state.films.payload : [],
+   
     filmDetail: state.filmDetail.payload ? state.filmDetail.payload : [],
   };
 };

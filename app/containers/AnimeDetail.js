@@ -1,16 +1,18 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {animeDetailRequest} from '../redux/AnimeDetailRedux';
-
+import cheerio from 'cheerio-without-node-native';
+import axios from 'axios';
 import Play from 'react-native-vector-icons/AntDesign';
 import Star from 'react-native-vector-icons/FontAwesome';
-
-import {Chip} from 'react-native-paper';
+ 
+import {Chip, Button} from 'react-native-paper';
 import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
   View,
+  Modal,
   ScrollView,
   Image,
   Text,
@@ -21,42 +23,100 @@ import {
 import {connect} from 'react-redux';
 import reactotron from 'reactotron-react-native';
 import {Playeroo} from '../components/Playeroo';
+import { set } from 'react-native-reanimated';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 class AnimeDetail extends React.Component {
-  animeName = this.props.navigation.state.params.title;
-  anime = this.props.animeList.filter(
-    anime => anime.title === this.props.navigation.state.params.title,
-  )[0];
+
+
+state={
+  epsHref :[],
+  showModal:false
+}
+  animeName = this.props.navigation.state.params.item.title;
+  anime     =  this.props.navigation.state.params.item
 
   componentDidMount = () => {
     this.props.AnimeDetailRequest(this.anime.link);
   };
 
+  getEpsServers = async (link) => {
+            this.setState({showModal:true})
+      axios({
+      method: 'get',
+      url: link,
+    }).then(response => {
+        if (response.status === 200) {
+          const htmlString =   response.data; // get response text
+          const $ = cheerio.load(htmlString); // parse HTML string
+          href =[];
+          $(".embed-player-tabs .nav.nav-tabs  li").map((_, elm) => 
+          {
+             href.push( {text: $(elm).text(),link: $(elm).attr('hrefa') }) 
+           /* console.log("lala",$('a', elm).attr('href')) */
+            }
+        ); 
+           console.log(href)
+           this.setState({epsHref:href} ,()=>{console.log("hahowa",this.state.epsHref)})
+       
+        }
+      })
+      .catch(error => {
+           error;
+      });
+  }
   render() {
-    const cat =
-      this.props.Detail && this.props.filmDetail.length > 0
-        ? this.props.filmDetail[0]['category']
+    console.log("@@animeDetail",this.props.animeDetail)
+   /* 
+    published
+season
+category
+status
+episodesNbr
+story
+streamLinks
+relatedF */
+
+
+const season =
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['season']
         : '';
+
+        const status =
+        this.props.animeDetail && this.props.animeDetail.length > 0
+          ? this.props.animeDetail[0]['status']
+          : '';
+
+          const episodesNbr =
+        this.props.animeDetail && this.props.animeDetail.length > 0
+          ? this.props.animeDetail[0]['episodesNbr']
+          : '';
+
+    const cat =
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['category']
+        : '';
+
     const story =
-      this.props.filmDetail && this.props.filmDetail.length > 0
-        ? this.props.filmDetail[0]['story']
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['story']
         : [];
     const published =
-      this.props.filmDetail && this.props.filmDetail.length > 0
-        ? this.props.filmDetail[0]['published']
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['published']
         : [];
-    const duration =
-      this.props.filmDetail && this.props.filmDetail.length > 0
-        ? this.props.filmDetail[0]['duration']
-        : [];
+    const duration = "";
+     /* this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['duration']
+        : []; */
     const streamLinks =
-      this.props.filmDetail && this.props.filmDetail.length > 0
-        ? this.props.filmDetail[0]['streamLinks']
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['streamLinks']
         : [];
 
-    console.log('papaia', this.props.animeDetail);
+    console.log('streamLinks@', streamLinks);
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scroll}>
@@ -99,7 +159,8 @@ class AnimeDetail extends React.Component {
                   flexDirection: 'row',
                 }}>
                 <View style={{flex: 1}}>
-                  <TouchableOpacity style={styles.playBtn}>
+                  <TouchableOpacity style={styles.playBtn} 
+                  onPress={ () => this.getEpsServers( streamLinks[0].link)}>
                     <Play
                       name="play"
                       size={35}
@@ -110,6 +171,30 @@ class AnimeDetail extends React.Component {
                 </View>
 
                 <View style={{flex: 1}}>
+                {season[0] && (
+                    <View
+                      style={{
+                        justifyContent: 'flex-end',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={{color: '#9A999A', marginRight: 10}}>
+                        {season[1]}
+                      </Text>
+                      <Text>{season[0]}</Text>
+                    </View>
+                  )}
+                  {status[0] && (
+                    <View
+                      style={{
+                        justifyContent: 'flex-end',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={{color: '#9A999A', marginRight: 10}}>
+                        {status[1]}
+                      </Text>
+                      <Text>{status[0]}</Text>
+                    </View>
+                  )}
                   {published[0] && (
                     <View
                       style={{
@@ -134,6 +219,18 @@ class AnimeDetail extends React.Component {
                       <Text>{duration[0]}</Text>
                     </View>
                   )}
+                  {episodesNbr[0] && (
+                    <View
+                      style={{
+                        justifyContent: 'flex-end',
+                        flexDirection: 'row',
+                      }}>
+                      <Text style={{color: '#9A999A', marginRight: 10}}>
+                        {episodesNbr[1]}
+                      </Text>
+                      <Text>{episodesNbr[0]}</Text>
+                    </View>
+                  )}
                 </View>
               </View>
               {story.map((p, i) => {
@@ -149,17 +246,40 @@ class AnimeDetail extends React.Component {
                   <Playeroo
                     key={i}
                     video={video}
-                    navigate={() => {
-                      this.props.navigation.navigate('streamPage', {
-                        link: video.link,
-                      });
-                    }}
+                    navigate={() => this.getEpsServers( video.link)}
                   />
                 ) : null;
               })}
             </View>
           </ImageBackground>
         </ScrollView>
+        <Modal
+        animationType="slide"
+        transparent={false}
+        visible={this.state.showModal}
+      >
+         
+      <Text style={{textAlign:"center",marginVertical:10}}>روابط المشاهدة</Text>
+      <FlatList
+                
+                data={this.state.epsHref}
+                renderItem={({item, i}) => (
+                  <Playeroo
+                    key={i}
+                    video={item}
+                    navigate={() => {
+                       this.setState({showModal:false})
+                      this.props.navigation.navigate('streamPage', {
+                        link: item.link,
+                      });
+                    }}
+                  />
+                )}
+                keyExtractor={video => video.title}
+              />
+     
+        <Button    onPress={()=> this.setState({showModal:false})}>return</Button>
+      </Modal>
       </SafeAreaView>
     );
   }
@@ -231,8 +351,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    animeList:  state.animeList && state.animeList.payload ? state.animeList.payload : [],
-    animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
+     animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
   };
 };
 
