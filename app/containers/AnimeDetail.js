@@ -1,29 +1,13 @@
-import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import {animeDetailRequest} from '../redux/AnimeDetailRedux';
-import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
+import cheerio from 'cheerio-without-node-native';
+import React from 'react';
+import { Dimensions, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Chip } from 'react-native-paper';
 import Play from 'react-native-vector-icons/AntDesign';
-import Star from 'react-native-vector-icons/FontAwesome';
- 
-import {Chip, Button} from 'react-native-paper';
-import {
-  Dimensions,
-  TouchableOpacity,
-  ImageBackground,
-  View,
-  Modal,
-  ScrollView,
-  Image,
-  Text,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
-import {connect} from 'react-redux';
-import reactotron from 'reactotron-react-native';
-import {Playeroo} from '../components/Playeroo';
-import { set } from 'react-native-reanimated';
+import { connect } from 'react-redux';
+import { Playeroo } from '../components/Playeroo';
+import  AnimeServers  from '../components/AnimeServers';
+import { animeDetailRequest } from '../redux/AnimeDetailRedux';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
@@ -145,7 +129,7 @@ const season =
                       marginRight: 10,
                       backgroundColor: '#F5F5F5',
                     }}
-                    onPress={() => console.log('Pressed')}>
+                    onPress={ ()=> {  this.props.navigation.navigate('ByCategory',{title:item.title,type:"anime"})}}>
                     <Text style={{color: '#9A999A'}}>{item.title}</Text>
                   </Chip>
                 )}
@@ -253,33 +237,7 @@ const season =
             </View>
           </ImageBackground>
         </ScrollView>
-        <Modal
-        animationType="slide"
-        transparent={false}
-        visible={this.state.showModal}
-      >
-         
-      <Text style={{textAlign:"center",marginVertical:10}}>روابط المشاهدة</Text>
-      <FlatList
-                
-                data={this.state.epsHref}
-                renderItem={({item, i}) => (
-                  <Playeroo
-                    key={i}
-                    video={item}
-                    navigate={() => {
-                       this.setState({showModal:false})
-                      this.props.navigation.navigate('streamPage', {
-                        link: item.link,
-                      });
-                    }}
-                  />
-                )}
-                keyExtractor={video => video.title}
-              />
-     
-        <Button    onPress={()=> this.setState({showModal:false})}>return</Button>
-      </Modal>
+       <AnimeServers  hide={()=>this.setState({showModal:false})}  epsHref={this.state.epsHref} showModal={this.state.showModal}  navigation={this.props.navigation}/>
       </SafeAreaView>
     );
   }

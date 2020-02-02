@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export function Playeroo  (props) {
  
-console.log("lalala",props.video)
+ 
 
     return(
         <LinearGradient

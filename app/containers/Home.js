@@ -2,7 +2,7 @@ import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import TextStyled from "../components/TextStyled"
 import { Chip,ActivityIndicator } from 'react-native-paper';
-import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView, Alert} from 'react-native';
+import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView, Alert,TouchableOpacity} from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
@@ -14,6 +14,7 @@ import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {filmRequest} from '../redux/FilmRedux';
 import {connect} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
+import Ant from 'react-native-vector-icons/AntDesign';
  
 
 
@@ -56,7 +57,7 @@ class Home extends React.Component {
     } */
   }
 
-     
+  
 
   componentDidMount () {
 
@@ -78,6 +79,9 @@ class Home extends React.Component {
         : {}; 
     return (
       <SafeAreaView style={{ backgroundColor:"#f8f5fa"}}>
+      <TouchableOpacity  onPress={()=>this.props.navigation.navigate('SearchPage')} >
+          <Ant name="search1" size={20} color="white"   />
+               </TouchableOpacity>
       <ScrollView  >
      { this.props.fetching ? <Loader/>
      
@@ -133,7 +137,7 @@ class Home extends React.Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={ this.props.animeEpisodes.slice(0, 20)}
-              renderItem={({ item }) => <PlayCard item={item}   />}
+              renderItem={({ item }) => <PlayCard item={item} />}
         keyExtractor={item => item.title}
               />
              

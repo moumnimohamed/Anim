@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image} from 'react-native'; 
+import {Image,TouchableOpacity} from 'react-native'; 
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator  } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -10,12 +10,18 @@ import FilmAllList from "../containers/FilmAllList"
 import AnimeAllList from "../containers/AnimeAllList"
 import AnimeDetail from "../containers/AnimeDetail"
 import ByCategory from "../containers/ByCategory"
-import Heart from 'react-native-vector-icons/AntDesign';
+import SearchPage from "../containers/SearchPage"
+import Ant from 'react-native-vector-icons/AntDesign';
  
 const SearchStackNavigator = createStackNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
+      headerRight: (navigation) => (
+        <TouchableOpacity  onPress={()=> console.log( navigation)} >
+          <Ant name="search1" size={20} color="white"   />
+               </TouchableOpacity>
+      ),
       headerTitle:   <Image
       style={{ width: 40,height: 40,}}
       source={require('../images/logo.png')}
@@ -83,6 +89,15 @@ const SearchStackNavigator = createStackNavigator({
       headerTransparent: true,
     },
   },
+  SearchPage:{
+    screen: SearchPage,
+    navigationOptions: {
+      title:"search",
+      /* headerTintColor: '#fff',
+      headerTransparent: true, */
+    },
+  },
+
 })
 
 const TabNavigator = createBottomTabNavigator({
