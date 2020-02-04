@@ -41,7 +41,7 @@ export const aniEpisodes = (state = initialState, action) => {
       return {
         ...state,
         fetching: false,
-        payload: action.payload,
+        payload:  action.payload,
         error: false,
         success: true,
       };

@@ -11,13 +11,11 @@ export class PlayCard extends React.Component {
 
     render() {
         return (
-           <View  style={styles.view} >
+           <TouchableOpacity  style={styles.view} onPress={this.props.navigate}>
              <Image
             resizeMode="contain"
             style={styles.image} source={{uri: this.props.item.img}} />
-               <TouchableOpacity style={styles.playBtn}>
-          <Play name="play" size={35} color="white" style={{backgroundColor:"black",borderRadius:20}} />
-               </TouchableOpacity>
+                
                <View style={styles.Btncontainer} >
             
             <TouchableOpacity style={styles.btn}>
@@ -26,8 +24,10 @@ export class PlayCard extends React.Component {
                <TouchableOpacity style={styles.btn}>
           <FontAwesome name="send-o" size={15} color="black"  />
                </TouchableOpacity>
+               
 </View>
-           </View>
+  <Text style={styles.title}>{this.props.item.title}</Text>
+           </TouchableOpacity>
         );
     }
 }
@@ -42,11 +42,13 @@ const styles = StyleSheet.create({
           
     },
     view:{
-        marginLeft:20,
+        marginLeft:screenWidth/9,
         marginBottom:5,
 
         width:screenWidth/3,
         height: screenWidth-140,
+       
+        
     },
     playBtn:{
         position: 'absolute',
@@ -81,5 +83,17 @@ const styles = StyleSheet.create({
         
         elevation: 4,
         
+    },
+    title:{
+        position:"absolute" ,bottom:50,
+        color:"white",
+        textAlign:"center",
+        
+        fontWeight:"bold",
+ 
+      textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 1,
+    textShadowColor: '#000',
+         
     }
 });

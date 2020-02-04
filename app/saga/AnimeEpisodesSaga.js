@@ -4,10 +4,17 @@ import axios from 'axios';
 import * as actionsAndType from '../redux/AnimeEpisodes';
 
 /** function that returns an axios call */
-function getAnimeEpisodesApi() {
+function getAnimeEpisodesApi(page) {
+  let link =""
+  if (page > 0){
+   link =`https://anime2001.com/episode/page/${page}`
+}else{
+  link =`https://anime2001.com/episode/`
+}
+
   return axios({
     method: 'get',
-    url: 'https://anime2001.com/episode/',
+    url: link,
   })
     .then(res => {
       return res;
@@ -19,7 +26,7 @@ function getAnimeEpisodesApi() {
 
 export function* getAnimeEpisodes(action) {
   try {
-    const response = yield getAnimeEpisodesApi(); // fetch page
+    const response = yield getAnimeEpisodesApi(action.data); // fetch page
     
 
     if (response.status === 200) {

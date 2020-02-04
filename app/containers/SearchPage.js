@@ -1,6 +1,6 @@
 import React from 'react';
  
-import { Searchbar} from 'react-native-paper';
+import { Searchbar,Button} from 'react-native-paper';
 import {
   Dimensions,
   TouchableOpacity,
@@ -18,22 +18,29 @@ import {connect} from 'react-redux';
  
 import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
-import {FilmCard} from '../components/FilmCard';
+import AnimeServers from '../components/AnimeServers';
+import {PlayCard} from '../components/PlayCard';
+import Loader from '../components/Loader';
+
 
 export default class SearchPage extends React.Component {
 
     state = {
-        firstQuery: 'naruto',
-        anime:[]
+        firstQuery: '',
+        anime:[],
+        epsHref:[],
+        showModal:false,
+        fetching:false
       };
 
     SearchKnow = async (searchQuery) => {
-        
+      this.setState({fetching:true})
   axios({
   method: 'get',
   url: `https://anime2001.com/?s=${searchQuery}`,
 }).then(response => {
     if (response.status === 200) {
+     
       const htmlString =   response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
              
@@ -49,7 +56,8 @@ export default class SearchPage extends React.Component {
     }
 
     this.setState({
-        anime:myData
+        anime:myData,
+       fetching:false
     })
   })
   .catch(error => {
@@ -57,9 +65,34 @@ export default class SearchPage extends React.Component {
   });
 }
 
+getEpsServers = async (link) => {
+  this.setState({showModal:true})
+axios({
+method: 'get',
+url: link,
+}).then(response => {
+if (response.status === 200) {
+const htmlString =   response.data; // get response text
+const $ = cheerio.load(htmlString); // parse HTML string
+href =[];
+$(".embed-player-tabs .nav.nav-tabs  li").map((_, elm) => 
+{
+   href.push( {text: $(elm).text(),link: $(elm).attr('hrefa') }) 
+ /* console.log("lala",$('a', elm).attr('href')) */
+  }
+); 
+ console.log(href)
+ this.setState({epsHref:href})
+
+}
+})
+.catch(error => {
+ error;
+});
+}
 
     componentDidMount(){
-       this.SearchKnow("naruto")
+      
     }
     
     
@@ -70,25 +103,32 @@ export default class SearchPage extends React.Component {
 
         return(
             <SafeAreaView style={styles.container}>
+            <View style={{ flexDirection:"row"}}>
              <Searchbar
+             style={{flex:1}}
         placeholder="Search"
         onChangeText={query => { this.setState({ firstQuery: query }); }}
         value={firstQuery}
       />
-        <FlatList
+      <Button icon="camera" mode="contained" onPress={() =>  this.SearchKnow(firstQuery)}>
+    search
+  </Button>
+      </View>
+      
+       {this.state.fetching ? <Loader/> : <FlatList
         data={this.state.anime }
          
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <PlayCard item={item} showTitle={true}      navigate={()=>{
-                    
-                      this.props.navigation.navigate('FilmDetail', {  item:item })
-                   
-                    } }
+        renderItem={({ item,index }) => item.img && <PlayCard item={item} showTitle={true}      
+        navigate={()=>this.getEpsServers(item.link) }
 
                     />}
         numColumns={2}
         keyExtractor={(item,index) => index.toString()}
-      />
+      />}
+
+       <AnimeServers  hide={()=>this.setState({showModal:false})}  epsHref={this.state.epsHref} showModal={this.state.showModal}  navigation={this.props.navigation}/>
+     
          </SafeAreaView>
         )
     }

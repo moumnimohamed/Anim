@@ -11,6 +11,8 @@ import AnimeAllList from "../containers/AnimeAllList"
 import AnimeDetail from "../containers/AnimeDetail"
 import ByCategory from "../containers/ByCategory"
 import SearchPage from "../containers/SearchPage"
+import EpisodesAllList from "../containers/EpisodesAllList"
+
 import Ant from 'react-native-vector-icons/AntDesign';
  
 const SearchStackNavigator = createStackNavigator({
@@ -75,6 +77,14 @@ const SearchStackNavigator = createStackNavigator({
   },
   AnimeAllList :{
     screen: AnimeAllList,
+    navigationOptions: {
+      title:"",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+  EpisodesAllList :{
+    screen: EpisodesAllList,
     navigationOptions: {
       title:"",
       headerTintColor: '#fff',

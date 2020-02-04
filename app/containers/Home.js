@@ -6,6 +6,8 @@ import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleShee
 import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
+import AnimeServers from '../components/AnimeServers';
+
 import CategoryCard from '../components/CategoryCard';
 import Loader from '../components/Loader';
 import {getNewRequest} from '../redux/newAnimRedux';
@@ -15,7 +17,8 @@ import {filmRequest} from '../redux/FilmRedux';
 import {connect} from 'react-redux';
 import Carousel from 'react-native-snap-carousel';
 import Ant from 'react-native-vector-icons/AntDesign';
- 
+import cheerio from 'cheerio-without-node-native';
+import axios from 'axios';
 
 
 import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
@@ -38,6 +41,8 @@ class Home extends React.Component {
       activeSlider: 0,
       title: 0,
       show: false,
+      showModal:false,
+      epsHref:[]
     };
   }
 
@@ -48,6 +53,33 @@ class Home extends React.Component {
   handleClose = () => {
     this.setState({show: false});
   };
+
+  getEpsServers = async (link) => {
+    this.setState({showModal:true})
+  axios({
+  method: 'get',
+  url: link,
+  }).then(response => {
+  if (response.status === 200) {
+  const htmlString =   response.data; // get response text
+  const $ = cheerio.load(htmlString); // parse HTML string
+  href =[];
+  $(".embed-player-tabs .nav.nav-tabs  li").map((_, elm) => 
+  {
+     href.push( {text: $(elm).text(),link: $(elm).attr('hrefa') }) 
+   /* console.log("lala",$('a', elm).attr('href')) */
+    }
+  ); 
+   console.log(href)
+   this.setState({epsHref:href})
+  
+  }
+  })
+  .catch(error => {
+   error;
+  });
+  }
+  
 
   componentDidUpdate() {
 
@@ -123,7 +155,7 @@ class Home extends React.Component {
              
          
          {/*  آخر الحلقات المضافة */}
-         <TextStyled title={" آخر الحلقات المضافة"}/>
+         <TextStyled title={" آخر الحلقات المضافة"} onClick={()=> { this.props.navigation.navigate('EpisodesAllList')}}/>
           <View style={{position: 'relative'}}>
             <View style={styles.view}>
               <Image
@@ -137,9 +169,11 @@ class Home extends React.Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={ this.props.animeEpisodes.slice(0, 20)}
-              renderItem={({ item }) => <PlayCard item={item} />}
+              renderItem={({ item }) => <PlayCard item={item}   navigate={()=>this.getEpsServers(item.link) }/>}
         keyExtractor={item => item.title}
               />
+               <AnimeServers  hide={()=>this.setState({showModal:false})}  epsHref={this.state.epsHref} showModal={this.state.showModal}  navigation={this.props.navigation}/>
+     
              
           </View>
 
