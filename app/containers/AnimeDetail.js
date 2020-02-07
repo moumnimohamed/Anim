@@ -1,58 +1,78 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import { Dimensions, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Chip } from 'react-native-paper';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Chip} from 'react-native-paper';
 import Play from 'react-native-vector-icons/AntDesign';
-import { connect } from 'react-redux';
-import { Playeroo } from '../components/Playeroo';
-import  AnimeServers  from '../components/AnimeServers';
-import { animeDetailRequest } from '../redux/AnimeDetailRedux';
+import {connect} from 'react-redux';
+import {Playeroo} from '../components/Playeroo';
+import AnimeServers from '../components/AnimeServers';
+import {animeDetailRequest} from '../redux/AnimeDetailRedux';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
+import { NavigationEvents } from 'react-navigation';
 
 class AnimeDetail extends React.Component {
-
-
-state={
-  epsHref :[],
-  showModal:false
-}
-  animeName = this.props.navigation.state.params.item.title;
-  anime     =  this.props.navigation.state.params.item
-
-  componentDidMount = () => {
-    this.props.AnimeDetailRequest(this.anime.link);
+  state = {
+    epsHref: [],
+    showModal: false,
+    anime : this.props.navigation.state.params.item
   };
+  
 
-  getEpsServers = async (link) => {
-            this.setState({showModal:true})
-      axios({
+  
+
+  componentDidMount() {
+ 
+    this.props.AnimeDetailRequest(this.state.anime.link)
+ 
+  }
+
+ /*   componentWillUpdate  = (nextProps, nextState) => {
+     if(this.props.navigation.state.params.item.title !== nextProps.navigation.state.params.item.title) 
+    this.props.AnimeDetailRequest(nextState.anime.link);
+  };  */
+
+  getEpsServers = async link => {
+    this.setState({showModal: true});
+    axios({
       method: 'get',
       url: link,
-    }).then(response => {
+    })
+      .then(response => {
         if (response.status === 200) {
-          const htmlString =   response.data; // get response text
+          const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          href =[];
-          $(".embed-player-tabs .nav.nav-tabs  li").map((_, elm) => 
-          {
-             href.push( {text: $(elm).text(),link: $(elm).attr('hrefa') }) 
-           /* console.log("lala",$('a', elm).attr('href')) */
-            }
-        ); 
-           console.log(href)
-           this.setState({epsHref:href} ,()=>{console.log("hahowa",this.state.epsHref)})
-       
+          href = [];
+          $('.embed-player-tabs .nav.nav-tabs  li').map((_, elm) => {
+            href.push({text: $(elm).text(), link: $(elm).attr('hrefa')});
+            /* console.log("lala",$('a', elm).attr('href')) */
+          });
+          console.log(href);
+          this.setState({epsHref: href}, () => {
+            console.log('hahowa', this.state.epsHref);
+          });
         }
       })
       .catch(error => {
-           error;
+        error;
       });
-  }
+  };
   render() {
-    console.log("@@animeDetail",this.props.animeDetail)
-   /* 
+    console.log('@@animeDetail', this.props.animeDetail);
+    console.log('@@anime name', this.props.navigation.state.params.item.title);
+    /* 
     published
 season
 category
@@ -62,21 +82,20 @@ story
 streamLinks
 relatedF */
 
-
-const season =
+    const season =
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['season']
         : '';
 
-        const status =
-        this.props.animeDetail && this.props.animeDetail.length > 0
-          ? this.props.animeDetail[0]['status']
-          : '';
+    const status =
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['status']
+        : '';
 
-          const episodesNbr =
-        this.props.animeDetail && this.props.animeDetail.length > 0
-          ? this.props.animeDetail[0]['episodesNbr']
-          : '';
+    const episodesNbr =
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['episodesNbr']
+        : '';
 
     const cat =
       this.props.animeDetail && this.props.animeDetail.length > 0
@@ -91,8 +110,8 @@ const season =
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['published']
         : [];
-    const duration = "";
-     /* this.props.animeDetail && this.props.animeDetail.length > 0
+    const duration = '';
+    /* this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['duration']
         : []; */
     const streamLinks =
@@ -100,20 +119,21 @@ const season =
         ? this.props.animeDetail[0]['streamLinks']
         : [];
 
-    console.log('streamLinks@', streamLinks);
+    console.log('streamLinks@', season);
     return (
       <SafeAreaView style={styles.container}>
+       
         <ScrollView style={styles.scroll}>
           <ImageBackground
             blurRadius={1}
-            source={{uri: this.anime.img ? this.anime.img : ''}}
+            source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
             style={styles.bkg}>
             <View style={styles.viewDATA}>
               <View style={styles.imageContainer}>
                 <Image
                   ImageResizeMode={'contain'}
                   style={styles.image}
-                  source={{uri: this.anime.img ? this.anime.img : ''}}
+                  source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
                 />
               </View>
 
@@ -129,7 +149,12 @@ const season =
                       marginRight: 10,
                       backgroundColor: '#F5F5F5',
                     }}
-                    onPress={ ()=> {  this.props.navigation.navigate('ByCategory',{title:item.title,type:"anime"})}}>
+                    onPress={() => {
+                      this.props.navigation.push('ByCategory', {
+                        title: item.title,
+                        type: 'anime',
+                      });
+                    }}>
                     <Text style={{color: '#9A999A'}}>{item.title}</Text>
                   </Chip>
                 )}
@@ -143,8 +168,9 @@ const season =
                   flexDirection: 'row',
                 }}>
                 <View style={{flex: 1}}>
-                  <TouchableOpacity style={styles.playBtn} 
-                  onPress={ () => this.getEpsServers( streamLinks[0].link)}>
+                  <TouchableOpacity
+                    style={styles.playBtn}
+                    onPress={() => this.getEpsServers(streamLinks[0].link)}>
                     <Play
                       name="play"
                       size={35}
@@ -155,18 +181,7 @@ const season =
                 </View>
 
                 <View style={{flex: 1}}>
-                {season[0] && (
-                    <View
-                      style={{
-                        justifyContent: 'flex-end',
-                        flexDirection: 'row',
-                      }}>
-                      <Text style={{color: '#9A999A', marginRight: 10}}>
-                        {season[1]}
-                      </Text>
-                      <Text>{season[0]}</Text>
-                    </View>
-                  )}
+                 
                   {status[0] && (
                     <View
                       style={{
@@ -215,6 +230,26 @@ const season =
                       <Text>{episodesNbr[0]}</Text>
                     </View>
                   )}
+                  {season[0] && (
+                    <View
+                      style={{
+                        justifyContent: 'flex-end',
+                        flexDirection: 'row',
+                      }}>
+                      <Text
+                        onPress={ ()=> this.props.navigation.push('BySeason',{link:season[2]})}
+                        style={{
+                          color: 'red',
+                          borderBottomWidth: 1,
+                          borderColor: 'red',
+                          marginRight: 10,
+                        }}>
+                        {season[1]}
+                      </Text>
+
+                      <Text>{season[0]}</Text>
+                    </View>
+                  )}
                 </View>
               </View>
               {story.map((p, i) => {
@@ -230,14 +265,19 @@ const season =
                   <Playeroo
                     key={i}
                     video={video}
-                    navigate={() => this.getEpsServers( video.link)}
+                    navigate={() => this.getEpsServers(video.link)}
                   />
                 ) : null;
               })}
             </View>
           </ImageBackground>
         </ScrollView>
-       <AnimeServers  hide={()=>this.setState({showModal:false})}  epsHref={this.state.epsHref} showModal={this.state.showModal}  navigation={this.props.navigation}/>
+        <AnimeServers
+          hide={() => this.setState({showModal: false})}
+          epsHref={this.state.epsHref}
+          showModal={this.state.showModal}
+          navigation={this.props.navigation}
+        />
       </SafeAreaView>
     );
   }
@@ -309,7 +349,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-     animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
+    animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
   };
 };
 

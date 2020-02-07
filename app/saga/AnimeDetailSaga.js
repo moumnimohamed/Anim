@@ -95,7 +95,8 @@ export function* getAnime_PeaceDetail (action) {
                      ],
           season :[
             $(".details-section .details-content-info ul li:nth-child(2) label").text(),
-            $(".details-section .details-content-info ul li:nth-child(2) span").text()
+            $(".details-section .details-content-info ul li:nth-child(2) span").text(),
+            $(".details-section .details-content-info ul li:nth-child(2) span a").attr('href'),
            ],
           category: cat,
 

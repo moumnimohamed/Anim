@@ -54,7 +54,7 @@ import Loader from '../components/Loader';
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={props.categories}
-              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.navigate('ByCategory',{title:item.title,type:"anime"})}}/>}
+              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"anime"})}}/>}
         keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
         /> */}
 

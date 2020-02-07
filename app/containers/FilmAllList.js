@@ -16,14 +16,14 @@ import {FilmCard} from '../components/FilmCard';
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={props.categories}
-              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.navigate('ByCategory',{title:item.title,type:"film"})}}/>}
+              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"film"})}}/>}
         keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
         />
         <FlatList
         data={props.films }
         style={styles.FlatList}
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.navigate('FilmDetail', {  item:item })} } />}
+        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.push('FilmDetail', {  item:item })} } />}
         numColumns={2}
         keyExtractor={(item,index) => index.toString()}
       />

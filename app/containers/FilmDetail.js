@@ -86,7 +86,7 @@ class FilmDetail extends React.Component {
                       marginRight: 10,
                       backgroundColor: '#F5F5F5',
                     }}
-                    onPress={ ()=> {  this.props.navigation.navigate('ByCategory',{title:item.title,type:"film"})}}>
+                    onPress={ ()=> {  this.props.navigation.push('ByCategory',{title:item.title,type:"film"})}}>
                     <Text style={{color: '#9A999A'}}>{item.title}</Text>
                   </Chip>
                 )}
@@ -151,7 +151,7 @@ class FilmDetail extends React.Component {
                     key={i}
                     video={video}
                     navigate={() => {
-                      this.props.navigation.navigate('streamPage', {
+                      this.props.navigation.push('streamPage', {
                         link: video.link,
                       });
                     }}

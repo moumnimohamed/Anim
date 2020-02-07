@@ -10,6 +10,7 @@ import FilmAllList from "../containers/FilmAllList"
 import AnimeAllList from "../containers/AnimeAllList"
 import AnimeDetail from "../containers/AnimeDetail"
 import ByCategory from "../containers/ByCategory"
+import BySeason from "../containers/BySeason"
 import SearchPage from "../containers/SearchPage"
 import EpisodesAllList from "../containers/EpisodesAllList"
 
@@ -99,6 +100,14 @@ const SearchStackNavigator = createStackNavigator({
       headerTransparent: true,
     },
   },
+  BySeason :{
+    screen: BySeason,
+    navigationOptions: {
+      title:"",
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
   SearchPage:{
     screen: SearchPage,
     navigationOptions: {
@@ -113,7 +122,7 @@ const SearchStackNavigator = createStackNavigator({
 const TabNavigator = createBottomTabNavigator({
   Home: {
     screen: SearchStackNavigator,
-    navigationOptions: { tabBarVisible: false }
+   /*  navigationOptions: { tabBarVisible: false } */
   },
    
 })

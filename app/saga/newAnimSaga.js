@@ -26,7 +26,7 @@ export function* getNewAnimes(action) {
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
        
-       const liList = $('.home-slider  .hovereffect')  .map((_, hover) => ({
+       const liList = $('.home-slider  .hovereffect').map((_, hover) => ({
           // map to an list of objects
           title: $('h2', hover).text(),
           img: $('.img-responsive', hover).attr('src'),
@@ -34,9 +34,9 @@ export function* getNewAnimes(action) {
         })); 
       // console.log(' before send typeof : ', Object.keys(liList) );
       var myData = Object.keys(liList).map(key => {
-        return liList[key];
+        return   key !== ("options" || "_root" || "length" || "prevObject") && liList[key] ;
       });
-       console.log(' mydata : ', myData);
+       console.log(' table : ', myData );
 
       yield put(actionsAndType.getNewSuccess(myData));
     } else {

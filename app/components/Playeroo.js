@@ -38,7 +38,7 @@ export function Playeroo  (props) {
 
                
                <View style={styles.name}>
-              <Text style={{marginRight:10,color:"#535353"}}>{props.video && props.video.text ? props.video.text : ""}</Text> 
+              <Text style={{paddingHorizontal:10,textAlign:"center",color:"#535353"}}>{props.video && props.video.text ? props.video.text : ""}</Text> 
               <V name="videocamera" size={20} color="#535353"  />
                </View>
             

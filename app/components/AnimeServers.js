@@ -19,18 +19,18 @@ export  default  function AnimeServers (props) {
            data={props.epsHref}
            renderItem={({item, i}) => (
              <Playeroo
-               key={i}
+              
                video={item}
                navigate={() => {
                  
                  props.hide()
-                  props.navigation.navigate('streamPage', {
+                  props.navigation.push('streamPage', {
                    link: item.link,
                  });
                }}
              />
            )}
-           keyExtractor={video => video.title}
+           keyExtractor={(item,i) => i.toString()}
          />
            <Button icon="camera" mode="contained" onPress={() => props.hide()}>
     Return

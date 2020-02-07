@@ -1,28 +1,63 @@
 
  
 import {SafeAreaView,FlatList,StyleSheet} from 'react-native';
-import React , {useState} from "react"
+import React , {useState, useEffect} from "react"
 import {connect} from 'react-redux';
-import {getAnimeListRequest} from '../redux/AnimeListRedux';
+ 
 import {FilmCard} from '../components/FilmCard';
 import CategoryCard from '../components/CategoryCard';
+import cheerio from 'cheerio-without-node-native';
+import axios from 'axios';
 
 import Loader from '../components/Loader';
 
 
-  function AnimeAllList  (props) {
+  function BySeason  (props) {
      
-     const [page,setPage] = useState(2);
-     
-    const _loadAnime = () =>{
-        
-         
-        props.getAnimeList(page)
-        setPage(page + 1)
-    }
-    return(
+        const [anime,setAnime] =useState([])
 
-        <SafeAreaView style={styles.container}>
+
+       
+   
+
+    useEffect (()=>{
+      console.log("hahi", props.navigation.state.params.link)
+      if(!anime.length>0){
+      getAnimeBySeason( props.navigation.state.params.link)}
+    })
+
+   const getAnimeBySeason = async (link) => {
+        axios({
+        method: 'get',
+        url: link,
+      }).then(response => {
+          if (response.status === 200) {
+            const htmlString =   response.data; // get response text
+            const $ = cheerio.load(htmlString); // parse HTML string
+                   
+                const liList = $('.col-list-padding > .hovereffect').map((_, hover) => ({
+                title: $('h2', hover).text(),
+                img: $('.img-responsive', hover).attr('src'),
+                link: $('a', hover).attr('href'),
+              })); 
+            
+            var myData = Object.keys(liList).map(key => {
+              return liList[key];
+            });
+          }
+      
+          
+          setAnime(myData)
+          
+        })
+        .catch(error => {
+             error;
+        });
+      }
+      
+    return(
+         
+        <SafeAreaView  >
       <FlatList
               style={{ marginLeft:5,marginTop:10,marginBottom:10 }}
               horizontal={true}
@@ -33,8 +68,8 @@ import Loader from '../components/Loader';
         />
 
         <FlatList
-        data={props.animeList}
-        style={styles.FlatList}
+        data={ anime}
+         
               showsHorizontalScrollIndicator={false}
         renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.push('AnimeDetail', {  item:item })} } />}
         numColumns={2}
@@ -46,11 +81,7 @@ import Loader from '../components/Loader';
     );
   }}
         keyExtractor={(item,index) => index.toString()}
-        onEndReachedThreshold={0.5}
-  onEndReached={() => {
-          _loadAnime()
-      
-  }}
+        
       />
             {/*   {props.fetching && <Loader/>} */}
          </SafeAreaView>
@@ -61,19 +92,11 @@ import Loader from '../components/Loader';
    
 
 
-const styles = StyleSheet.create({
-    FlatList:{
-    
-    }
-})
-
-
 
 
 const mapStateToProps = state => {
     return {
-        animeList:state.animeList && state.animeList.payload ? state.animeList.payload : [],
-        fetching:state.animeList.fetching ,
+         
         categories :state.animeList && state.animeList.categories ? state.animeList.categories : [],
    
     };
@@ -81,14 +104,13 @@ const mapStateToProps = state => {
   
   const mapDispatchToProps = dispatch => {
     return {
-        getAnimeList: data => dispatch(getAnimeListRequest(data)),
-        
+         
     };
   };
   
   export default connect(
       mapStateToProps,
       mapDispatchToProps,
-  )(AnimeAllList);
+  )(BySeason);
   
  

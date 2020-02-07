@@ -76,8 +76,8 @@ export default class AnimeDetail extends React.Component {
               showsHorizontalScrollIndicator={false}
         renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{
                     item.title.includes("فيلم") ?
-                      this.props.navigation.navigate('FilmDetail', {  item:item })
-                    :  this.props.navigation.navigate('AnimeDetail', {  item:item })
+                      this.props.navigation.push('FilmDetail', {  item:item })
+                    :  this.props.navigation.push('AnimeDetail', {  item:item })
                     } }
 
                     />}

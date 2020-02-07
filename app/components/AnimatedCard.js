@@ -18,7 +18,7 @@ export class AnimatedCard extends React.Component {
        <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={{uri: this.props.item.img}}
+          source={{uri: this.props.item.img ? this.props.item.img  :"https://helpx.adobe.com/content/dam/help/en/acrobat/kb/not-default-pdf-owner-windows101/jcr_content/main-pars/procedure_1039842004/proc_par/step_0/step_par/image/properties.png"}}
         />
         <TouchableOpacity style={styles.playBtn} onPress={this.props.navigate}>
                                             <Play name="play" size={50} color="#89C13D"/>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     flex:1,
     width: null,
     height: null,
-    
+    overflow:"visible"
 
 },
 info:{
