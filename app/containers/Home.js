@@ -7,7 +7,7 @@ import {AnimatedCard} from '../components/AnimatedCard';
 import {PlayCard} from '../components/PlayCard';
 import {FilmCard} from '../components/FilmCard';
 import AnimeServers from '../components/AnimeServers';
-import {Playeroo} from '../components/Playeroo';
+import Header from '../components/Header';
 import CategoryCard from '../components/CategoryCard';
 import Loader from '../components/Loader';
 import {getNewRequest} from '../redux/newAnimRedux';
@@ -48,7 +48,7 @@ class Home extends React.Component {
   }
 
   static navigationOptions = {
-    header: <Playeroo/>,
+    header: <Header/>,
   };
 
   handleOpen = () => {
@@ -146,9 +146,7 @@ class Home extends React.Component {
         : {}; 
     return (
       <SafeAreaView style={{ backgroundColor:"#f8f5fa"}}>
-      <TouchableOpacity  onPress={()=>this.props.navigation.navigate('SearchPage')} >
-          <Ant name="search1" size={20} color="white"   />
-               </TouchableOpacity>
+       
       <ScrollView  >
      { this.props.fetching ? <Loader/>
      

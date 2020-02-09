@@ -46,9 +46,8 @@ export class AnimatedCard extends React.Component {
                                      
 
                            <View style={styles.linkContainer}>
-                         
-   <Text style={styles.link}>Overview</Text> 
-   <Text style={styles.link}>episodes</Text> 
+     
+   <Text style={styles.link} onPress={this.props.navigate}>الحلقات</Text> 
                            </View>
 
                             </View>
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
        height: 2,
      },
      shadowOpacity: 0.25,
-     shadowRadius: 3.84,
+     shadowRadius: 30,
      height:"90%",
      elevation: 5,
   },
