@@ -1,27 +1,15 @@
-import React from 'react';
-
-import {Searchbar} from 'react-native-paper';
-import {
-  Dimensions,
-  TouchableOpacity,
-  ImageBackground,
-  View,
-  Modal,
-  ScrollView,
-  Image,
-  Text,
-  FlatList,
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
-import {connect} from 'react-redux';
-
-import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
+import cheerio from 'cheerio-without-node-native';
+import React from 'react';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { Searchbar } from 'react-native-paper';
+import { connect } from 'react-redux';
 import AnimeServers from '../components/AnimeServers';
-import {PlayCard} from '../components/PlayCard';
-import {FilmCard} from '../components/FilmCard';
+import { FilmCard } from '../components/FilmCard';
 import Loader from '../components/Loader';
+import { PlayCard } from '../components/PlayCard';
+
+
 
 class SearchPage extends React.Component {
   state = {

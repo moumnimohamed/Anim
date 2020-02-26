@@ -6,20 +6,25 @@ import {Dimensions,ImageBackground,View,ScrollView,TouchableOpacity,Text,StyleSh
 import { Switch } from 'react-native-paper';
 import React from "react"
 import LinearGradient from 'react-native-linear-gradient';
+import PlayerContext from './PlayerContext';
 
 export function Playeroo  (props) {
  
  
 
     return(
-        <LinearGradient
+        <PlayerContext.Consumer>
+        {
+            ({setVideo}) => (
+                <LinearGradient
         start={{x: 0, y: 0}} end={{x: 1, y: 0}} 
         style={styles.container}
         colors={['#fff','#89C13D']}
          > 
          
-
-<TouchableOpacity style={styles.btn} onPress={props.navigate}>
+ 
+{/* <TouchableOpacity style={styles.btn} onPress={props.navigate}>*/}
+<TouchableOpacity style={styles.btn} onPress={()=>setVideo(true)}> 
           <Play name="play" size={20} color="white"  />
                </TouchableOpacity>
          
@@ -44,6 +49,10 @@ export function Playeroo  (props) {
             
         
         </LinearGradient>
+            )
+        }
+        </PlayerContext.Consumer> 
+        
        
     )
 }

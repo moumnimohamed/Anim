@@ -14,6 +14,7 @@ import AnimeDetail from '../containers/AnimeDetail';
 import ByCategory from '../containers/ByCategory';
 import BySeason from '../containers/BySeason';
 import SearchPage from '../containers/SearchPage';
+import Account from '../containers/Account';
 import EpisodesAllList from '../containers/EpisodesAllList';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Ant from 'react-native-vector-icons/AntDesign';
@@ -139,7 +140,7 @@ const TabNavigator = createBottomTabNavigator(
       },
     },
     setting: {
-      screen: SearchStackNavigator,
+      screen: Account,
       navigationOptions: {
         tabBarLabel: 'ضبط',
         tabBarIcon:  ({tintColor})=>(<Icon name="setting" size={17}  color={tintColor}   />),
