@@ -1,14 +1,13 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet,Text } from 'react-native';
 import { Searchbar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import AnimeServers from '../components/AnimeServers';
 import { FilmCard } from '../components/FilmCard';
 import Loader from '../components/Loader';
-import { PlayCard } from '../components/PlayCard';
-
+ 
 
 
 class SearchPage extends React.Component {
@@ -89,6 +88,8 @@ class SearchPage extends React.Component {
   componentDidMount() {}
 
   render() {
+
+    console.log("search props",this.props)
     const {firstQuery} = this.state;
 
     return (
@@ -96,7 +97,7 @@ class SearchPage extends React.Component {
         
           <Searchbar
             
-            placeholder="Search"
+            placeholder="بحث"
             onChangeText={query => {
               this.setState({firstQuery: query}, () =>
                 this.SearchKnow(this.state.firstQuery),
@@ -109,25 +110,31 @@ class SearchPage extends React.Component {
 
         {this.state.fetching ? (
           <Loader />
-        ) : (
+        ) : this.state.anime && this.state.anime.length > 0  ? (
           <FlatList
             data={this.state.anime}
             showsHorizontalScrollIndicator={false}
             renderItem={({item, index}) =>
-            item.img &&  item.title.includes("فيلم") ? 
+            item.img ?  item.title.includes("فيلم") ? 
                
-            (  <FilmCard item={item}  showTitle={false} navigate={()=>{this.props.navigation.push('FilmDetail', {  item:item })} } />)
+            (  <FilmCard item={item}  showTitle={true} navigate={()=>{this.props.navigation.navigate('FilmDetail', {item:item })} } />)
               :
-             ( <PlayCard
+             ( <FilmCard
                   item={item}
                   showTitle={true}
                   navigate={() => this.getEpsServers(item.link)}
                 />)
+                :   null 
             }
             numColumns={2}
             keyExtractor={(item, index) => index.toString()}
           />
-        )}
+        )
+        :
+        (
+           <Text> إبحث  عن أنيمي المفضلة لديك !!!</Text>
+        )
+        }
 
         <AnimeServers
           hide={() => this.setState({showModal: false})}

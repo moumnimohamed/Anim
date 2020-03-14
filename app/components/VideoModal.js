@@ -1,13 +1,28 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { WebView } from "react-native-webview";
 
 export default function VideoModal(props) {
+  console.log("layla",props)
   return (
+    
     <View style={styles.container}>
-      <Text
-        style={{paddingHorizontal: 10, textAlign: 'center', color: '#535353'}}>
-        {props.video && props.video.text ? props.video.text : 'no video'}
-      </Text>
+      <View style={styles.video}>
+        {props.video && props.video.length &&
+          <WebView 
+        source={{uri : props.video[0].link}}
+        allowsFullscreenVideo={true}
+        allowsInlineMediaPlayback={true}
+      />
+        }
+       </View>
+       <View style={styles.links}>
+       <Text>nfevbebvebebveueb</Text>
+       <Text>nfevbebvebebveueb</Text>
+       <Text>nfevbebvebebveueb</Text>
+       <Text>nfevbebvebebveueb</Text>
+       
+    </View>
     </View>
   );
 }
@@ -15,6 +30,14 @@ export default function VideoModal(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'red',
+   
   },
+  container: {
+    flex: 1,
+     
+  },
+  links:{
+    flex:1,
+    backgroundColor: 'blue',
+  }
 });

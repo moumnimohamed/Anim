@@ -1,6 +1,6 @@
 
  
-import {SafeAreaView,FlatList,StyleSheet} from 'react-native';
+import {View,SafeAreaView,FlatList,StyleSheet} from 'react-native';
 import React , {useState} from "react"
 import {connect} from 'react-redux';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
@@ -9,6 +9,23 @@ import CategoryCard from '../components/CategoryCard';
 
 import Loader from '../components/Loader';
 
+
+
+const FlatListHeader = (props) => {
+  return (
+    <View
+    >
+    <FlatList
+              style={{ marginLeft:5,marginTop:10,marginBottom:10 }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={props.categories}
+              renderItem={({ item }) => item.title && <CategoryCard item={ item}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"film"})}}/>}
+        keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
+        />
+       </View>
+  );
+}
 
   function AnimeAllList  (props) {
      
@@ -23,17 +40,11 @@ import Loader from '../components/Loader';
     return(
 
         <SafeAreaView style={styles.container}>
-      <FlatList
-              style={{ marginLeft:5,marginTop:10,marginBottom:10 }}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={props.categories}
-              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"anime"})}}/>}
-        keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
-        />
+      
 
         <FlatList
         data={props.animeList}
+        ListHeaderComponent = {  FlatListHeader(props) }   
         style={styles.FlatList}
               showsHorizontalScrollIndicator={false}
         renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.push('AnimeDetail', {  item:item })} } />}

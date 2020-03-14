@@ -2,14 +2,14 @@
 import Heart from 'react-native-vector-icons/AntDesign';
 import V from 'react-native-vector-icons/AntDesign';
 import Play from 'react-native-vector-icons/AntDesign';
-import {Dimensions,ImageBackground,View,ScrollView,TouchableOpacity,Text,StyleSheet} from 'react-native';
+import {Image,ImageBackground,View,ScrollView,TouchableOpacity,Text,StyleSheet} from 'react-native';
 import { Switch } from 'react-native-paper';
 import React from "react"
 import LinearGradient from 'react-native-linear-gradient';
 import PlayerContext from './PlayerContext';
 
-export function Playeroo  (props) {
- 
+export function CardEpisode  (props) {
+            console.log("hania",props.video)
  
 
     return(
@@ -19,30 +19,28 @@ export function Playeroo  (props) {
         style={styles.container}
         colors={['#fff','#89C13D']}
          > 
-         
- 
-<TouchableOpacity style={styles.btn} onPress={props.navigate}>
-  
-          <Play name="play" size={20} color="white"  />
-               </TouchableOpacity>
-         
-               <Switch
-               style={styles.btn}
-               color={"#89C13D"}
-        value={true}
-        onValueChange={() =>
-          { this.setState({ isSwitchOn: !isSwitchOn }); }
-        }
-      />
+         <Image
+                  ImageResizeMode={'contain'}
+                  style={styles.image}
+                  source={{uri: props.img ? props.img : ''}}
+                />
+  <Text style={{paddingHorizontal:10,textAlign:"center",color:"#535353"}}>{props.video && props.video.text ? props.video.text : ""}</Text>
 
-         <TouchableOpacity style={styles.btn}>
-          <Heart name="hearto" size={15} color="black"  />
-               </TouchableOpacity>
+         
+                
+
+      
 
                
                <View style={styles.name}>
-              <Text style={{paddingHorizontal:10,textAlign:"center",color:"#535353"}}>{props.video && props.video.text ? props.video.text : ""}</Text> 
-              <V name="videocamera" size={20} color="#535353"  />
+               <TouchableOpacity style={{...styles.btn,marginRight:25}}>
+          <Heart name="hearto" size={15} color="white"  />
+               </TouchableOpacity>
+              <TouchableOpacity style={styles.btn} onPress={props.navigate}>
+
+          <Play name="play" size={20} color="white"  />
+         
+               </TouchableOpacity>
                </View>
             
         
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
     container:{
         marginVertical:10,
         borderRadius:20,
-        paddingVertical:5,
+        paddingVertical:10,
         paddingHorizontal:10,
         marginHorizontal:10,
         display:"flex",
@@ -77,6 +75,11 @@ const styles = StyleSheet.create({
         elevation: 13,
         
  
+    },
+    image:{
+        width: 50,
+        height: 50,
+        borderRadius:20,
     },
     name:{
         flexDirection:"row",

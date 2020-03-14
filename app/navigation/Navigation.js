@@ -28,7 +28,7 @@ const SearchStackNavigator = createStackNavigator({
       ), */
      /*  headerTitle: (
         <Image
-          style={{width: 40, height: 40}}
+          style={{width: 50, height: 50}}
           source={require('../images/logo.png')}
         />
       ), */

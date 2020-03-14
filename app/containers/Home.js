@@ -4,7 +4,7 @@ import TextStyled from "../components/TextStyled"
 import { Chip,ActivityIndicator } from 'react-native-paper';
 import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView, Alert,TouchableOpacity} from 'react-native';
 import {AnimatedCard} from '../components/AnimatedCard';
-import {PlayCard} from '../components/PlayCard';
+ 
 import {FilmCard} from '../components/FilmCard';
 import AnimeServers from '../components/AnimeServers';
 import Header from '../components/Header';
@@ -181,7 +181,7 @@ class Home extends React.Component {
  } }
                   slideStyle={styles.slide}
                   containerCustomStyle={{ flex: 1 }}
-          slideStyle={{ marginTop :screenHeight/6 ,marginBottom:20}}
+          slideStyle={{ marginTop :120 ,marginBottom:20}}
                   sliderWidth={screenWidth}
                   itemWidth={itemWidth}
 
@@ -233,7 +233,7 @@ class Home extends React.Component {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={ this.props.animeEpisodes.slice(0, 20)}
-              renderItem={({ item }) => <PlayCard item={item}   navigate={()=>this.getEpsServers(item.link) }/>}
+              renderItem={({ item }) => <FilmCard item={item}   navigate={()=>this.getEpsServers(item.link) }/>}
         keyExtractor={item => item.title}
               />
                <AnimeServers  hide={()=>this.setState({showModal:false})}  epsHref={this.state.epsHref} showModal={this.state.showModal}  navigation={this.props.navigation}/>
@@ -332,7 +332,6 @@ const styles = StyleSheet.create({
      
   },
   ScrollView:{
-    
     paddingLeft: 80,  
      overflow:"visible"
   },

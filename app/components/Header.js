@@ -12,7 +12,7 @@ import React from 'react';
 export default function Header(props) {
   return <View style={styles.container}>
   <Image
-          style={{width: 20, height:40 ,margin:10}}
+          style={{width: 50, height:50 ,margin:10}}
           source={require('../images/logo.png')}
         />
         <View style={styles.texts}>

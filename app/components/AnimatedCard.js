@@ -1,20 +1,23 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { default as AntDesign, default as Heart, default as Play } from 'react-native-vector-icons/AntDesign';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  default as AntDesign,
+  default as Heart,
+  default as Play,
+} from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import share from '../components/Share';
 export class AnimatedCard extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: this.props.item.img
-                ? this.props.item.img
-                : 'https://helpx.adobe.com/content/dam/help/en/acrobat/kb/not-default-pdf-owner-windows101/jcr_content/main-pars/procedure_1039842004/proc_par/step_0/step_par/image/properties.png',
-            }}
-          />
+          {  (
+            <Image
+              style={styles.image}
+              source={ this.props.item.img  ? {uri: this.props.item.img} : require('../images/splash.png')}
+            />
+          ) }
           <TouchableOpacity
             style={styles.playBtn}
             onPress={this.props.navigate}>
@@ -26,7 +29,9 @@ export class AnimatedCard extends React.Component {
             <TouchableOpacity style={styles.btn}>
               <Heart name="hearto" size={20} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity
+              onPress={() => share(this.props.item)}
+              style={styles.btn}>
               <FontAwesome name="send" size={20} color="black" />
             </TouchableOpacity>
             <View style={styles.likeNumber}>
@@ -41,7 +46,9 @@ export class AnimatedCard extends React.Component {
 
           <View style={styles.linkContainer}>
             <Text style={styles.link} onPress={this.props.navigate}>
-              الحلقات
+              {this.props.item.title.includes('فيلم')
+                ? 'مشاهدة الفيلم'
+                : 'الحلقات'}
             </Text>
           </View>
         </View>

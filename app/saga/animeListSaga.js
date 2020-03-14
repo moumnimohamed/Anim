@@ -48,6 +48,22 @@ export function* getAnimList (action) {
       // make category list
       const categoryList = $('.catelist > li').map((_, li) => ({
         title: $('a', li).text(),
+        colorLeft:
+          'rgb(' +
+          Math.floor(Math.random() * 256) +
+          ',' +
+          Math.floor(Math.random() * 256) +
+          ',' +
+          Math.floor(Math.random() * 256) +
+          ')',
+        colorRight:
+          'rgb(' +
+          Math.floor(Math.random() * 256) +
+          ',' +
+          Math.floor(Math.random() * 256) +
+          ',' +
+          Math.floor(Math.random() * 256) +
+          ')',
         
       })); 
     

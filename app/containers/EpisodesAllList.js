@@ -4,7 +4,8 @@ import {SafeAreaView,FlatList,StyleSheet} from 'react-native';
 import React , {useState} from "react"
 import {connect} from 'react-redux';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
-import {PlayCard} from '../components/PlayCard';
+ 
+import {FilmCard} from '../components/FilmCard';
  
 import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
@@ -62,7 +63,7 @@ import Loader from '../components/Loader';
         data={props.animeEpisodes}
         style={styles.FlatList}
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <PlayCard showTitle={true}  item={item}    navigate={()=>getEpsServers(item.link) } />}
+        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}    navigate={()=>getEpsServers(item.link) } />}
         numColumns={2}
         ListFooterComponent={   () => {
    

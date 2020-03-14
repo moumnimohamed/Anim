@@ -3,7 +3,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import {detailRequest} from '../redux/filmDetailRedux';
 
 import Play from 'react-native-vector-icons/AntDesign';
-import Star from 'react-native-vector-icons/FontAwesome';
 
 import {Chip} from 'react-native-paper';
 import {
@@ -25,8 +24,8 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 class FilmDetail extends React.Component {
-  animeName   = this.props.navigation.state.params.item.title;
-  anime =    this.props.navigation.state.params.item
+  animeName = this.props.navigation.state.params.item.title;
+  anime = this.props.navigation.state.params.item;
 
   componentDidMount = () => {
     console.log('anime....', this.anime);
@@ -35,7 +34,6 @@ class FilmDetail extends React.Component {
   };
 
   render() {
-     
     const cat =
       this.props.filmDetail && this.props.filmDetail.length > 0
         ? this.props.filmDetail[0]['category']
@@ -63,14 +61,14 @@ class FilmDetail extends React.Component {
         <ScrollView style={styles.scroll}>
           <ImageBackground
             blurRadius={1}
-            source={{uri: this.anime.img ? this.anime.img : ""}}
+            source={{uri: this.anime.img ? this.anime.img : ''}}
             style={styles.bkg}>
             <View style={styles.viewDATA}>
               <View style={styles.imageContainer}>
                 <Image
                   ImageResizeMode={'contain'}
                   style={styles.image}
-                  source={{uri: this.anime.img ? this.anime.img : ""}}
+                  source={{uri: this.anime.img ? this.anime.img : ''}}
                 />
               </View>
 
@@ -86,7 +84,12 @@ class FilmDetail extends React.Component {
                       marginRight: 10,
                       backgroundColor: '#F5F5F5',
                     }}
-                    onPress={ ()=> {  this.props.navigation.push('ByCategory',{title:item.title,type:"film"})}}>
+                    onPress={() => {
+                      this.props.navigation.push('ByCategory', {
+                        title: item.title,
+                        type: 'film',
+                      });
+                    }}>
                     <Text style={{color: '#9A999A'}}>{item.title}</Text>
                   </Chip>
                 )}
@@ -100,7 +103,13 @@ class FilmDetail extends React.Component {
                   flexDirection: 'row',
                 }}>
                 <View style={{flex: 1}}>
-                  <TouchableOpacity style={styles.playBtn}>
+                  <TouchableOpacity
+                    style={styles.playBtn}
+                    onPress={() =>
+                      this.props.navigation.push('streamPage', {
+                        link: streamLinks[0].link,
+                      })
+                    }>
                     <Play
                       name="play"
                       size={35}
@@ -144,20 +153,21 @@ class FilmDetail extends React.Component {
                   </Text>
                 ) : null;
               })}
-
-              {streamLinks.map((video, i) => {
-                return video && video.text ? (
-                  <Playeroo
-                    key={i}
-                    video={video}
-                    navigate={() => {
-                      this.props.navigation.push('streamPage', {
-                        link: video.link,
-                      });
-                    }}
-                  />
-                ) : null;
-              })}
+              
+                {streamLinks.map((video, i) => {
+                  return video && video.text ? (
+                    <Playeroo
+                      key={i}
+                      video={video}
+                      navigate={() => {
+                        this.props.navigation.push('streamPage', {
+                          link: video.link,
+                        });
+                      }}
+                    />
+                  ) : null;
+                })}
+             
             </View>
           </ImageBackground>
         </ScrollView>
@@ -232,7 +242,6 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-   
     filmDetail: state.filmDetail.payload ? state.filmDetail.payload : [],
   };
 };
