@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     top: -25,
   },
   title: {
+    fontFamily: 'JF Flat regular',
     textAlign: 'center',
     top: 10,
   },
@@ -125,6 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   link: {
+    fontFamily: 'JF Flat regular',
     borderBottomColor: '#89C13D',
     borderBottomWidth: 2,
     marginBottom: 30,

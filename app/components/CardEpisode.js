@@ -24,7 +24,7 @@ export function CardEpisode  (props) {
                   style={styles.image}
                   source={{uri: props.img ? props.img : ''}}
                 />
-  <Text style={{paddingHorizontal:10,textAlign:"center",color:"#535353"}}>{props.video && props.video.text ? props.video.text : ""}</Text>
+  <Text style={{  width:"60%",  fontFamily: 'JF Flat regular',paddingHorizontal:10,textAlign:"center",color:"#535353"}}>{props.video && props.video.text ? props.video.text : ""}</Text>
 
          
                 

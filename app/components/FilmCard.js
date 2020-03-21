@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     marginTop: 10,
     marginBottom: 10,
-    marginHorizontal: screenWidth / 24,
+    marginHorizontal: screenWidth / 40,
     width: screenWidth / 2.5,
     height: screenWidth / 2,
     backgroundColor: 'white',
@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     color: 'white',
     textAlign: 'left',
-
-    fontWeight: 'bold',
+    fontFamily: 'JF Flat regular',
+     fontSize:17,
 
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 1,

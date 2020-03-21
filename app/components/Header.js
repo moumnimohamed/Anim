@@ -10,15 +10,17 @@ import {
 import React from 'react';
 
 export default function Header(props) {
+
+  console.log("header props",props)
   return <View style={styles.container}>
   <Image
           style={{width: 50, height:50 ,margin:10}}
           source={require('../images/logo.png')}
         />
         <View style={styles.texts}>
-      <Text style={styles.text}>الأفلام</Text>
-      <Text style={styles.text}>الانمي</Text>
-      <Text style={styles.text}>الحلقات</Text>
+      <Text style={styles.text}  onPress={()=> { props.navigation.navigate('FilmAllList')}} >الأفلام</Text>
+      <Text style={styles.text} onPress={()=> { props.navigation.navigate('AnimeAllList')}}  >الانمي</Text>
+      <Text style={styles.text} onPress={()=> { props.navigation.navigate('EpisodesAllList')}} >الحلقات</Text>
       </View>
   </View>
 }
@@ -26,19 +28,20 @@ export default function Header(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection:"row",
-     margin:5,
-     
+      
+     paddingTop:30,
   },
   texts:{
-       
+  
     flexDirection:"row",
      flex:1,
       justifyContent:"space-around",
       alignItems:"center"
   },
   text:{
+    fontFamily: 'JF Flat regular',
       color:"white",
-      fontWeight:"bold",
+       
       fontSize:17,
     paddingHorizontal:20,
 }

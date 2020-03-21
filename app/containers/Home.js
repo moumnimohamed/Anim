@@ -1,27 +1,24 @@
-import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
-import TextStyled from "../components/TextStyled"
-import { Chip,ActivityIndicator } from 'react-native-paper';
-import {Dimensions,ImageBackground,View,ScrollView,Image,Text,FlatList,StyleSheet,SafeAreaView, Alert,TouchableOpacity} from 'react-native';
-import {AnimatedCard} from '../components/AnimatedCard';
- 
-import {FilmCard} from '../components/FilmCard';
-import AnimeServers from '../components/AnimeServers';
-import Header from '../components/Header';
-import CategoryCard from '../components/CategoryCard';
-import Loader from '../components/Loader';
-import {getNewRequest} from '../redux/newAnimRedux';
-import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
-import {getAnimeListRequest} from '../redux/AnimeListRedux';
-import {filmRequest} from '../redux/FilmRedux';
-import {connect} from 'react-redux';
-import Carousel from 'react-native-snap-carousel';
-import Ant from 'react-native-vector-icons/AntDesign';
-import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
+import cheerio from 'cheerio-without-node-native';
+import React from 'react';
+import { Dimensions, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { StatusBar } from 'react-native'
+import Carousel from 'react-native-snap-carousel';
+import { connect } from 'react-redux';
+import { AnimatedCard } from '../components/AnimatedCard';
+import AnimeServers from '../components/AnimeServers';
+import { FilmCard } from '../components/FilmCard';
+import Header from '../components/Header';
+import Loader from '../components/Loader';
+import TextStyled from "../components/TextStyled";
+import { aniEpisodeRequest } from '../redux/AnimeEpisodes';
+import { getAnimeListRequest } from '../redux/AnimeListRedux';
+import { filmRequest } from '../redux/FilmRedux';
+import { getNewRequest } from '../redux/newAnimRedux';
+ 
 
 
-import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -47,9 +44,14 @@ class Home extends React.Component {
     };
   }
 
-  static navigationOptions = {
-    header: <Header/>,
-  };
+   
+
+  static navigationOptions = ({ navigation }) => {
+     
+    return {
+        header: <Header navigation={navigation}/>
+    };
+};
 
   handleOpen = () => {
     this.setState({show: true});
@@ -146,7 +148,10 @@ class Home extends React.Component {
         : {}; 
     return (
       <SafeAreaView style={{ backgroundColor:"#f8f5fa"}}>
-       
+        <StatusBar
+     translucent backgroundColor="transparent"
+     
+  />
       <ScrollView  >
      { this.props.fetching ? <Loader/>
      
@@ -181,7 +186,7 @@ class Home extends React.Component {
  } }
                   slideStyle={styles.slide}
                   containerCustomStyle={{ flex: 1 }}
-          slideStyle={{ marginTop :120 ,marginBottom:20}}
+          slideStyle={{ marginTop :150 ,marginBottom:20}}
                   sliderWidth={screenWidth}
                   itemWidth={itemWidth}
 
@@ -191,7 +196,7 @@ class Home extends React.Component {
               </LinearGradient>
               </ImageBackground> 
              
-              <TextStyled title={"أنميات الأسطورية"} />
+              <TextStyled hide title={"أنميات الأسطورية"} />
         
               <Carousel
              firstItem={legendAnime.length-1}

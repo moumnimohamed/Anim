@@ -1,15 +1,15 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import { FlatList, SafeAreaView, StyleSheet,Text } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Dimensions,FlatList, SafeAreaView, StyleSheet,Text } from 'react-native';
+import { TextInput } from 'react-native-paper';
 import { connect } from 'react-redux';
 import AnimeServers from '../components/AnimeServers';
 import { FilmCard } from '../components/FilmCard';
 import Loader from '../components/Loader';
  
 
-
+const screenHeight = Math.round(Dimensions.get('window').height);
 class SearchPage extends React.Component {
   state = {
     firstQuery: '',
@@ -94,16 +94,20 @@ class SearchPage extends React.Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        
-          <Searchbar
-            
-            placeholder="بحث"
+
+<TextInput
+   
+  theme={{ colors: { placeholder: '#89C13D', text: 'gray', primary: '#89C13D',
+                        } }}
+      
+      underlineColor="#89C13D"
+            label=   "بحث"
             onChangeText={query => {
               this.setState({firstQuery: query}, () =>
                 this.SearchKnow(this.state.firstQuery),
               );
             }}
-            value={firstQuery}
+            
           />
           
          
@@ -132,7 +136,8 @@ class SearchPage extends React.Component {
         )
         :
         (
-           <Text> إبحث  عن أنيمي المفضلة لديك !!!</Text>
+           <Text style={{fontFamily: 'JF Flat regular', top:screenHeight/3,
+    alignSelf:"center",}}> إبحث  عن أنيمي المفضلة لديك !!!</Text>
         )
         }
 
@@ -149,6 +154,8 @@ class SearchPage extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    
+    paddingTop:30,
     backgroundColor: '#f8f5fa',
     flex: 1,
   },

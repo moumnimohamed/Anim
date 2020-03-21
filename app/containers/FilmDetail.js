@@ -90,7 +90,10 @@ class FilmDetail extends React.Component {
                         type: 'film',
                       });
                     }}>
-                    <Text style={{color: '#9A999A'}}>{item.title}</Text>
+                    <Text
+                      style={{color: '#9A999A', fontFamily: 'JF Flat regular'}}>
+                      {item.title}
+                    </Text>
                   </Chip>
                 )}
                 keyExtractor={item => item.title}
@@ -126,10 +129,17 @@ class FilmDetail extends React.Component {
                         justifyContent: 'flex-end',
                         flexDirection: 'row',
                       }}>
-                      <Text style={{color: '#9A999A', marginRight: 10}}>
+                      <Text
+                        style={{
+                          color: '#9A999A',
+                          marginRight: 10,
+                          fontFamily: 'JF Flat regular',
+                        }}>
                         {published[1]}
                       </Text>
-                      <Text>{published[0]}</Text>
+                      <Text style={{fontFamily: 'JF Flat regular'}}>
+                        {published[0]}
+                      </Text>
                     </View>
                   )}
                   {duration[0] && (
@@ -138,38 +148,38 @@ class FilmDetail extends React.Component {
                         justifyContent: 'flex-end',
                         flexDirection: 'row',
                       }}>
-                      <Text style={{color: '#9A999A', marginRight: 24}}>
+                      <Text style={{color: '#9A999A', marginRight: 24,   fontFamily: 'JF Flat regular',}}>
                         {duration[1]}
                       </Text>
-                      <Text>{duration[0]}</Text>
+                      <Text style={{   fontFamily: 'JF Flat regular',}}>{duration[0]}</Text>
                     </View>
                   )}
                 </View>
               </View>
               {story.map((p, i) => {
                 return p && p.text ? (
-                  <Text key={i} style={{padding: 20, color: '#9A999A'}}>
+                  <Text key={i} style={{padding: 20, color: '#9A999A',   fontFamily: 'JF Flat regular',}}>
                     {p.text}
                   </Text>
                 ) : null;
               })}
+
               
-                {streamLinks.map((video, i) => {
-                  return video && video.text ? (
-                    <Playeroo
-                      key={i}
-                      video={video}
-                      navigate={() => {
-                        this.props.navigation.push('streamPage', {
-                          link: video.link,
-                        });
-                      }}
-                    />
-                  ) : null;
-                })}
-             
             </View>
           </ImageBackground>
+          {streamLinks.map((video, i) => {
+                return video && video.text ? (
+                  <Playeroo
+                    key={i}
+                    video={video}
+                    navigate={() => {
+                      this.props.navigation.push('streamPage', {
+                        link: video.link,
+                      });
+                    }}
+                  />
+                ) : null;
+              })}
         </ScrollView>
       </SafeAreaView>
     );
@@ -183,9 +193,11 @@ const styles = StyleSheet.create({
   },
   bkg: {
     width: '100%',
-    height: screenHeight,
+    
   },
-  scroll: {},
+  scroll: {
+    backgroundColor:"#fff"
+  },
 
   viewDATA: {
     /*  marginTop:200,*/

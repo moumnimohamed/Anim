@@ -17,11 +17,34 @@ function getFilmApi() {
     });
 }
 
+function getCharacters() {
+  return axios({
+    method: 'get',
+    url: 'https://api.jikan.moe/v3/anime/1/characters_staff',
+  })
+    .then(res => {
+      
+      return res;
+    })
+    .catch(error => {
+       
+      return error;
+    });
+}
+
 export function* getFilm(action) {
   try {
     const response = yield getFilmApi(); // fetch page
+    const characters = yield getCharacters(); // fetch page
+    /*    let imgProfile
+    if (characters.status === 200) {
+      console.log("vovo",characters.data.characters image_url)
 
+      characters.data.characters image_url
+    } */
+     
     if (response.status === 200) {
+
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
 
@@ -38,24 +61,13 @@ export function* getFilm(action) {
       yield put(actionsAndType.filmSuccess(myData));
 
       // make category list
-      const categoryList = $('.catelist > li').map((_, li) => ({
+      let i=0
+      const categoryList = $('.catelist > li').map((_, li) => (
+        i++,
+        {
+        img :characters.data.characters[i].image_url,
         title: $('a', li).text(),
-        colorLeft:
-          'rgb(' +
-          Math.floor(Math.random() * 256) +
-          ',' +
-          Math.floor(Math.random() * 256) +
-          ',' +
-          Math.floor(Math.random() * 256) +
-          ')',
-        colorRight:
-          'rgb(' +
-          Math.floor(Math.random() * 256) +
-          ',' +
-          Math.floor(Math.random() * 256) +
-          ',' +
-          Math.floor(Math.random() * 256) +
-          ')',
+        
       }));
 
       var catData = Object.keys(categoryList).map(key => {

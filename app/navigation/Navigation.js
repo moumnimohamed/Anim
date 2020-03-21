@@ -68,17 +68,22 @@ const SearchStackNavigator = createStackNavigator({
   FilmAllList: {
     screen: FilmAllList,
     navigationOptions: {
-      title: '',
-      headerTintColor: '#fff',
-      headerTransparent: true,
+      title: 'أفلام',
+      headerTintColor: '#89C13D',
+     
     },
   },
   AnimeAllList: {
     screen: AnimeAllList,
+    
     navigationOptions: {
-      title: '',
-      headerTintColor: '#fff',
-      headerTransparent: true,
+     headerTitleStyle:{
+        
+      fontFamily: 'JF Flat regular'
+},
+      title: 'الأنميات',
+      headerTintColor: '#89C13D',
+      /* headerTransparent: true, */
     },
   },
   EpisodesAllList: {
@@ -86,7 +91,7 @@ const SearchStackNavigator = createStackNavigator({
     navigationOptions: {
       title: '',
       headerTintColor: '#fff',
-      headerTransparent: true,
+       
     },
   },
   ByCategory: {
@@ -94,7 +99,7 @@ const SearchStackNavigator = createStackNavigator({
     navigationOptions: {
       title: 'ByCategory',
       headerTintColor: '#fff',
-      headerTransparent: true,
+       
     },
   },
   BySeason: {
@@ -102,7 +107,7 @@ const SearchStackNavigator = createStackNavigator({
     navigationOptions: {
       title: '',
       headerTintColor: '#fff',
-      headerTransparent: true,
+      
     },
   },
   SearchPage: {
@@ -141,7 +146,10 @@ const TabNavigator = createBottomTabNavigator(
     },
     setting: {
       screen: Account,
+      
       navigationOptions: {
+        
+       
         tabBarLabel: 'ضبط',
         tabBarIcon:  ({tintColor})=>(<Icon name="setting" size={17}  color={tintColor}   />),
       },
@@ -150,7 +158,11 @@ const TabNavigator = createBottomTabNavigator(
   {
     
     tabBarOptions: {
+      labelStyle: {
+        fontFamily: 'JF Flat regular',
+      },
       style: {
+        
         borderTopWidth: 0,
         backgroundColor:"#f8f5fa",
     },
