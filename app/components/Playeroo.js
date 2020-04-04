@@ -1,10 +1,31 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Switch } from 'react-native-paper';
 import { default as Play, default as V } from 'react-native-vector-icons/AntDesign';
+const screenWidth = Math.round(Dimensions.get('window').width);
+const screenHeight = Math.round(Dimensions.get('window').height);
 
 export function Playeroo(props) {
+  /* const downloadWithADM = () => {
+    const url = 'whatsapp://';
+
+			 Linking.canOpenURL(url).then(supported => {
+
+				if (!supported) {
+
+					console.log('Can\'t handle url: ' + url);
+
+		 }else{
+
+					return Linking.openURL(url);
+
+		}
+
+		 }).catch(err =>
+
+		       console.error('An error occurred', err));
+  }
+   */
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -15,23 +36,21 @@ export function Playeroo(props) {
         <Play name="play" size={20} color="#89C13D" />
       </TouchableOpacity>
 
-      <Switch
-        style={styles.btn}
-        color={'#89C13D'}
-        value={true}
-        onValueChange={() => {
-          this.setState({isSwitchOn: !isSwitchOn});
-        }}
-      />
+      
 
       <View style={styles.name}>
         <Text
-          style={{paddingHorizontal: 10, textAlign: 'center', color: '#fff',   fontFamily: 'JF Flat regular',}}>
+          style={{
+            paddingHorizontal: 10,
+            textAlign: 'center',
+            color: '#fff',
+            fontFamily: 'JF Flat regular',
+          }}>
           {props.video && props.video.text ? props.video.text : ''}
         </Text>
         <V name="videocamera" size={20} color="#fff" />
       </View>
-    </LinearGradient>
+       </LinearGradient>
   );
 }
 

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     elevation: 4,
     marginTop: 10,
     marginBottom: 10,
-    marginHorizontal: screenWidth / 40,
+    marginHorizontal: screenWidth / 24,
     width: screenWidth / 2.5,
     height: screenWidth / 2,
     backgroundColor: 'white',

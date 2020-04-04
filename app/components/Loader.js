@@ -1,23 +1,26 @@
-import {View, StyleSheet} from 'react-native';
-import React  from 'react';
-import {ActivityIndicator} from 'react-native-paper';
+import React from 'react';
+import { Dimensions, StyleSheet, View,Image } from 'react-native';
+const screenHeight = Math.round(Dimensions.get('window').height);
 
-export  default  function Loader (props) {
+export default function Loader(props) {
   return (
     <View style={styles.ActivityIndicator}>
-    
-      <ActivityIndicator animating={true} color={'#89C13D'} />
+      <Image
+        style={{width: 50, height: 50, margin: 10}}
+        source={require('../images/logo.png')}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    ActivityIndicator:{
-      height:100,
-         
-       zIndex:12,
-        
-       justifyContent:"center"
-     
-     }
+  ActivityIndicator: {
+    zIndex:9,
+    opacity: 0.5,
+    height: screenHeight,
+    backgroundColor: '#89C13D',
+    zIndex: 12,
+   alignItems:"center",
+    justifyContent: 'center',
+  },
 });

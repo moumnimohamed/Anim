@@ -1,9 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View,Alert } from 'react-native';
 import { PLAYER_STATES } from 'react-native-media-controls';
 import { WebView } from "react-native-webview";
 import cheerio from 'cheerio-without-node-native';
-import axios from "axios"
+import axios from "axios";
+import Orientation from "react-native-orientation"
+
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
+
 export default class StreamPage extends React.Component {
 
   videoPlayer;
@@ -101,12 +110,33 @@ export default class StreamPage extends React.Component {
 
   static navigationOptions = {
     header: null,
-    
+    keepGoing:false
     };
 
 
+    componentWillUnmount  = () =>{
+       alert("clear Timeout")
+       alert(this.timer)
+       if (this.timer) {                   
+                           
+        clearTimeout(this.timer);       
+        this.timer = 0;                 
+    }  
+    }
+
+     
+    
     componentDidMount () {
-     // Orientation.lockToLandscape();
+     this.timer=  setTimeout( () =>{
+        alert("ads")
+AdMobRewarded.setAdUnitID('ca-app-pub-4024120289306171/8777670113');
+AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd()); 
+
+
+}, 5000);
+      alert(this.timer)
+  
+     /*  Orientation.lockToLandscape(); */
 /* if (this.props.navigation.state.params.link) {
   console.log("lala link",this.props.navigation.state.params.link)
   this.getVideoURL(this.props.navigation.state.params.link)
@@ -114,12 +144,16 @@ export default class StreamPage extends React.Component {
      
     }
 
+
+    componentWillUpdate = (nextState ,nextProps ) => {
+
+    }
     
 
 
     render() {
-      console.log("str",this.props.navigation.state.params.link)
-  
+
+      
    /* mega      :  in webview 
    Let's Upload : in webview 
    4 shared: in webview 

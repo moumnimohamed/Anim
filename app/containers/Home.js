@@ -77,6 +77,15 @@ class Home extends React.Component {
    /* console.log("lala",$('a', elm).attr('href')) */
     }
   ); 
+
+  if ( href.length <= 0  ) {
+    console.log("count2",href.length)
+    $('.episode-videoplay ul li').map((_, elm) => {
+      href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
+    });
+  } 
+ /*  const animeHrefLink=   $(".col-md-4.col-no-padding-right a").attr('href')
+     console.log(animeHrefLink,) */
    console.log(href)
    this.setState({epsHref:href})
   

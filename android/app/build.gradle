@@ -128,6 +128,7 @@ android {
     }
 
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.anim"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
@@ -179,6 +180,8 @@ android {
 }
 
 dependencies {
+    
+    implementation project(':react-native-send-intent')
     implementation project(':react-native-orientation')
     implementation project(':react-native-safe-area-context')
     implementation project(':react-native-screens')
@@ -186,9 +189,10 @@ dependencies {
     implementation project(':react-native-reanimated')
     implementation project(':react-native-text-gradient')
     implementation project(':react-native-vector-icons')
+    implementation 'com.android.support:multidex:1.0.3'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
-
+   
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")

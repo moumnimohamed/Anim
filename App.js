@@ -5,6 +5,10 @@ import { Provider } from 'react-redux';
 import PlayerProvider from './app/components/PlayerProvider';
 import Navigator from './app/navigation/Navigation';
 import { store } from './app/redux/index';
+
+import SplashScreen from 'react-native-splash-screen';
+ 
+  
  
 import * as NetInfo from "@react-native-community/netinfo"
 
@@ -32,15 +36,17 @@ class App extends React.Component {
     isConnected: true
   };
 
-  /* componentDidMount() {
-    NetInfo.addEventListener(this.handleConnectivityChange);
-
-    // The fetch is not needed as the listen will send the current state when you subscribe to it
+  componentDidMount() {
+    SplashScreen.hide()
+   /*  NetInfo.addEventListener(this.handleConnectivityChange);*/
   }
+
+   
+  
 
   componentWillUnmount() {
     NetInfo.removeEventListener(this.handleConnectivityChange);
-  } */
+  } 
 
   handleConnectivityChange = state => {
     if (state.isConnected) {

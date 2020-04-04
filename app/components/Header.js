@@ -28,7 +28,7 @@ export default function Header(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection:"row",
-      
+        zIndex:7,
      paddingTop:30,
   },
   texts:{
