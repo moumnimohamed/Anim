@@ -58,6 +58,7 @@ export default class AnimeDetail extends React.Component {
 }
 
 
+
     componentDidMount(){
       const type  =this.props.navigation.state.params.type
         const catName =this.props.navigation.state.params.title.replace(" ","-")
@@ -92,9 +93,13 @@ export default class AnimeDetail extends React.Component {
 }
 
 
+AnimeDetail.navigationOptions = screenProps => ({
+  title: screenProps.navigation.state.params.title
+});
+
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: '#f8f5fa',
+     
       flex: 1,
     },
 })

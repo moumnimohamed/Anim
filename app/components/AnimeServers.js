@@ -1,3 +1,4 @@
+import React , {useState,useEffect} from "react"
 import {
   Modal,
   Text,
@@ -6,7 +7,12 @@ import {
   View,
   ImageBackground,
 } from 'react-native';
-import React from 'react';
+
+import SendIntentAndroid from  "react-native-send-intent";
+ 
+import cheerio from 'cheerio-without-node-native';
+import axios from 'axios';
+ 
 import {IconButton,Switch} from 'react-native-paper';
 import {Playeroo} from '../components/Playeroo';
 
@@ -15,10 +21,20 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function AnimeServers(props) {
 
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const download = async (url) => {
-            
-    console.log("called")
+  const _onToggleSwitch = () => {setIsSwitchOn(!isSwitchOn),()=>{}
+        !isSwitchOn  ? download() : remove()
+  }
+
+  useEffect (()=>{
+     
+  })
+  
+  
+  const remove = async () => { alert("remove")}
+  const download = async () => {
+      
     axios({
       method: 'get',
       url: "https://www.4shared.com/web/embed/file/ou2hTuU7iq.html",
@@ -30,22 +46,21 @@ export default function AnimeServers(props) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
          const  dl = $('#player video source').attr('src');
-          console.log('downloadLink', dl);
+         SendIntentAndroid.openAppWithData(
+          "com.dv.adm",
+           dl,
+          "video/*",
+          {
+            position: { type: "int", value: 60 },
+          }
+        ).then(wasOpened => {});
         }
       })
       .catch((error) => {
         error;
       });
 
-    /* SendIntentAndroid.openAppWithData(
-      "com.dv.adm",
-       url,
-      "video/*",
-      {
-        position: { type: "int", value: 60 },
-      }
-    ).then(wasOpened => {});
- */
+     
   };
 
   return (
@@ -60,6 +75,7 @@ export default function AnimeServers(props) {
         }}>
         <View
           style={{
+            top:100,
             borderRadius: 20,
             overflow: 'hidden',
             backgroundColor: '#fff',
@@ -86,10 +102,8 @@ export default function AnimeServers(props) {
           <Switch
          
          color={'#89C13D'}
-         value={false}
-         onValueChange={() => {
-           this.setState({isSwitchOn: !isSwitchOn});
-         }}
+         value={isSwitchOn}
+         onValueChange={ _onToggleSwitch}
        />
        <Text style={{fontFamily: 'JF Flat regular',color:"gray",marginLeft:5}}>
        تحميل

@@ -58,20 +58,20 @@ import Loader from '../components/Loader';
     return(
          
         <SafeAreaView  >
-      <FlatList
+      {/* <FlatList
               style={{ marginLeft:5,marginTop:10,marginBottom:10 }}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={props.categories}
               renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"anime"})}}/>}
         keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
-        />
+        /> */}
 
         <FlatList
         data={ anime}
          
               showsHorizontalScrollIndicator={false}
-        renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.push('AnimeDetail', {  item:item })} } />}
+        renderItem={({ item,index }) => item && item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.push('AnimeDetail', {  item:item })} } />}
         numColumns={2}
         ListFooterComponent={   () => {
    
@@ -89,7 +89,9 @@ import Loader from '../components/Loader';
     )
 }
 
-   
+BySeason.navigationOptions = screenProps => ({
+  title: screenProps.navigation.state.params.title
+});
 
 
 

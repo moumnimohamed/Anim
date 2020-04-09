@@ -15,16 +15,18 @@ const FlatListHeader = (props) => {
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={props.categories}
-              renderItem={({ item }) => item.title && <CategoryCard item={ item}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"film"})}}/>}
+              renderItem={({ item }) => item.title && <CategoryCard item={ item}  navigate={()=> {  props.navigation.navigate('ByCategory',{title:item.title,type:"film"})}}/>}
         keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
         />
        </View>
   );
 }
 
+
+
   function FilmAllList  (props) {
 
-    
+      
  
     return(
         <SafeAreaView style={styles.container}>
@@ -43,7 +45,7 @@ const FlatListHeader = (props) => {
     )
 }
 
-   
+
 
 
 const styles = StyleSheet.create({

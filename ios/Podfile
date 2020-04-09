@@ -48,6 +48,10 @@ target 'Anim' do
 
   pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
 
+  pod 'react-native-background-downloader', :path => '../node_modules/react-native-background-downloader'
+
+  pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
+
   target 'AnimTests' do
     inherit! :search_paths
     # Pods for testing

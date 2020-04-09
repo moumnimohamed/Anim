@@ -68,6 +68,12 @@ const SearchStackNavigator = createStackNavigator({
   FilmAllList: {
     screen: FilmAllList,
     navigationOptions: {
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        backgroundColor:"#f2f2f2"
+      },
       title: 'أفلام',
       headerTintColor: '#89C13D',
      
@@ -77,6 +83,12 @@ const SearchStackNavigator = createStackNavigator({
     screen: AnimeAllList,
     
     navigationOptions: {
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        backgroundColor:"#f2f2f2"
+      },
      headerTitleStyle:{
         
       fontFamily: 'JF Flat regular'
@@ -89,25 +101,46 @@ const SearchStackNavigator = createStackNavigator({
   EpisodesAllList: {
     screen: EpisodesAllList,
     navigationOptions: {
-      title: '',
-      headerTintColor: '#fff',
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        backgroundColor:"#f2f2f2"
+      },
+      title: 'الحلقات',
+      headerTintColor: '#89C13D',
        
     },
   },
   ByCategory: {
+
     screen: ByCategory,
     navigationOptions: {
-      title: 'ByCategory',
-      headerTintColor: '#fff',
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        backgroundColor:"#f2f2f2"
+      },
+       
+      headerTintColor: '#89C13D',
+       
        
     },
   },
   BySeason: {
     screen: BySeason,
     navigationOptions: {
-      title: '',
-      headerTintColor: '#fff',
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        backgroundColor:"#f2f2f2"
+      },
       
+      headerTintColor: '#89C13D',
+       
+
     },
   },
   SearchPage: {

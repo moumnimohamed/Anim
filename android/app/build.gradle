@@ -180,6 +180,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-permissions')
+    implementation project(':react-native-background-downloader')
     
     implementation project(':react-native-send-intent')
     implementation project(':react-native-orientation')

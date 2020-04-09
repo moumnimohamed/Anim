@@ -241,6 +241,7 @@ relatedF */
                       onPress={() =>
                         this.props.navigation.push('BySeason', {
                           link: season[2],
+                          title: season[1],
                         })
                       }
                       style={{

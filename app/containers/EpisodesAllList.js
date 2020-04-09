@@ -6,9 +6,7 @@ import {connect} from 'react-redux';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
  
 import {FilmCard} from '../components/FilmCard';
- 
-import cheerio from 'cheerio-without-node-native';
-import axios from 'axios';
+
 import AnimeServers from '../components/AnimeServers';
 
 import Loader from '../components/Loader';
