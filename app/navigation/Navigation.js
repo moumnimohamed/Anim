@@ -83,6 +83,7 @@ const SearchStackNavigator = createStackNavigator({
     screen: AnimeAllList,
     
     navigationOptions: {
+       
       headerStyle: {
         elevation: 0,
         shadowOpacity: 0,

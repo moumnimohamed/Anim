@@ -1,7 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import { Dimensions, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
+import {Button, Dimensions, FlatList, Image, ImageBackground, SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { StatusBar } from 'react-native'
 import Carousel from 'react-native-snap-carousel';
@@ -16,7 +16,16 @@ import { aniEpisodeRequest } from '../redux/AnimeEpisodes';
 import { getAnimeListRequest } from '../redux/AnimeListRedux';
 import { filmRequest } from '../redux/FilmRedux';
 import { getNewRequest } from '../redux/newAnimRedux';
- 
+import {Button as B} from 'react-native-paper';
+import  { default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import * as NetInfo from "@react-native-community/netinfo";
+
+import {
+  SCLAlert,
+  SCLAlertButton
+} from 'react-native-scl-alert'
+
 
 
 
@@ -35,16 +44,30 @@ class Home extends React.Component {
     super(props);
     this.state = {
       activeImage:"",
-      activeSlider: 0,
+      activeSlider: 1,
       title: 0,
       show: false,
       showModal:false,
       epsHref:[],
-      legendAnime:[]
+      legendAnime:[],
+       showAlertDesigned:false,
+
     };
   }
 
-   
+
+    
+
+   // Subscribe
+  unsubscribe = NetInfo.addEventListener(state => {
+    /* alert("Connection type", state.type); */
+     
+    if(!state.isConnected){
+      this.setState({showAlertDesigned:true})
+    }else{
+      this.setState({showAlertDesigned:false})
+    }
+  });
 
   static navigationOptions = ({ navigation }) => {
      
@@ -98,7 +121,7 @@ class Home extends React.Component {
   
 
   componentDidUpdate() {
-
+   
     /* this.allImages=[];
     if (this.props.newAnimeFailure) {
       this.setState({show: true});
@@ -106,15 +129,19 @@ class Home extends React.Component {
   }
 
   
-
-  componentDidMount () {
-
-    
-    this.props.getAnimRequest();
+getData = () => {
+  this.props.getAnimRequest();
     this.getLegendAnime();
     this.props.getAnimeList(0);
     this.props.aniEpisodeRequest();
     this.props.filmRequest();
+}
+
+
+  componentDidMount () {
+
+    this.unsubscribe();
+    this.getData()
   }
 
    
@@ -183,7 +210,7 @@ class Home extends React.Component {
                 layoutCardOffset={0}
                  maxToRenderPerBatch={3}
                  windowSize={10}
-
+                 onSnapToItem={index => this.setState({activeSlider: index})}
                   inactiveSlideOpacity={1}
                   layout={'default'}
                   data={newAnime}
@@ -326,7 +353,24 @@ class Home extends React.Component {
       
      </React.Fragment>
      }
+     <View style={styles.alertContainer}>
+         
+        <SCLAlert
+        headerIconComponent={  <Icon name="wifi-off" size={40} color="#fff" />}
+        onRequestClose={()=>{}}
+          theme="danger"
+          show={this.state.showAlertDesigned}
+          
+          titleStyle={{fontFamily: 'JF Flat regular'}}
+          subtitleStyle={{lineHeight:40,fontFamily: 'JF Flat regular'}}
+          title="عفوًا"
+          subtitle="اتصال إنترنت بطيء أو معدوم. يرجى التحقق من إعدادات الإنترنت الخاصة بك"
+        >
+        <B  mode="contained"  style={{fontFamily: 'JF Flat regular',backgroundColor:"#D63A45"}} onPress={this.getData}>تحديث</B>
+          </SCLAlert>
+      </View>
      </ScrollView>
+     
      </SafeAreaView>
          
     );
@@ -336,6 +380,12 @@ class Home extends React.Component {
  
 
 const styles = StyleSheet.create({
+  alertContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   container: {
      
     flex: 1,

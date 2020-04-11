@@ -88,7 +88,7 @@ export default class StreamPage extends React.Component {
   onError = () => alert('Oh! ', error);
   
   exitFullScreen = () => {
-    alert('Exit full screen');
+     
   };
 
   
@@ -115,8 +115,8 @@ export default class StreamPage extends React.Component {
 
 
     componentWillUnmount  = () =>{
-       alert("clear Timeout")
-       alert(this.timer)
+       
+       
        if (this.timer) {                   
                            
         clearTimeout(this.timer);       
@@ -128,13 +128,13 @@ export default class StreamPage extends React.Component {
     
     componentDidMount () {
      this.timer=  setTimeout( () =>{
-        alert("ads")
+       
 AdMobRewarded.setAdUnitID('ca-app-pub-4024120289306171/8777670113');
 AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd()); 
 
 
 }, 5000);
-      alert(this.timer)
+       
   
      /*  Orientation.lockToLandscape(); */
 /* if (this.props.navigation.state.params.link) {

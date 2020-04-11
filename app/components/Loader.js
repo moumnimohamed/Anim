@@ -15,11 +15,16 @@ export default function Loader(props) {
 
 const styles = StyleSheet.create({
   ActivityIndicator: {
-    zIndex:9,
+    zIndex:7,
     opacity: 0.5,
-    height: screenHeight,
+    top:0,
+    right:0,
+    bottom:0,
+    left:0,
+    position:"absolute",
+   
     backgroundColor: '#89C13D',
-    zIndex: 12,
+    
    alignItems:"center",
     justifyContent: 'center',
   },

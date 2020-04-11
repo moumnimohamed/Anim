@@ -1,14 +1,23 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import { Dimensions,FlatList, SafeAreaView, StyleSheet,Text } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import { connect } from 'react-redux';
+import {
+  Dimensions,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  Image,
+  StatusBar,
+  View,
+} from 'react-native';
+import {TextInput} from 'react-native-paper';
+import {connect} from 'react-redux';
 import AnimeServers from '../components/AnimeServers';
-import { FilmCard } from '../components/FilmCard';
+import {FilmCard} from '../components/FilmCard';
 import Loader from '../components/Loader';
- 
 
+const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 class SearchPage extends React.Component {
   state = {
@@ -76,7 +85,15 @@ class SearchPage extends React.Component {
             href.push({text: $(elm).text(), link: $(elm).attr('hrefa')});
             /* console.log("lala",$('a', elm).attr('href')) */
           });
-          console.log(href);
+          
+          
+          if ( href.length <= 0  ) {
+            console.log("count2",href.length)
+            $('.episode-videoplay ul li').map((_, elm) => {
+              href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
+            });
+          } 
+          
           this.setState({epsHref: href});
         }
       })
@@ -88,59 +105,89 @@ class SearchPage extends React.Component {
   componentDidMount() {}
 
   render() {
-
-    console.log("search props",this.props)
+    console.log('search props', this.props);
     const {firstQuery} = this.state;
 
     return (
       <SafeAreaView style={styles.container}>
-
-<TextInput
-   
-  theme={{ colors: { placeholder: '#89C13D', text: 'gray', primary: '#89C13D',
-                        } }}
-      
-      underlineColor="#89C13D"
-            label=   "بحث"
+        <View
+          style={{
+            height: screenHeight / 4,
+            flexDirection: 'row',
+            backgroundColor: '#89C13D',
+            overflow:"hidden"
+          }}>
+          <Text style={styles.message}>
+            ابحث عن الأنمي المفضل لديك هنا واستمتع !!!
+          </Text>
+          <View style={styles.imageView}>
+            <Image
+              style={styles.animImage}
+              source={require('../images/hero.png')}
+            />
+          </View>
+        </View>
+        <View style={styles.textInputContainer}>
+          <TextInput
+            theme={{
+              colors: {
+                backgroundColor: 'white',
+                placeholder: '#89C13D',
+                text: 'gray',
+                primary: '#89C13D',
+                textAlign:"right"
+              },
+            }}
+             
+keyboardType={"default"}
+            style={{height:50,backgroundColor:"#fff"}}
+            underlineColor="#89C13D"
+            label="بحث"
             onChangeText={query => {
               this.setState({firstQuery: query}, () =>
                 this.SearchKnow(this.state.firstQuery),
               );
             }}
-            
           />
-          
-         
-
+        </View>
+        <View style={{borderRadius:30,overflow:"hidden",backgroundColor:"#fff",height:screenHeight}}>
         {this.state.fetching ? (
           <Loader />
-        ) : this.state.anime && this.state.anime.length > 0  ? (
-          <FlatList
-            data={this.state.anime}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({item, index}) =>
-            item.img ?  item.title.includes("فيلم") ? 
+        ) : (
+          this.state.anime &&
+          this.state.anime.length > 0 && (
+          
+            <FlatList
                
-            (  <FilmCard item={item}  showTitle={true} navigate={()=>{this.props.navigation.navigate('FilmDetail', {item:item })} } />)
-              :
-             ( <FilmCard
-                  item={item}
-                  showTitle={true}
-                  navigate={() => this.getEpsServers(item.link)}
-                />)
-                :   null 
-            }
-            numColumns={2}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        )
-        :
-        (
-           <Text style={{fontFamily: 'JF Flat regular', top:screenHeight/3,
-    alignSelf:"center",}}> إبحث  عن أنيمي المفضلة لديك !!!</Text>
-        )
-        }
-
+              data={this.state.anime}
+              showsHorizontalScrollIndicator={false}
+              renderItem={({item, index}) =>
+                item.img ? (
+                  item.title.includes('فيلم') ? (
+                    <FilmCard
+                      item={item}
+                      showTitle={true}
+                      navigate={() => {
+                        this.props.navigation.navigate('FilmDetail', {
+                          item: item,
+                        });
+                      }}
+                    />
+                  ) : (
+                    <FilmCard
+                      item={item}
+                      showTitle={true}
+                      navigate={() => this.getEpsServers(item.link)}
+                    />
+                  )
+                ) : null
+              }
+              numColumns={2}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          )
+        )}
+</View>
         <AnimeServers
           hide={() => this.setState({showModal: false})}
           epsHref={this.state.epsHref}
@@ -154,10 +201,40 @@ class SearchPage extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    
-    paddingTop:30,
-    backgroundColor: '#f8f5fa',
+    paddingTop: 30,
+    backgroundColor: '#89C13D',
     flex: 1,
+    
+  },
+  animImage: {
+    width: null,
+    height: null,
+    flex: 1,
+  },
+  imageView: {
+    flex: 2,
+
+    width: screenWidth / 1.5,
+    height: screenWidth / 1.5,
+  },
+  message: {
+    padding: 20,
+    top:-20,
+    lineHeight: 40,
+    color: '#fff',
+    fontFamily: 'JF Flat regular',
+    flex: 2,
+    fontSize: 17,
+    alignSelf: 'center',
+  },
+  textInputContainer: {
+    overflow:"hidden",
+    borderRadius: 50,
+    alignSelf: 'center',
+    position: 'absolute',
+    flex: 1,
+    width: screenWidth - 100,
+    top: screenHeight / 5,
   },
 });
 
@@ -171,4 +248,7 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-export default connect(mapStateToProps, null)(SearchPage);
+export default connect(
+  mapStateToProps,
+  null,
+)(SearchPage);

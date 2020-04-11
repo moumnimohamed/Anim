@@ -45,6 +45,8 @@ export function* getAnimeDetail (action) {
               }
           );  
 
+          
+
 
 
           const story=[];
@@ -66,6 +68,13 @@ export function* getAnimeDetail (action) {
           
             }
         );  
+
+        if ( href.length <= 0  ) {
+          console.log("count2",href.length)
+          $('.episode-videoplay ul li').map((_, elm) => {
+            href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
+          });
+        } 
  
 // related film
          
