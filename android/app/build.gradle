@@ -192,7 +192,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-splash-screen')
     implementation project(':react-native-onesignal')
+   compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.10'
    
     implementation project(':react-native-permissions')
    
