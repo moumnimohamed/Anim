@@ -7,6 +7,8 @@ import {
   View,
   ImageBackground,
 } from 'react-native';
+import Loader from '../components/Loader';
+
 
 import SendIntentAndroid from  "react-native-send-intent";
  
@@ -23,8 +25,9 @@ export default function AnimeServers(props) {
 
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const _onToggleSwitch = () => {setIsSwitchOn(!isSwitchOn),()=>{}
-        !isSwitchOn  ? download() : remove()
+  const _onToggleSwitch = (url) => {setIsSwitchOn(!isSwitchOn), 
+   
+        !isSwitchOn  && download(url)  
   }
 
   useEffect (()=>{
@@ -32,12 +35,12 @@ export default function AnimeServers(props) {
   })
   
   
-  const remove = async () => { alert("remove")}
-  const download = async () => {
+   
+  const download = async (url) => {
       
     axios({
       method: 'get',
-      url: "https://www.4shared.com/web/embed/file/ou2hTuU7iq.html",
+      url: url,
     })
       .then((response) => {
       
@@ -98,12 +101,14 @@ export default function AnimeServers(props) {
   />
            
           </View>
+        { props.epsHref.length <= 0 && <Loader/>  }
           <View  style={{ justifyContent:"flex-end", flexDirection:"row",alignItems:"center",marginRight:15}}>
+         
           <Switch
          
          color={'#89C13D'}
          value={isSwitchOn}
-         onValueChange={ _onToggleSwitch}
+         onValueChange={() => _onToggleSwitch(props.epsHref && props.epsHref.filter(l => l.link.toLowerCase().includes("4shared"))[0].link)}
        />
        <Text style={{fontFamily: 'JF Flat regular',color:"gray",marginLeft:5}}>
        تحميل

@@ -1,3 +1,14 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' } // Gradle Plugin Portal 
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.1, 0.99.99]'
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
+
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -120,6 +131,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
 def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
+     
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     compileOptions {
@@ -180,6 +192,8 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-onesignal')
+   
     implementation project(':react-native-permissions')
    
     implementation project(':react-native-send-intent')

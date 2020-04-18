@@ -1,4 +1,6 @@
 import React from 'react';
+import OneSignal from 'react-native-onesignal'; // Import package from node modules
+
 import {Alert, Platform} from 'react-native';
 import {
   configureFonts,
@@ -26,9 +28,14 @@ const theme = {
 };
 
 class App extends React.Component {
-  state = {
-    isConnected: true,
-  };
+  constructor(properties) {
+    super(properties);
+    OneSignal.init("adcdfe88-e634-46fc-a233-e06f2202799d", {kOSSettingsKeyAutoPrompt : true});// set kOSSettingsKeyAutoPrompt to false prompting manually on iOS
+
+    OneSignal.addEventListener('received', this.onReceived);
+    OneSignal.addEventListener('opened', this.onOpened);
+    OneSignal.addEventListener('ids', this.onIds);
+  }
 
   componentDidMount() {
     SplashScreen.hide();

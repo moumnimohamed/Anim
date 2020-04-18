@@ -51,6 +51,12 @@ target 'Anim' do
  
   pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
+  pod 'react-native-simple-toast', :path => '../node_modules/react-native-simple-toast'
+
+ 
+
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'AnimTests' do
     inherit! :search_paths
     # Pods for testing

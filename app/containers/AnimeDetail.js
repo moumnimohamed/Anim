@@ -372,8 +372,9 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    top: -140,
-    position: 'absolute',
+     
+    top: 0,
+    marginBottom:20,
     width: '50%',
     height: 220,
     borderRadius: 90,

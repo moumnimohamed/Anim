@@ -33,7 +33,7 @@ export function Playeroo(props) {
       style={styles.container}
       colors={['#fff', '#89C13D']}>
       <TouchableOpacity style={styles.btn} onPress={props.navigate}>
-        <Play name="play" size={20} color="#89C13D" />
+        <Play name="play" size={30} color="#89C13D" />
       </TouchableOpacity>
 
       

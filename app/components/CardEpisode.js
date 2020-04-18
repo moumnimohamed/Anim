@@ -33,8 +33,8 @@ export function CardEpisode  (props) {
 
                
                <View style={styles.name}>
-               <TouchableOpacity style={{...styles.btn,marginRight:25}}>
-          <Heart name="hearto" size={15} color="white"  />
+               <TouchableOpacity style={{...styles.btn,marginRight:10}}>
+          <Heart name="hearto" size={20} color="white"  />
                </TouchableOpacity>
               <TouchableOpacity style={styles.btn} onPress={props.navigate}>
 
@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
    alignItems:"center"
     },
 
-    btn:{marginRight:10}
+    btn:{ justifyContent:"center",alignItems:"center", width:50,height:50}
 })
  
