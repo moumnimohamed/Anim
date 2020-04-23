@@ -154,6 +154,25 @@ const SearchStackNavigator = createStackNavigator({
   },
 });
 
+SearchStackNavigator.navigationOptions = ({ navigation }) => {
+  console.log("@@", navigation);
+
+  if (navigation.state.routes.length) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === "streamPage") {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
+
+  return {
+    tabBarVisible
+  };
+};
+
+
 const TabNavigator = createBottomTabNavigator(
   {
     Home: {

@@ -46,7 +46,7 @@ export default class PlayerProvider extends React.PureComponent<
     const isOS = Platform.OS === 'ios';
     return (
       <PlayerContext.Provider value={{video, setVideo}}>
-        <StatusBar barStyle="dark-content" />
+       
         <View style={styles.container}>
           <View style={StyleSheet.absoluteFill}>{children}</View>
 

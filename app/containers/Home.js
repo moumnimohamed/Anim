@@ -2,7 +2,7 @@ import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import Toast from 'react-native-simple-toast';
- 
+
 import {
   Button,
   Dimensions,
@@ -61,13 +61,11 @@ class Home extends React.Component {
   }
 
   checkUpdate = async () => {
-      
     // Request last version number from your server
     // And compare with current version.
     // You can save this number in device storage with AsyncStorage
     // At last:
     this.setState({
-       
       updateKnow: false, // Or false
     });
   };
@@ -131,7 +129,6 @@ class Home extends React.Component {
   };
 
   componentDidUpdate() {
-     
     /* this.allImages=[];
     if (this.props.newAnimeFailure) {
       this.setState({show: true});
@@ -191,192 +188,199 @@ class Home extends React.Component {
         ? this.props.newAnime[this.state.activeSlider]
         : {};
     return (
-      <SafeAreaView style={{backgroundColor: '#f8f5fa'}}>
+      <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
+        {this.props.fetching && <Loader />}
         <StatusBar translucent backgroundColor="transparent" />
         <ScrollView>
-          {this.props.fetching ? (
-            <Loader />
-          ) : (
-            <React.Fragment>
-              {/*  {this.props.fetching ?
+          <React.Fragment>
+            {/*  {this.props.fetching ?
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
 
-              <ImageBackground
-                blurRadius={1}
-                source={{uri: anim.img}}
-                style={{width: '100%'}}>
-                <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
-                  <View>
-                    <Carousel
+            <ImageBackground
+              blurRadius={1}
+              source={{uri: anim.img}}
+              style={{width: '100%'}}>
+              <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
+                <View>
+                  <Carousel
                     loop
                     autoplay
-                    enableMomentum ={false}
-                    lockScrollWhileSnapping  ={true}
+                    enableMomentum={false}
+                    lockScrollWhileSnapping={true}
                     autoplayInterval={3000}
-                      firstItem={1}
-                      layoutCardOffset={0}
-                      maxToRenderPerBatch={3}
-                      windowSize={10}
-                      onSnapToItem={index =>
-                        this.setState({activeSlider: index})
-                      }
-                      inactiveSlideOpacity={1}
-                      layout={'default'}
-                      data={newAnime}
-                      renderItem={({item, index}) => {
-                        return (
-                          <AnimatedCard
-                            item={item}
-                            navigate={() => {
-                              item.title.includes('فيلم')
-                                ? this.props.navigation.push('FilmDetail', {
-                                    index: index,
-                                    item: item,
-                                  })
-                                : this.props.navigation.push('AnimeDetail', {
-                                    index: index,
-                                    item: item,
-                                  });
-                            }}
-                          />
-                        );
-                      }}
-                      slideStyle={styles.slide}
-                      containerCustomStyle={{flex: 1}}
-                      slideStyle={{marginTop: 150, marginBottom: 20}}
-                      sliderWidth={screenWidth}
-                      itemWidth={itemWidth}
-                    />
-                  </View>
-                </LinearGradient>
-              </ImageBackground>
+                    firstItem={1}
+                    layoutCardOffset={0}
+                    maxToRenderPerBatch={3}
+                    windowSize={10}
+                    onSnapToItem={index => this.setState({activeSlider: index})}
+                    inactiveSlideOpacity={1}
+                    layout={'default'}
+                    data={newAnime}
+                    renderItem={({item, index}) => {
+                      return (
+                        <AnimatedCard
+                          item={item}
+                          navigate={() => {
+                            item.title.includes('فيلم')
+                              ? this.props.navigation.push('FilmDetail', {
+                                  index: index,
+                                  item: item,
+                                })
+                              : this.props.navigation.push('AnimeDetail', {
+                                  index: index,
+                                  item: item,
+                                });
+                          }}
+                        />
+                      );
+                    }}
+                    slideStyle={styles.slide}
+                    containerCustomStyle={{flex: 1}}
+                    slideStyle={{marginTop: 150, marginBottom: 20}}
+                    sliderWidth={screenWidth}
+                    itemWidth={itemWidth}
+                  />
+                </View>
+              </LinearGradient>
+            </ImageBackground>
 
+            {!this.props.fetching && (
               <TextStyled hide title={'أنميات الأسطورية'} />
+            )}
+            <Carousel
+              firstItem={legendAnime.length - 1}
+              inactiveSlideOpacity={1}
+              layout={'stack'}
+              data={legendAnime}
+              renderItem={({item, index}) => {
+                return (
+                  <AnimatedCard
+                    key={index}
+                    item={item}
+                    navigate={() => {
+                      item.title.includes('فيلم')
+                        ? this.props.navigation.push('FilmDetail', {
+                            index: index,
+                            item: item,
+                          })
+                        : this.props.navigation.push('AnimeDetail', {
+                            index: index,
+                            item: item,
+                          });
+                    }}
+                  />
+                );
+              }}
+              slideStyle={{
+                marginTop: 20,
+                paddingTop: 50,
+                overflow: 'visible',
+              }}
+              sliderWidth={screenWidth}
+              itemWidth={itemWidth + 50}
+              containerCustomStyle={{overflow: 'visible'}}
+              contentContainerCustomStyle={{overflow: 'visible'}}
+              layoutCardOffset={16}
+            />
 
-              <Carousel
-                firstItem={legendAnime.length - 1}
-                inactiveSlideOpacity={1}
-                layout={'stack'}
-                data={legendAnime}
-                renderItem={({item, index}) => {
-                  return (
-                    <AnimatedCard
-                      key={index}
-                      item={item}
-                      navigate={() => {
-                        item.title.includes('فيلم')
-                          ? this.props.navigation.push('FilmDetail', {
-                              index: index,
-                              item: item,
-                            })
-                          : this.props.navigation.push('AnimeDetail', {
-                              index: index,
-                              item: item,
-                            });
-                      }}
-                    />
-                  );
-                }}
-                slideStyle={{
-                  marginTop: 20,
-                  paddingTop: 50,
-                  overflow: 'visible',
-                }}
-                sliderWidth={screenWidth}
-                itemWidth={itemWidth + 50}
-                containerCustomStyle={{overflow: 'visible'}}
-                contentContainerCustomStyle={{overflow: 'visible'}}
-                layoutCardOffset={16}
-              />
-
-              {/*  آخر الحلقات المضافة */}
+            {/*  آخر الحلقات المضافة */}
+            {!this.props.fetching && (
               <TextStyled
                 title={' آخر الحلقات المضافة'}
                 onClick={() => {
                   this.props.navigation.push('EpisodesAllList');
                 }}
               />
-              <View style={{position: 'relative'}}>
-                <View style={styles.view}>
+            )}
+            <View style={{position: 'relative'}}>
+              <View style={styles.view}>
+                {!this.props.fetching && (
                   <Image
                     style={styles.animImage}
                     source={require('../images/onepiese.png')}
                   />
-                </View>
-
-                <FlatList
-                  style={styles.ScrollView}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  data={this.props.animeEpisodes.slice(0, 20)}
-                  renderItem={({item}) => (
-                    <FilmCard
-                      item={item}
-                      navigate={() => this.getEpsServers(item.link)}
-                    />
-                  )}
-                  keyExtractor={item => item.title}
-                />
-                <AnimeServers
-                  hide={() => this.setState({showModal: false})}
-                  epsHref={this.state.epsHref}
-                  showModal={this.state.showModal}
-                  navigation={this.props.navigation}
-                />
+                )}
               </View>
 
-              {/* آخر الأنميات المضافة */}
+              <FlatList
+                style={styles.ScrollView}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={this.props.animeEpisodes.slice(0, 20)}
+                renderItem={({item}) => (
+                  <FilmCard
+                    item={item}
+                    navigate={() => this.getEpsServers(item.link)}
+                  />
+                )}
+                keyExtractor={item => item.title}
+              />
+              <AnimeServers
+                hide={() => this.setState({showModal: false})}
+                epsHref={this.state.epsHref}
+                showModal={this.state.showModal}
+                navigation={this.props.navigation}
+              />
+            </View>
+
+            {/* آخر الأنميات المضافة */}
+            {!this.props.fetching && (
               <TextStyled
                 title={'آخر الأنميات المضافة'}
                 onClick={() => {
                   this.props.navigation.push('AnimeAllList');
                 }}
               />
+            )}
 
-              <View style={{position: 'relative'}}>
-                <View style={styles.view}>
+            <View style={{position: 'relative'}}>
+              <View style={styles.view}>
+                {!this.props.fetching && (
                   <Image
                     style={styles.animImage}
                     source={require('../images/hero.png')}
                   />
-                </View>
-                {/* <ScrollView
+                )}
+              </View>
+              {/* <ScrollView
               style={{paddingLeft: 10 , flex: 1}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
                this.props.categories &&
                 this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)*/}
-                {/*  </ScrollView> */}
-                <FlatList
-                  style={styles.ScrollView}
-                  horizontal={true}
-                  showsHorizontalScrollIndicator={false}
-                  data={this.props.animeList.slice(0, 20)}
-                  renderItem={({item}) => (
-                    <FilmCard
-                      item={item}
-                      showTitle={false}
-                      navigate={() => {
-                        this.props.navigation.push('AnimeDetail', {item: item});
-                      }}
-                    />
-                  )}
-                  keyExtractor={item => item.title}
-                />
-              </View>
-              {/*التصنيف*/}
-              {/* <TextStyled title={"التصنيف"}/> */}
+              {/*  </ScrollView> */}
+              <FlatList
+                style={styles.ScrollView}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={this.props.animeList.slice(0, 20)}
+                renderItem={({item}) => (
+                  <FilmCard
+                    item={item}
+                    showTitle={false}
+                    navigate={() => {
+                      this.props.navigation.push('AnimeDetail', {item: item});
+                    }}
+                  />
+                )}
+                keyExtractor={item => item.title}
+              />
+            </View>
+            {/*التصنيف*/}
+            {/* <TextStyled title={"التصنيف"}/> */}
 
-              {/*آخر أفلام الأنميات المضافة  */}
+            {/*آخر أفلام الأنميات المضافة  */}
+            {!this.props.fetching && (
               <TextStyled
                 title={'آخر أفلام'}
                 onClick={() => {
                   this.props.navigation.push('FilmAllList');
                 }}
               />
-
+            )}
+            {!this.props.fetching && (
               <View style={{position: 'relative'}}>
                 <View style={styles.view}>
                   <Image
@@ -384,15 +388,6 @@ class Home extends React.Component {
                     source={require('../images/red.png')}
                   />
                 </View>
-                {/* <ScrollView
-              style={{paddingLeft: 10 , flex: 1}}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-            this.props.filmCategories &&
-                this.props.filmCategories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)
-                
-                </ScrollView>
-           */}
 
                 <FlatList
                   data={this.props.films.slice(0, 20)}
@@ -415,8 +410,8 @@ class Home extends React.Component {
                   keyExtractor={(item, index) => index.toString()}
                 />
               </View>
-            </React.Fragment>
-          )}
+            )}
+          </React.Fragment>
 
           {this.state.showAlertDesigned &&
             Toast.showWithGravity(
@@ -424,7 +419,7 @@ class Home extends React.Component {
               Toast.LONG,
               Toast.BOTTOM,
             )}
-           <View style={styles.alertContainer}>
+          <View style={styles.alertContainer}>
             <SCLAlert
               headerIconComponent={
                 <Icon name="update" size={40} color="#fff" />
@@ -513,7 +508,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    fetching: state.newAnime.fetching,
+    fetching: state.newAnime.fetching || state.animeList.fetching  || state.films.fetching || state.animeEpisodes.fetching ,
     //|| state.animeList.fetching || state.animeEpisodes.fetching,
     newAnime:
       state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],

@@ -16,7 +16,7 @@ export default function Loader(props) {
 const styles = StyleSheet.create({
   ActivityIndicator: {
     zIndex:7,
-    opacity: 0.5,
+   
     top:0,
     right:0,
     bottom:0,

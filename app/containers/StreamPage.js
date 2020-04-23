@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View,Alert } from 'react-native';
+import { StyleSheet, Text, View,StatusBar } from 'react-native';
 import { PLAYER_STATES } from 'react-native-media-controls';
 import { WebView } from "react-native-webview";
 import cheerio from 'cheerio-without-node-native';
@@ -115,7 +115,8 @@ export default class StreamPage extends React.Component {
 
 
     componentWillUnmount  = () =>{
-       
+      StatusBar.setHidden(false);
+      Orientation.lockToPortrait(); 
        
        if (this.timer) {                   
                            
@@ -127,6 +128,9 @@ export default class StreamPage extends React.Component {
      
     
     componentDidMount () {
+       
+        StatusBar.setHidden(true);
+      
      this.timer=  setTimeout( () =>{
        
 AdMobRewarded.setAdUnitID('ca-app-pub-4024120289306171/8777670113');
@@ -136,7 +140,7 @@ AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd());
 }, 5000);
        
   
-     /*  Orientation.lockToLandscape(); */
+       Orientation.lockToLandscape(); 
 /* if (this.props.navigation.state.params.link) {
   console.log("lala link",this.props.navigation.state.params.link)
   this.getVideoURL(this.props.navigation.state.params.link)
@@ -167,6 +171,7 @@ AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd());
       return (
         <View style={styles.container}>
         <WebView
+        
         source={{uri :this.props.navigation.state.params.link}}
         allowsFullscreenVideo={true}
         allowsInlineMediaPlayback={true}
