@@ -1,86 +1,68 @@
+import axios from 'axios';
+import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   Dimensions,
-  Image,
+  FlatList,
   SafeAreaView,
-  Text,
   StyleSheet,
+  Text,
+  Image,
+  StatusBar,
   View,
-  ImageBackground,
-  TouchableOpacity,
 } from 'react-native';
-import {Button} from 'react-native-paper';
-
-import Play from 'react-native-vector-icons/AntDesign';
-import FACE from 'react-native-vector-icons/FontAwesome';
+import {TextInput} from 'react-native-paper';
 import {connect} from 'react-redux';
+import AnimeServers from '../components/AnimeServers';
+import {FilmCard} from '../components/FilmCard';
+import Loader from '../components/Loader';
 
-const {height, width} = Dimensions.get('window');
+const screenWidth = Math.round(Dimensions.get('window').width);
+const screenHeight = Math.round(Dimensions.get('window').height);
 class Account extends React.Component {
-  state = {};
+  state = {
+    firstQuery: '',
+    anime: [],
+    epsHref: [],
+    showModal: false,
+    fetching: false,
+  };
 
   componentDidMount() {}
 
   render() {
-    
     return (
-      <SafeAreaView style={{...styles.container}}>
-        <ImageBackground
-       
-          source={{uri: 'https://wallpaperaccess.com/full/200338.jpg'}}
-          style={{width: '100%'}}>
-          <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
-            <View style={{height:height ,justifyContent:"flex-end"}}>
-              <View
-                style={{  height: height / 2, justifyContent: 'space-around'}}>
-                <View style={styles.btnContainer}>
-                  <TouchableOpacity
-                    style={{...styles.btn, backgroundColor: '#1DA1F2'}}
-                    onPress={this.props.navigate}>
-                    <Play name="twitter" size={24} color="#fff" />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={{...styles.btn, backgroundColor: 'red'}}
-                    onPress={this.props.navigate}>
-                    <Play name="google" size={24} color="#fff" />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity
-                    style={{...styles.btn, backgroundColor: '#4267B2'}}
-                    onPress={this.props.navigate}>
-                    <FACE name="facebook-square" size={24} color="#fff" />
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.soloBtn}>
-                  <Button
-                    style={{
-                      borderRadius: 20,
-                      backgroundColor: 'white',
-                      paddingVertical: 4,
-                    }}
-                    mode="contained"
-                    onPress={() => console.log('Pressed')}>
-                    <Text style={{color: '#535353'}}>تسجيل الدخول</Text>
-                  </Button>
-                </View>
-                <Text
-                  style={{
-                    borderBottomColor: '#535353',
-
-                    alignSelf: 'center',
-                    borderBottomWidth: 2,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    color: '#535353',
-                  }}>
-                  حساب جديد ؟
-                </Text>
-              </View>
-            </View>
-          </LinearGradient>
-        </ImageBackground>
+      <SafeAreaView style={styles.container}>
+        <View
+          style={{
+            height: screenHeight / 4,
+            flexDirection: 'row',
+            backgroundColor: '#89C13D',
+            overflow: 'hidden',
+          }}>
+          <Text style={styles.message}>
+          ابدأ بإدارة حسابك هنا !!!
+          </Text>
+          <View style={styles.imageView}>
+            <Image
+              style={styles.animImage}
+              source={require('../images/red.png')}
+            />
+          </View>
+        </View>
+         
+        <View
+          style={{
+            borderRadius: 30,
+            overflow: 'hidden',
+            backgroundColor: '#fff',
+            height: screenHeight,
+          }}
+        >
+          <Text style={{...styles.message,color:"#000"}}>
+          كيف تبدأ؟
+          </Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -88,29 +70,38 @@ class Account extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 30,
+    backgroundColor: '#89C13D',
     flex: 1,
-
-    justifyContent: 'flex-end',
   },
-  absoluteFill: {},
-  image: {
-    flex: 1,
-    height: null,
+  animImage: {
     width: null,
+    height: null,
+    flex: 1,
   },
-  btnContainer: {
-    justifyContent: 'space-around',
-    alignItems: 'flex-start',
-    flexDirection: 'row',
+  imageView: {
+    flex: 3,
+ 
+    height: screenWidth / 1.5,
   },
-  btn: {
-    padding: 17,
+  message: {
+    padding: 20,
+    top: -10,
+    lineHeight: 40,
+    color: '#f2f2f2',
+    fontFamily: 'JF Flat regular',
+    flex: 2,
+    fontSize: 17,
+    alignSelf: 'center',
+  },
+  textInputContainer: {
+    overflow: 'hidden',
     borderRadius: 50,
-  },
-  soloBtn: {
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    borderRadius: 20,
+    alignSelf: 'center',
+    position: 'absolute',
+    flex: 1,
+    width: screenWidth - 100,
+    top: screenHeight / 5,
   },
 });
 
@@ -122,4 +113,7 @@ const mapDispatchToProps = dispatch => {
   return {};
 };
 
-export default connect(mapStateToProps, null)(Account);
+export default connect(
+  mapStateToProps,
+  null,
+)(Account);

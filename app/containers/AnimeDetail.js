@@ -1,30 +1,44 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
-import TextStyled from "../components/TextStyled";
-import { FilmCard } from '../components/FilmCard';
-import { Dimensions, FlatList, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { TextInput ,Chip,IconButton } from 'react-native-paper';
+import TextStyled from '../components/TextStyled';
+import {FilmCard} from '../components/FilmCard';
+import {
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  AsyncStorage,
+} from 'react-native';
+import {TextInput, Chip, IconButton} from 'react-native-paper';
 import Play from 'react-native-vector-icons/AntDesign';
 import Pray from 'react-native-vector-icons/FontAwesome5';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import AnimeServers from '../components/AnimeServers';
-import { CardEpisode } from '../components/CardEpisode';
-import { animeDetailRequest } from '../redux/AnimeDetailRedux';
-import { set } from 'react-native-reanimated';
+import {CardEpisode} from '../components/CardEpisode';
+import {animeDetailRequest} from '../redux/AnimeDetailRedux';
+import {set} from 'react-native-reanimated';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
-
+let links = [];
 class AnimeDetail extends React.Component {
   state = {
     epsHref: [],
     showModal: false,
     anime: this.props.navigation.state.params.item,
-    display:false,
-    firstQuery:""
+    display: false,
+    firstQuery: '',
+    
+    alreadyViewed:[]
   };
 
   componentDidMount() {
+    this.showEyes()
     this.props.AnimeDetailRequest(this.state.anime.link);
   }
 
@@ -33,7 +47,40 @@ class AnimeDetail extends React.Component {
     this.props.AnimeDetailRequest(nextState.anime.link);
   };  */
 
-  getEpsServers = async link => {
+  showEyes = async () => {
+    const existingNames = await AsyncStorage.getItem('names');
+
+    let AllNames = JSON.parse(existingNames);
+
+       this.setState({alreadyViewed:AllNames})
+     
+     
+  };
+
+  getEpsServers = async (link, name) => {
+   
+    const nameToBeSaved = {name: name};
+    const existingNames = await AsyncStorage.getItem('names');
+
+    let newName = JSON.parse(existingNames);
+
+    if (!newName) {
+      newName = [];
+    }
+    let alreadyExist = newName.filter(n => n.name === name).length > 0;
+
+    if (!alreadyExist) {
+      newName.push(nameToBeSaved);
+    }
+
+    await AsyncStorage.setItem('names', JSON.stringify(newName))
+      .then(() => {
+        console.log('‘It was saved successfully’');
+      })
+      .catch(() => {
+        console.log('‘There was an error saving the product’');
+      });
+
     this.setState({showModal: true});
     axios({
       method: 'get',
@@ -47,13 +94,13 @@ class AnimeDetail extends React.Component {
           $('.embed-player-tabs .nav.nav-tabs  li').map((_, elm) => {
             href.push({text: $(elm).text(), link: $(elm).attr('hrefa')});
           });
-                   console.log("count",href.length)
-           if ( href.length <= 0  ) {
-            console.log("count2",href.length)
+          console.log('count', href.length);
+          if (href.length <= 0) {
+            console.log('count2', href.length);
             $('.episode-videoplay ul li').map((_, elm) => {
               href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
             });
-          } 
+          }
           console.log(href);
           this.setState({epsHref: href}, () => {
             console.log('hahowa', this.state.epsHref);
@@ -65,7 +112,6 @@ class AnimeDetail extends React.Component {
       });
   };
   render() {
-
     console.log('@@animeDetail', this.props.animeDetail);
     console.log('@@anime name', this.props.navigation.state.params.item.title);
     /* 
@@ -114,16 +160,18 @@ relatedF */
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['streamLinks']
         : [];
-   
 
-        const links = streamLinks.filter(video => video.text.includes(this.state.firstQuery))
+    links = streamLinks.filter(video =>
+      video.text.includes(this.state.firstQuery),
+    );
 
- const relatedF =
+      console.log("alreadyViewed",this.state.alreadyViewed)
+
+    const relatedF =
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['relatedF']
         : [];
-     
-         
+
     return (
       <ScrollView style={styles.scroll}>
         <ImageBackground
@@ -138,7 +186,7 @@ relatedF */
                 source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
               />
             </View>
-            
+
             <FlatList
               horizontal={true}
               showsHorizontalScrollIndicator={false}
@@ -157,7 +205,10 @@ relatedF */
                       type: 'anime',
                     });
                   }}>
-                  <Text style={{color: '#9A999A',   fontFamily: 'JF Flat regular',}}>{item.title}</Text>
+                  <Text
+                    style={{color: '#9A999A', fontFamily: 'JF Flat regular'}}>
+                    {item.title}
+                  </Text>
                 </Chip>
               )}
               keyExtractor={item => item.title}
@@ -172,7 +223,7 @@ relatedF */
               <View style={{flex: 1}}>
                 <TouchableOpacity
                   style={styles.playBtn}
-                  onPress={() => this.getEpsServers(streamLinks[0].link)}>
+                  onPress={() => this.getEpsServers(streamLinks[0].link, '')}>
                   <Play
                     name="play"
                     size={35}
@@ -189,10 +240,17 @@ relatedF */
                       justifyContent: 'flex-end',
                       flexDirection: 'row',
                     }}>
-                    <Text style={{color: '#9A999A',   fontFamily: 'JF Flat regular', marginRight: 10}}>
+                    <Text
+                      style={{
+                        color: '#9A999A',
+                        fontFamily: 'JF Flat regular',
+                        marginRight: 10,
+                      }}>
                       {status[1]}
                     </Text>
-                    <Text style={{   fontFamily: 'JF Flat regular',}}>{status[0]}</Text>
+                    <Text style={{fontFamily: 'JF Flat regular'}}>
+                      {status[0]}
+                    </Text>
                   </View>
                 )}
                 {published[0] && (
@@ -201,10 +259,17 @@ relatedF */
                       justifyContent: 'flex-end',
                       flexDirection: 'row',
                     }}>
-                    <Text style={{   fontFamily: 'JF Flat regular',color: '#9A999A', marginRight: 10}}>
+                    <Text
+                      style={{
+                        fontFamily: 'JF Flat regular',
+                        color: '#9A999A',
+                        marginRight: 10,
+                      }}>
                       {published[1]}
                     </Text>
-                    <Text style={{   fontFamily: 'JF Flat regular',}}>{published[0]}</Text>
+                    <Text style={{fontFamily: 'JF Flat regular'}}>
+                      {published[0]}
+                    </Text>
                   </View>
                 )}
                 {duration[0] && (
@@ -213,10 +278,17 @@ relatedF */
                       justifyContent: 'flex-end',
                       flexDirection: 'row',
                     }}>
-                    <Text style={{   fontFamily: 'JF Flat regular',color: '#9A999A', marginRight: 24}}>
+                    <Text
+                      style={{
+                        fontFamily: 'JF Flat regular',
+                        color: '#9A999A',
+                        marginRight: 24,
+                      }}>
                       {duration[1]}
                     </Text>
-                    <Text style={{   fontFamily: 'JF Flat regular',}}>{duration[0]}</Text>
+                    <Text style={{fontFamily: 'JF Flat regular'}}>
+                      {duration[0]}
+                    </Text>
                   </View>
                 )}
                 {episodesNbr[0] && (
@@ -225,10 +297,17 @@ relatedF */
                       justifyContent: 'flex-end',
                       flexDirection: 'row',
                     }}>
-                    <Text style={{   fontFamily: 'JF Flat regular',color: '#9A999A', marginRight: 10}}>
+                    <Text
+                      style={{
+                        fontFamily: 'JF Flat regular',
+                        color: '#9A999A',
+                        marginRight: 10,
+                      }}>
                       {episodesNbr[1]}
                     </Text>
-                    <Text style={{   fontFamily: 'JF Flat regular',}}>{episodesNbr[0]}</Text>
+                    <Text style={{fontFamily: 'JF Flat regular'}}>
+                      {episodesNbr[0]}
+                    </Text>
                   </View>
                 )}
                 {season[0] && (
@@ -254,79 +333,109 @@ relatedF */
                       {season[1]}
                     </Text>
 
-                    <Text style={{   fontFamily: 'JF Flat regular',}}>{season[0]}</Text>
+                    <Text style={{fontFamily: 'JF Flat regular'}}>
+                      {season[0]}
+                    </Text>
                   </View>
                 )}
               </View>
             </View>
             {story.map((p, i) => {
               return p && p.text ? (
-                <Text key={i} style={{   fontFamily: 'JF Flat regular',padding: 20, color: '#9A999A'}}>
+                <Text
+                  key={i}
+                  style={{
+                    fontFamily: 'JF Flat regular',
+                    padding: 20,
+                    color: '#9A999A',
+                  }}>
                   {p.text}
                 </Text>
               ) : null;
             })}
           </View>
         </ImageBackground>
+
         <React.Fragment>
-       {links.length> 0 && <View  >
-        <IconButton
-        
-    icon={() => <Play name="search1" size={20} color={"#89C13D"}/>}
-    size={20}
-    onPress={() => this.setState({display:!this.state.display})}
-  />
-  { this.state.display && <TextInput
-         style={{margin:10 }}
-  theme={{ colors: { placeholder: '#89C13D', text: 'gray', primary: '#89C13D',
-                        } }}
-      
-      underlineColor="#89C13D"
-            label=   "رقم الحلقة"
-            onChangeText={query => {
-              this.setState({firstQuery: query} 
-              );
-            }}
-            
-          />}
-      </View>
-       }
-        {
-           links.length> 0 ?
-          links.reverse().map((video, i) => {
-          return video && video.text ? (
-            <CardEpisode
-              img={this.state.anime.img}
-              key={i}
-              video={video}
-              navigate={() => this.getEpsServers(video.link)}
+          {links.length > 0 && (
+            <View>
+              <IconButton
+                icon={() => <Play name="search1" size={20} color={'#89C13D'} />}
+                size={20}
+                onPress={() => this.setState({display: !this.state.display})}
+              />
+              {this.state.display && (
+                <TextInput
+                  style={{margin: 10}}
+                  theme={{
+                    colors: {
+                      placeholder: '#89C13D',
+                      text: 'gray',
+                      primary: '#89C13D',
+                    },
+                  }}
+                  underlineColor="#89C13D"
+                  label="رقم الحلقة"
+                  onChangeText={query => {
+                    this.setState({firstQuery: query});
+                  }}
+                />
+              )}
+            </View>
+          )}
+
+          <View style={{flex: 1}}>
+             
+          </View>
+          {links.length > 0 ? (
+            <FlatList
+              data={links.reverse()}
+              renderItem={({item, i}) => (
+                <CardEpisode
+                 alreadyViewed={this.state.alreadyViewed.filter(obj=> obj.name===item.text).length>0}
+                  img={this.state.anime.img}
+                  key={i}
+                  video={item}
+                  navigate={() => this.getEpsServers(item.link, item.text)}
+                />
+              )}
+              keyExtractor={(item, i) => i.toString()}
             />
-          ) : null;
-        })
-        :
-        <View style={{ alignItems:"center"}}>
-        {published[0] && (
-                  <View
+          ) : (
+            <View style={{alignItems: 'center'}}>
+              {published[0] && (
+                <View
+                  style={{
+                    justifyContent: 'flex-end',
+                    flexDirection: 'row',
+                  }}>
+                  <Text
                     style={{
-                      justifyContent: 'flex-end',
-                      flexDirection: 'row',
+                      fontFamily: 'JF Flat regular',
+                      color: '#9A999A',
+                      marginRight: 10,
                     }}>
-                    <Text style={{   fontFamily: 'JF Flat regular',color: '#9A999A', marginRight: 10}}>
-                      {published[1]}
-                    </Text>
-                    <Text style={{   fontFamily: 'JF Flat regular',}}>{published[0]}</Text>
-                  </View>
+                    {published[1]}
+                  </Text>
+                  <Text style={{fontFamily: 'JF Flat regular'}}>
+                    {published[0]}
+                  </Text>
+                </View>
+              )}
+              <Text
+                style={{fontFamily: 'JF Flat regular', alignSelf: 'center'}}>
+                {' '}
+                نعتذر، الحلقات في عملية التحضير
+              </Text>
+              <IconButton
+                icon={() => (
+                  <Pray name="praying-hands" size={30} color={'#89C13D'} />
                 )}
-        <Text style={{fontFamily: 'JF Flat regular',  
-    alignSelf:"center",}}> نعتذر، الحلقات في عملية التحضير</Text>
-    <IconButton
-        
-        icon={() => <Pray name="praying-hands" size={30} color={"#89C13D"}/>}
-        size={30}
-        onPress={() => this.props.navigation.goBack()  }
-      />
-      </View>
-        }
+                size={30}
+                onPress={() => this.props.navigation.goBack()}
+              />
+            </View>
+          )}
         </React.Fragment>
         <AnimeServers
           hide={() => this.setState({showModal: false})}
@@ -334,16 +443,22 @@ relatedF */
           showModal={this.state.showModal}
           navigation={this.props.navigation}
         />
-        <TextStyled hide title={"أنميات ذات صلة"} />
+        <TextStyled hide title={'أنميات ذات صلة'} />
         <FlatList
-              style={styles.relatedF}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={relatedF}
-              renderItem={({ item }) => <FilmCard item={item}    navigate={()=>{this.props.navigation.push('AnimeDetail', {  item:item })} }/>}
-        keyExtractor={item => item.title}
-              
-              />
+          style={styles.relatedF}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          data={relatedF}
+          renderItem={({item}) => (
+            <FilmCard
+              item={item}
+              navigate={() => {
+                this.props.navigation.push('AnimeDetail', {item: item});
+              }}
+            />
+          )}
+          keyExtractor={item => item.title}
+        />
       </ScrollView>
     );
   }
@@ -372,9 +487,8 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-     
     top: 0,
-    marginBottom:20,
+    marginBottom: 20,
     width: '50%',
     height: 220,
     borderRadius: 90,
@@ -411,9 +525,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  relatedF:{
-    paddingBottom:10,
-  }
+  relatedF: {
+    paddingBottom: 10,
+  },
 });
 
 const mapStateToProps = state => {
@@ -428,4 +542,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AnimeDetail);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AnimeDetail);

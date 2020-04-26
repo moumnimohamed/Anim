@@ -1,16 +1,11 @@
 import React from 'react';
 import OneSignal from 'react-native-onesignal'; // Import package from node modules
+import { configureFonts, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen';
-import {Alert, Platform} from 'react-native';
-import {
-  configureFonts,
-  DefaultTheme,
-  Provider as PaperProvider,
-} from 'react-native-paper';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import PlayerProvider from './app/components/PlayerProvider';
 import Navigator from './app/navigation/Navigation';
-import {store} from './app/redux/index';
+import { store } from './app/redux/index';
 
  
 

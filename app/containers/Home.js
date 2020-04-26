@@ -190,6 +190,7 @@ class Home extends React.Component {
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
         {this.props.fetching && <Loader />}
+        
         <StatusBar translucent backgroundColor="transparent" />
         <ScrollView>
           <React.Fragment>
@@ -238,7 +239,7 @@ class Home extends React.Component {
                     }}
                     slideStyle={styles.slide}
                     containerCustomStyle={{flex: 1}}
-                    slideStyle={{marginTop: 150, marginBottom: 20}}
+                    slideStyle={{marginTop: 130, marginBottom: 20}}
                     sliderWidth={screenWidth}
                     itemWidth={itemWidth}
                   />

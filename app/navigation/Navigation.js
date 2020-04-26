@@ -17,7 +17,8 @@ import SearchPage from '../containers/SearchPage';
 import Account from '../containers/Account';
 import EpisodesAllList from '../containers/EpisodesAllList';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Ant from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+ 
 
 const SearchStackNavigator = createStackNavigator({
   Home: {
@@ -204,7 +205,7 @@ const TabNavigator = createBottomTabNavigator(
         
        
         tabBarLabel: 'ضبط',
-        tabBarIcon:  ({tintColor})=>(<Icon name="setting" size={17}  color={tintColor}   />),
+        tabBarIcon:  ({tintColor})=>(<Icon name="smileo" size={17}  color={tintColor}   />),
       },
     },
   },

@@ -1,17 +1,12 @@
-import React from "react";
-import { StyleSheet, Text, View,StatusBar } from 'react-native';
-import { PLAYER_STATES } from 'react-native-media-controls';
-import { WebView } from "react-native-webview";
-import cheerio from 'cheerio-without-node-native';
 import axios from "axios";
-import Orientation from "react-native-orientation"
+import cheerio from 'cheerio-without-node-native';
+import React from "react";
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
+import { AdMobRewarded } from 'react-native-admob';
+import { PLAYER_STATES } from 'react-native-media-controls';
+import Orientation from "react-native-orientation";
+import { WebView } from "react-native-webview";
 
-import {
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded,
-} from 'react-native-admob'
 
 export default class StreamPage extends React.Component {
 
