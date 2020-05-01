@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "740341936507",
+    "firebase_url": "https://anime-app-d10c6.firebaseio.com",
+    "project_id": "anime-app-d10c6",
+    "storage_bucket": "anime-app-d10c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:740341936507:android:56e6f3604044d92f758dde",
+        "android_client_info": {
+          "package_name": "com.anim"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "740341936507-odqds172r329jcskdfarq8b83oq87f0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVC1NCMs36OKQE7m7qCnl8IDMi2yQFLxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "740341936507-odqds172r329jcskdfarq8b83oq87f0k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

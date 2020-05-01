@@ -1,14 +1,13 @@
 
  
-import {View,SafeAreaView,FlatList,StyleSheet} from 'react-native';
+import {View,SafeAreaView,FlatList,StyleSheet,Tex} from 'react-native';
 import React , {useState} from "react"
 import {connect} from 'react-redux';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {FilmCard} from '../components/FilmCard';
 import CategoryCard from '../components/CategoryCard';
 
-import Loader from '../components/Loader';
-
+ 
 
 
 const FlatListHeader = (props) => {
@@ -49,13 +48,7 @@ const FlatListHeader = (props) => {
               showsHorizontalScrollIndicator={false}
         renderItem={({ item,index }) => item.img && <FilmCard showTitle={true}  item={item}  navigate={()=>{props.navigation.push('AnimeDetail', {  item:item })} } />}
         numColumns={2}
-        ListFooterComponent={   () => {
-   
-    if (!props.fetching) return null;
-    return (
-      <Loader/>
-    );
-  }}
+        
         keyExtractor={(item,index) => index.toString()}
         onEndReachedThreshold={0.5}
   onEndReached={() => {
@@ -63,7 +56,7 @@ const FlatListHeader = (props) => {
       
   }}
       />
-            {/*   {props.fetching && <Loader/>} */}
+             
          </SafeAreaView>
 
     )

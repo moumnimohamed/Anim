@@ -3,6 +3,7 @@ import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import Toast from 'react-native-simple-toast';
 
+import VersionCheck from 'react-native-version-check';
 import {
   Button,
   Dimensions,
@@ -23,7 +24,7 @@ import {AnimatedCard} from '../components/AnimatedCard';
 import AnimeServers from '../components/AnimeServers';
 import {FilmCard} from '../components/FilmCard';
 import Header from '../components/Header';
-import Loader from '../components/Loader';
+import LoaderModal from '../components/LoaderModal';
 import TextStyled from '../components/TextStyled';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
@@ -60,15 +61,7 @@ class Home extends React.Component {
     };
   }
 
-  checkUpdate = async () => {
-    // Request last version number from your server
-    // And compare with current version.
-    // You can save this number in device storage with AsyncStorage
-    // At last:
-    this.setState({
-      updateKnow: false, // Or false
-    });
-  };
+   
 
   // Subscribe
   unsubscribe = NetInfo.addEventListener(state => {
@@ -143,8 +136,27 @@ class Home extends React.Component {
     this.props.filmRequest();
   };
 
+  checkUpdateApp = async () => {
+    let latestVer=  "";
+      VersionCheck.getLatestVersion({
+      provider: 'playStore'  // for Android
+    })
+    .then(latestVersion => {
+        latestVer = latestVersion;    // 0.1.2
+    });
+
+    VersionCheck.needUpdate({
+      depth: 1,
+      currentVersion: VersionCheck.getCurrentVersion(),
+      latestVersion: latestVer,
+    }).then(res => {
+      this.setState({updateKnow:res.isNeeded})
+      console.log("ned update",res); // false
+    });
+  };
   componentDidMount() {
-    this.checkUpdate();
+    this.checkUpdateApp();
+     
     this.unsubscribe();
     this.getData();
   }
@@ -189,8 +201,8 @@ class Home extends React.Component {
         : {};
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
-        {this.props.fetching && <Loader />}
-        
+          <LoaderModal  visible={this.props.fetching}/>
+
         <StatusBar translucent backgroundColor="transparent" />
         <ScrollView>
           <React.Fragment>
@@ -225,11 +237,11 @@ class Home extends React.Component {
                           item={item}
                           navigate={() => {
                             item.title.includes('فيلم')
-                              ? this.props.navigation.push('FilmDetail', {
+                              ? this.props.navigation.navigate('FilmDetail', {
                                   index: index,
                                   item: item,
                                 })
-                              : this.props.navigation.push('AnimeDetail', {
+                              : this.props.navigation.navigate('AnimeDetail', {
                                   index: index,
                                   item: item,
                                 });
@@ -262,11 +274,11 @@ class Home extends React.Component {
                     item={item}
                     navigate={() => {
                       item.title.includes('فيلم')
-                        ? this.props.navigation.push('FilmDetail', {
+                        ? this.props.navigation.navigate('FilmDetail', {
                             index: index,
                             item: item,
                           })
-                        : this.props.navigation.push('AnimeDetail', {
+                        : this.props.navigation.navigate('AnimeDetail', {
                             index: index,
                             item: item,
                           });
@@ -291,7 +303,7 @@ class Home extends React.Component {
               <TextStyled
                 title={' آخر الحلقات المضافة'}
                 onClick={() => {
-                  this.props.navigation.push('EpisodesAllList');
+                  this.props.navigation.navigate('EpisodesAllList');
                 }}
               />
             )}
@@ -331,7 +343,7 @@ class Home extends React.Component {
               <TextStyled
                 title={'آخر الأنميات المضافة'}
                 onClick={() => {
-                  this.props.navigation.push('AnimeAllList');
+                  this.props.navigation.navigate('AnimeAllList');
                 }}
               />
             )}
@@ -362,7 +374,7 @@ class Home extends React.Component {
                     item={item}
                     showTitle={false}
                     navigate={() => {
-                      this.props.navigation.push('AnimeDetail', {item: item});
+                      this.props.navigation.navigate('AnimeDetail', {item: item});
                     }}
                   />
                 )}
@@ -377,7 +389,7 @@ class Home extends React.Component {
               <TextStyled
                 title={'آخر أفلام'}
                 onClick={() => {
-                  this.props.navigation.push('FilmAllList');
+                  this.props.navigation.navigate('FilmAllList');
                 }}
               />
             )}
@@ -401,7 +413,7 @@ class Home extends React.Component {
                         item={item}
                         showTitle={false}
                         navigate={() => {
-                          this.props.navigation.push('FilmDetail', {
+                          this.props.navigation.navigate('FilmDetail', {
                             item: item,
                           });
                         }}
@@ -509,7 +521,11 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    fetching: state.newAnime.fetching || state.animeList.fetching  || state.films.fetching || state.animeEpisodes.fetching ,
+    fetching:
+      state.newAnime.fetching ||
+      state.animeList.fetching ||
+      state.films.fetching ||
+      state.animeEpisodes.fetching,
     //|| state.animeList.fetching || state.animeEpisodes.fetching,
     newAnime:
       state.newAnime && state.newAnime.payload ? state.newAnime.payload : [],

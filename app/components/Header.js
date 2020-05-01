@@ -41,7 +41,9 @@ const styles = StyleSheet.create({
   text:{
     fontFamily: 'JF Flat regular',
       color:"white",
-       
+      textShadowColor: '#000',
+      textShadowOffset: {width: 1, height: 1},
+      textShadowRadius: 1,
       fontSize:17,
     paddingHorizontal:20,
 }

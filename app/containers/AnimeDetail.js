@@ -33,12 +33,12 @@ class AnimeDetail extends React.Component {
     anime: this.props.navigation.state.params.item,
     display: false,
     firstQuery: '',
-    
-    alreadyViewed:[]
+
+    alreadyViewed: [],
   };
 
   componentDidMount() {
-    this.showEyes()
+    this.showEyes();
     this.props.AnimeDetailRequest(this.state.anime.link);
   }
 
@@ -52,13 +52,10 @@ class AnimeDetail extends React.Component {
 
     let AllNames = JSON.parse(existingNames);
 
-       this.setState({alreadyViewed:AllNames})
-     
-     
+    this.setState({alreadyViewed: AllNames});
   };
 
   getEpsServers = async (link, name) => {
-   
     const nameToBeSaved = {name: name};
     const existingNames = await AsyncStorage.getItem('names');
 
@@ -165,7 +162,7 @@ relatedF */
       video.text.includes(this.state.firstQuery),
     );
 
-      console.log("alreadyViewed",this.state.alreadyViewed)
+    console.log('alreadyViewed', this.state.alreadyViewed);
 
     const relatedF =
       this.props.animeDetail && this.props.animeDetail.length > 0
@@ -384,15 +381,19 @@ relatedF */
             </View>
           )}
 
-          <View style={{flex: 1}}>
-             
-          </View>
+          <View style={{flex: 1}} />
           {links.length > 0 ? (
             <FlatList
               data={links.reverse()}
               renderItem={({item, i}) => (
                 <CardEpisode
-                 alreadyViewed={this.state.alreadyViewed.filter(obj=> obj.name===item.text).length>0}
+                  alreadyViewed={
+                    this.state.alreadyViewed &&
+                    this.state.alreadyViewed.length ?
+                    this.state.alreadyViewed.filter(
+                      obj => obj.name === item.text,
+                    ).length > 0 : false
+                  }
                   img={this.state.anime.img}
                   key={i}
                   video={item}
