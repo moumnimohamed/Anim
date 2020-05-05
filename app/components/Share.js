@@ -3,7 +3,7 @@ import Share from 'react-native-share';
 
 export default share = (anim) => {
     console.log("bo3oq",anim)
-  const url = "https://play.google.com/store/apps/details?id=com.crunchyroll.crunchyroid&hl=fr";
+  const url = "https://play.google.com/store/apps/details?id=com.anim";
   const title = anim.title;
   const message = `شاهد ${anim.title} فقط على`;
   const options = Platform.select({

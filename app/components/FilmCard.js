@@ -21,18 +21,26 @@ export class FilmCard extends React.Component {
         activeOpacity={0.9}
         onPress={this.props.navigate}
         style={styles.view}>
-        { (
+        {
           <Image
             ImageResizeMode={'contain'}
             style={styles.image}
-            source={ this.props.item.img  ? {uri: this.props.item.img} : require('../images/splash.png')}
+            source={
+              this.props.item.img
+                ? {uri: this.props.item.img}
+                : require('../images/splash.png')
+            }
           />
-        )  }
+        }
 
         <View style={styles.Btncontainer}>
-          <TouchableOpacity style={styles.btn}>
-            <Heart name="hearto" size={15} color="black" />
-          </TouchableOpacity>
+          {!this.props.item.title.includes("الحلقة") && <TouchableOpacity style={styles.btn} onPress={this.props.heartClick}>
+            <Heart
+              name={this.props.isFavorite ? 'heart' : 'hearto'}
+              color={this.props.isFavorite ? 'red' : 'black'}
+              size={15}
+            />
+          </TouchableOpacity>}
           <TouchableOpacity style={styles.btn}>
             <FontAwesome name="send-o" size={15} color="black" />
           </TouchableOpacity>
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'left',
     fontFamily: 'JF Flat regular',
-     fontSize:17,
+    fontSize: 17,
 
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 1,

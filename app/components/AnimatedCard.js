@@ -12,12 +12,16 @@ export class AnimatedCard extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          {  (
+          {
             <Image
               style={styles.image}
-              source={ this.props.item.img  ? {uri: this.props.item.img} : require('../images/splash.png')}
+              source={
+                this.props.item.img
+                  ? {uri: this.props.item.img}
+                  : require('../images/splash.png')
+              }
             />
-          ) }
+          }
           <TouchableOpacity
             style={styles.playBtn}
             onPress={this.props.navigate}>
@@ -26,19 +30,27 @@ export class AnimatedCard extends React.Component {
         </View>
         <View style={styles.info}>
           <View style={styles.socialBtns}>
-            <TouchableOpacity style={styles.btn}>
-              <Heart name="hearto" size={20} color="black" />
-            </TouchableOpacity>
+            
             <TouchableOpacity
               onPress={() => share(this.props.item)}
               style={styles.btn}>
               <FontAwesome name="send" size={20} color="black" />
             </TouchableOpacity>
             <View style={styles.likeNumber}>
-              <TouchableOpacity>
+              {/* <TouchableOpacity>
                 <AntDesign name="like2" size={20} color="black" />
               </TouchableOpacity>
-              <Text style={{marginLeft: 1}}>+1</Text>
+              <Text style={{marginLeft: 1}}>+1</Text> */}
+              <TouchableOpacity
+              style={styles.btn}
+              onPress={this.props.heartClick}>
+              <Heart
+                name={this.props.isFavorite ? 'heart' : 'hearto'}
+               
+                color={this.props.isFavorite ? 'red' : 'black'}
+                 size={20}
+              />
+            </TouchableOpacity>
             </View>
           </View>
 
@@ -137,7 +149,7 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    marginRight: 10,
+    
   },
   likeNumber: {
     flexDirection: 'row',

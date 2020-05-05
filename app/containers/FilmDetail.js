@@ -4,7 +4,7 @@ import {detailRequest} from '../redux/filmDetailRedux';
 
 import Play from 'react-native-vector-icons/AntDesign';
 
-import {Chip} from 'react-native-paper';
+import {ActivityIndicator, Chip} from 'react-native-paper';
 import {
   Dimensions,
   TouchableOpacity,
@@ -24,13 +24,25 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 class FilmDetail extends React.Component {
-  animeName = this.props.navigation.state.params.item.title;
-  anime = this.props.navigation.state.params.item;
+  state = {
+    animeName: this.props.navigation.state.params.item.title,
+    anime: this.props.navigation.state.params.item,
+  };
 
   componentDidMount = () => {
-    console.log('anime....', this.anime);
+    console.log('anime....', this.state.anime);
 
-    this.props.filmDetailRequest(this.anime.link);
+    this.props.filmDetailRequest(this.state.anime.link);
+  };
+
+  componentWillUpdate = (nextProps, nextState) => {
+    if (
+      this.props.navigation.state.params.item !==
+      nextProps.navigation.state.params.item
+    ) {
+      this.setState({anime: nextProps.navigation.state.params.item});
+      nextProps.filmDetailRequest(nextProps.navigation.state.params.item.link);
+    }
   };
 
   render() {
@@ -58,129 +70,156 @@ class FilmDetail extends React.Component {
     reactotron.log('ha streamLinks', streamLinks);
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scroll}>
-          <ImageBackground
-            blurRadius={1}
-            source={{uri: this.anime.img ? this.anime.img : ''}}
-            style={styles.bkg}>
-            <View style={styles.viewDATA}>
-              <View style={styles.imageContainer}>
-                <Image
-                  ImageResizeMode={'contain'}
-                  style={styles.image}
-                  source={{uri: this.anime.img ? this.anime.img : ''}}
-                />
-              </View>
-
-              <FlatList
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                data={cat}
-                renderItem={({item, index}) => (
-                  <Chip
-                    key={index}
-                    style={{
-                      marginTop: 10,
-                      marginRight: 10,
-                      backgroundColor: '#F5F5F5',
+        
+          <ScrollView style={styles.scroll}>
+            <ImageBackground
+              blurRadius={1}
+              source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
+              style={styles.bkg}>
+              <View style={styles.viewDATA}>
+                <View style={styles.imageContainer}>
+                  <Image
+                    ImageResizeMode={'contain'}
+                    style={styles.image}
+                    source={{
+                      uri: this.state.anime.img ? this.state.anime.img : '',
                     }}
-                    onPress={() => {
-                      this.props.navigation.push('ByCategory', {
-                        title: item.title,
-                        type: 'film',
-                      });
-                    }}>
-                    <Text
-                      style={{color: '#9A999A', fontFamily: 'JF Flat regular'}}>
-                      {item.title}
-                    </Text>
-                  </Chip>
-                )}
-                keyExtractor={item => item.title}
-              />
-              <View
-                style={{
-                  paddingHorizontal: 20,
-                  paddingTop: 20,
-                  justifyContent: 'center',
-                  flexDirection: 'row',
-                }}>
-                <View style={{flex: 1}}>
-                  <TouchableOpacity
-                    style={styles.playBtn}
-                    onPress={() =>
-                      this.props.navigation.push('streamPage', {
-                        link: streamLinks[0].link,
-                      })
-                    }>
-                    <Play
-                      name="play"
-                      size={35}
-                      color="#89C13D"
-                      style={{borderRadius: 20}}
-                    />
-                  </TouchableOpacity>
+                  />
                 </View>
 
-                <View style={{flex: 1}}>
-                  {published[0] && (
-                    <View
+                <FlatList
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  data={cat}
+                  renderItem={({item, index}) => (
+                    <Chip
+                      key={index}
                       style={{
-                        justifyContent: 'flex-end',
-                        flexDirection: 'row',
+                        marginTop: 10,
+                        marginRight: 10,
+                        backgroundColor: '#F5F5F5',
+                      }}
+                      onPress={() => {
+                        this.props.navigation.push('ByCategory', {
+                          title: item.title,
+                          type: 'film',
+                        });
                       }}>
                       <Text
                         style={{
                           color: '#9A999A',
-                          marginRight: 10,
                           fontFamily: 'JF Flat regular',
                         }}>
-                        {published[1]}
+                        {item.title}
                       </Text>
-                      <Text style={{fontFamily: 'JF Flat regular'}}>
-                        {published[0]}
-                      </Text>
-                    </View>
+                    </Chip>
                   )}
-                  {duration[0] && (
-                    <View
-                      style={{
-                        justifyContent: 'flex-end',
-                        flexDirection: 'row',
-                      }}>
-                      <Text style={{color: '#9A999A', marginRight: 24,   fontFamily: 'JF Flat regular',}}>
-                        {duration[1]}
-                      </Text>
-                      <Text style={{   fontFamily: 'JF Flat regular',}}>{duration[0]}</Text>
-                    </View>
-                  )}
-                </View>
-              </View>
-              {story.map((p, i) => {
-                return p && p.text ? (
-                  <Text key={i} style={{padding: 20, color: '#9A999A',   fontFamily: 'JF Flat regular',}}>
-                    {p.text}
-                  </Text>
-                ) : null;
-              })}
+                  keyExtractor={item => item.title}
+                />
+                <View
+                  style={{
+                    paddingHorizontal: 20,
+                    paddingTop: 20,
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <View style={{flex: 1}}>
+                    <TouchableOpacity
+                      style={styles.playBtn}
+                      onPress={() =>
+                        this.props.navigation.push('streamPage', {
+                          link: streamLinks[0].link,
+                        })
+                      }>
+                      <Play
+                        name="play"
+                        size={35}
+                        color="#89C13D"
+                        style={{borderRadius: 20}}
+                      />
+                    </TouchableOpacity>
+                  </View>
 
-              
-            </View>
-          </ImageBackground>
-          {streamLinks.map((video, i) => {
-                return video && video.text ? (
-                  <Playeroo
-                    key={i}
-                    video={video}
-                    navigate={() => {
-                      this.props.navigation.push('streamPage', {
-                        link: video.link,
-                      });
-                    }}
-                  />
-                ) : null;
-              })}
-        </ScrollView>
+                  <View style={{flex: 1}}>
+                    {published[0] && (
+                      <View
+                        style={{
+                          justifyContent: 'flex-end',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#9A999A',
+                            marginRight: 10,
+                            fontFamily: 'JF Flat regular',
+                          }}>
+                          {published[1]}
+                        </Text>
+                        <Text style={{fontFamily: 'JF Flat regular'}}>
+                          {published[0]}
+                        </Text>
+                      </View>
+                    )}
+                    {duration[0] && (
+                      <View
+                        style={{
+                          justifyContent: 'flex-end',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#9A999A',
+                            marginRight: 24,
+                            fontFamily: 'JF Flat regular',
+                          }}>
+                          {duration[1]}
+                        </Text>
+                        <Text style={{fontFamily: 'JF Flat regular'}}>
+                          {duration[0]}
+                        </Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+                {story.map((p, i) => {
+                  return p && p.text ? (
+                    <Text
+                      key={i}
+                      style={{
+                        padding: 20,
+                        color: '#9A999A',
+                        fontFamily: 'JF Flat regular',
+                      }}>
+                      {p.text}
+                    </Text>
+                  ) : null;
+                })}
+              </View>
+            </ImageBackground>
+            {streamLinks.map((video, i) => {
+              return video && video.text ? (
+                <Playeroo
+                  key={i}
+                  video={video}
+                  navigate={() => {
+                    this.props.navigation.push('streamPage', {
+                      link: video.link,
+                    });
+                  }}
+                />
+              ) : null;
+            })}
+          </ScrollView>
+        
+        {this.props.fetching && (
+          <View style={styles.ActivityIndicator}>
+            <Image
+              style={{width: 50, height: 50, position: 'absolute'}}
+              source={require('../images/logo.png')}
+            />
+            <ActivityIndicator animating={true} size={50} color={'#000'} />
+          </View>
+        )}
       </SafeAreaView>
     );
   }
@@ -193,10 +232,9 @@ const styles = StyleSheet.create({
   },
   bkg: {
     width: '100%',
-    
   },
   scroll: {
-    backgroundColor:"#fff"
+    backgroundColor: '#fff',
   },
 
   viewDATA: {
@@ -213,7 +251,7 @@ const styles = StyleSheet.create({
 
   imageContainer: {
     top: 0,
-    marginBottom:20,
+    marginBottom: 20,
     width: '50%',
     height: 300,
     borderRadius: 90,
@@ -250,11 +288,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  ActivityIndicator: {
+    height: screenHeight / 2,
+    backgroundColor: '#FFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 const mapStateToProps = state => {
   return {
     filmDetail: state.filmDetail.payload ? state.filmDetail.payload : [],
+    fetching: state.filmDetail.fetching,
   };
 };
 
@@ -264,4 +309,7 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilmDetail);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FilmDetail);

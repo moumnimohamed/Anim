@@ -1,5 +1,7 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
+
+import {toggleFavorites} from '../redux/FavoritesAnim';
 import React from 'react';
 import {
   Dimensions,
@@ -103,6 +105,18 @@ class SearchPage extends React.Component {
   };
 
   componentDidMount() {}
+  _toggleFavorites = anime => {
+    const index = this.props.favoritesAnim.findIndex(
+      anim => anim.link === anime.link,
+    );
+    if (index == -1) {
+      alert('added to favorites');
+    } else {
+      alert('deleted from favorites');
+    }
+
+    this.props.toggleFavorites(anime);
+  };
 
   render() {
     console.log('search props', this.props);
@@ -165,6 +179,13 @@ keyboardType={"default"}
                 item.img ? (
                   item.title.includes('فيلم') ? (
                     <FilmCard
+                    isFavorite={
+                    this.props.favoritesAnim.filter(
+                      animF => animF.link === item.link,
+                    ).length > 0
+                  }
+                  heartClick={() => this._toggleFavorites(item)}
+                  
                       item={item}
                       showTitle={true}
                       navigate={() => {
@@ -175,6 +196,13 @@ keyboardType={"default"}
                     />
                   ) : (
                     <FilmCard
+                    isFavorite={
+                    this.props.favoritesAnim.filter(
+                      animF => animF.link === item.link,
+                    ).length > 0
+                  }
+                  heartClick={() => this._toggleFavorites(item)}
+                  
                       item={item}
                       showTitle={true}
                       navigate={() => this.getEpsServers(item.link)}
@@ -240,15 +268,18 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
+    favoritesAnim: state.favoritesAnim.data || [],
     films: state.films && state.films.payload ? state.films.payload : [],
   };
 };
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    toggleFavorites: data => dispatch(toggleFavorites(data)),
+  };
 };
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(SearchPage);

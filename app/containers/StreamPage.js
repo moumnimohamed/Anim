@@ -111,7 +111,7 @@ export default class StreamPage extends React.Component {
 
     componentWillUnmount  = () =>{
       StatusBar.setHidden(false);
-      Orientation.lockToPortrait(); 
+      /* Orientation.lockToPortrait();  */
        
        if (this.timer) {                   
                            
@@ -135,7 +135,7 @@ AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd());
 }, 5000);
        
   
-       Orientation.lockToLandscape(); 
+       /* Orientation.lockToLandscape(); */ 
 /* if (this.props.navigation.state.params.link) {
   console.log("lala link",this.props.navigation.state.params.link)
   this.getVideoURL(this.props.navigation.state.params.link)

@@ -1,5 +1,9 @@
 import React from 'react';
+import Share from 'react-native-share';
+
 import {
+  Platform,
+  Linking,
   TouchableOpacity,
   Dimensions,
   Image,
@@ -65,6 +69,43 @@ class Account extends React.Component {
 
   componentDidMount() {}
 
+  share = () => {
+     
+  const url = "https://play.google.com/store/apps/details?id=com.anim";
+  const title = "";
+  const message = `تطبيق مجاني لمشاهدة وتحميل الأنمي`;
+  const options = Platform.select({
+    ios: {
+      activityItemSources: [
+        {
+          placeholderItem: {type: 'url', content: url},
+          item: {
+            default: {type: 'url', content: url},
+          },
+          subject: {
+            default: title,
+          },
+          linkMetadata: {originalUrl: url, url, title},
+        },
+        {
+          placeholderItem: {type: 'text', content: message},
+          item: {
+            default: {type: 'text', content: message},
+            message: null, // Specify no text to share via Messages app.
+          },
+        },
+      ],
+    },
+    default: {
+      title,
+      subject: title,
+      message: `${message} ${url}`,
+    },
+  });
+
+  Share.open(options);
+};
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -85,13 +126,56 @@ class Account extends React.Component {
 
         <ScrollView
           style={{
+            paddingVertical: 20,
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
             overflow: 'hidden',
             backgroundColor: '#fff',
             height: screenHeight,
           }}>
-          {this.state.login && <Login />}
+          <TouchableOpacity
+            onPress={() =>
+              Linking.canOpenURL('https://www.instagram.com/animia_app/')
+                .then(supported => {
+                  if (!supported) {
+                    alert("Can't handle url: " + 'https://www.instagram.com/animia_app/');
+                  } else {
+                    return Linking.openURL('https://www.instagram.com/animia_app/');
+                  }
+                })
+                .catch(err => alert('An error occurred', err))
+            }
+            style={styles.btnBig}>
+            <Text style={styles.btnText}>تابعنا على انستغرام</Text>
+            <Image
+              style={{width: 20, height: 20}}
+              source={require('../images/insta.png')}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.share()  } style={styles.btnBig}>
+            <Text style={styles.btnText}>شارك هذا التطبيق</Text>
+            <Icon name={'share'} size={25} color="#89C13D" />
+          </TouchableOpacity>
+          <TouchableOpacity  onPress={() =>
+              Linking.canOpenURL('https://play.google.com/store/apps/details?id=com.anim')
+                .then(supported => {
+                  if (!supported) {
+                    alert("Can't handle url: " + 'https://play.google.com/store/apps/details?id=com.anim');
+                  } else {
+                    return Linking.openURL('https://play.google.com/store/apps/details?id=com.anim');
+                  }
+                })
+                .catch(err => alert('An error occurred', err))
+            } style={styles.btnBig}>
+            <Text style={styles.btnText}>قيم هذا التطبيق</Text>
+            <Icon name={'star'} size={25} color="#89C13D" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('mailto:xman012312@gmail.com')} style={styles.btnBig}>
+            <Text style={styles.btnText}>اتصل بنا (اقتراح ، خطأ في التطبيق ، طلب)</Text>
+            <Icon name={'account'} size={25} color="#89C13D" />
+          </TouchableOpacity>
+
+          {/*  {this.state.login && <Login />}
           {this.state.signUp && (
             <SignUp
               return={() => this.setState({signUp: false, account: true})}
@@ -116,7 +200,7 @@ class Account extends React.Component {
                 );
               })}
             </View>
-          )}
+          )} */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -167,6 +251,23 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
 
     padding: 20,
+  },
+  btnBig: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginVertical: 5,
+
+    flexDirection: 'row',
+    borderRadius: 10,
+  },
+  btnText: {
+    paddingRight: 20,
+    color: '#89C13D',
+    fontFamily: 'JF Flat regular',
+
+    fontSize: 15,
   },
   surface: {
     marginHorizontal: screenWidth / 45,

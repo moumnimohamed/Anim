@@ -15,6 +15,7 @@ import {
   StyleSheet,
   View,
   Linking,
+  AsyncStorage
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {StatusBar} from 'react-native';
@@ -29,6 +30,7 @@ import TextStyled from '../components/TextStyled';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {filmRequest} from '../redux/FilmRedux';
+import {toggleFavorites} from '../redux/FavoritesAnim';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {Button as B} from 'react-native-paper';
 import {default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -61,7 +63,10 @@ class Home extends React.Component {
     };
   }
 
-   
+
+  
+  
+    
 
   // Subscribe
   unsubscribe = NetInfo.addEventListener(state => {
@@ -87,6 +92,19 @@ class Home extends React.Component {
   handleClose = () => {
     this.setState({show: false});
   };
+
+  _toggleFavorites(anime) {
+    const index = this.props.favoritesAnim.findIndex(
+      anim => anim.link === anime.link,
+    );
+    if (index == -1) {
+      alert('added to favorites');
+    } else {
+      alert('deleted from favorites');
+    }
+
+    this.props.toggleFavorites(anime);
+  }
 
   getEpsServers = async link => {
     this.setState({showModal: true});
@@ -121,7 +139,9 @@ class Home extends React.Component {
       });
   };
 
-  componentDidUpdate() {
+  componentDidUpdate(nextProps, nextState) {
+    console.log('halola', nextProps.newAnime);
+    console.log('favoritesAnim', nextProps.favoritesAnim);
     /* this.allImages=[];
     if (this.props.newAnimeFailure) {
       this.setState({show: true});
@@ -137,12 +157,11 @@ class Home extends React.Component {
   };
 
   checkUpdateApp = async () => {
-    let latestVer=  "";
-      VersionCheck.getLatestVersion({
-      provider: 'playStore'  // for Android
-    })
-    .then(latestVersion => {
-        latestVer = latestVersion;    // 0.1.2
+    let latestVer = '';
+    VersionCheck.getLatestVersion({
+      provider: 'playStore', // for Android
+    }).then(latestVersion => {
+      latestVer = latestVersion; // 0.1.2
     });
 
     VersionCheck.needUpdate({
@@ -150,13 +169,13 @@ class Home extends React.Component {
       currentVersion: VersionCheck.getCurrentVersion(),
       latestVersion: latestVer,
     }).then(res => {
-      this.setState({updateKnow:res.isNeeded})
-      console.log("ned update",res); // false
+      this.setState({updateKnow: res.isNeeded});
+      console.log('ned update', res); // false
     });
   };
   componentDidMount() {
-    this.checkUpdateApp();
      
+    this.checkUpdateApp();
     this.unsubscribe();
     this.getData();
   }
@@ -201,7 +220,7 @@ class Home extends React.Component {
         : {};
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
-          <LoaderModal  visible={this.props.fetching}/>
+        <LoaderModal visible={this.props.fetching} />
 
         <StatusBar translucent backgroundColor="transparent" />
         <ScrollView>
@@ -222,7 +241,7 @@ class Home extends React.Component {
                     autoplay
                     enableMomentum={false}
                     lockScrollWhileSnapping={true}
-                    autoplayInterval={3000}
+                    autoplayInterval={5000}
                     firstItem={1}
                     layoutCardOffset={0}
                     maxToRenderPerBatch={3}
@@ -234,6 +253,12 @@ class Home extends React.Component {
                     renderItem={({item, index}) => {
                       return (
                         <AnimatedCard
+                          isFavorite={
+                            this.props.favoritesAnim.filter(
+                              animF => animF.link === item.link,
+                            ).length > 0
+                          }
+                          heartClick={() => this._toggleFavorites(item)}
                           item={item}
                           navigate={() => {
                             item.title.includes('فيلم')
@@ -270,6 +295,12 @@ class Home extends React.Component {
               renderItem={({item, index}) => {
                 return (
                   <AnimatedCard
+                    heartClick={() => this._toggleFavorites(item)}
+                    isFavorite={
+                      this.props.favoritesAnim.filter(
+                        animF => animF.link === item.link,
+                      ).length > 0
+                    }
                     key={index}
                     item={item}
                     navigate={() => {
@@ -324,6 +355,12 @@ class Home extends React.Component {
                 data={this.props.animeEpisodes.slice(0, 20)}
                 renderItem={({item}) => (
                   <FilmCard
+                    isFavorite={
+                      this.props.favoritesAnim.filter(
+                        animF => animF.link === item.link,
+                      ).length > 0
+                    }
+                    heartClick={() => this._toggleFavorites(item)}
                     item={item}
                     navigate={() => this.getEpsServers(item.link)}
                   />
@@ -371,10 +408,18 @@ class Home extends React.Component {
                 data={this.props.animeList.slice(0, 20)}
                 renderItem={({item}) => (
                   <FilmCard
+                    isFavorite={
+                      this.props.favoritesAnim.filter(
+                        animF => animF.link === item.link,
+                      ).length > 0
+                    }
+                    heartClick={() => this._toggleFavorites(item)}
                     item={item}
                     showTitle={false}
                     navigate={() => {
-                      this.props.navigation.navigate('AnimeDetail', {item: item});
+                      this.props.navigation.navigate('AnimeDetail', {
+                        item: item,
+                      });
                     }}
                   />
                 )}
@@ -410,6 +455,12 @@ class Home extends React.Component {
                   renderItem={({item, index}) =>
                     item.img && (
                       <FilmCard
+                        isFavorite={
+                          this.props.favoritesAnim.filter(
+                            animF => animF.link === item.link,
+                          ).length > 0
+                        }
+                        heartClick={() => this._toggleFavorites(item)}
                         item={item}
                         showTitle={false}
                         navigate={() => {
@@ -451,14 +502,19 @@ class Home extends React.Component {
                   backgroundColor: '#027BFF',
                 }}
                 onPress={() =>
-                  Linking.canOpenURL('https://stackoverflow.com/')
+                  Linking.canOpenURL(
+                    'https://play.google.com/store/apps/details?id=com.anim',
+                  )
                     .then(supported => {
                       if (!supported) {
                         alert(
-                          "Can't handle url: " + 'https://stackoverflow.com/',
+                          "Can't handle url: " +
+                            'https://play.google.com/store/apps/details?id=com.anim',
                         );
                       } else {
-                        return Linking.openURL('https://stackoverflow.com/');
+                        return Linking.openURL(
+                          'https://play.google.com/store/apps/details?id=com.anim',
+                        );
                       }
                     })
                     .catch(err => alert('An error occurred', err))
@@ -539,6 +595,7 @@ const mapStateToProps = state => {
     films: state.films && state.films.payload ? state.films.payload : [],
     filmCategories:
       state.films && state.films.categories ? state.films.categories : [],
+    favoritesAnim: state.favoritesAnim.data || [],
   };
 };
 
@@ -548,6 +605,7 @@ const mapDispatchToProps = dispatch => {
     getAnimeList: data => dispatch(getAnimeListRequest(data)),
     aniEpisodeRequest: data => dispatch(aniEpisodeRequest(data)),
     filmRequest: data => dispatch(filmRequest(data)),
+    toggleFavorites: data => dispatch(toggleFavorites(data)),
   };
 };
 

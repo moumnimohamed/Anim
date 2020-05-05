@@ -5,6 +5,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Home from '../containers/Home';
 import StreamPage from '../containers/StreamPage';
+import FavoritesList from '../containers/FavoritesList';
 import Header from '../components/Header';
 import TabBarButton from '../components/TabBarButton';
 import FilmDetail from '../containers/FilmDetail';
@@ -18,16 +19,41 @@ import Account from '../containers/Account';
 import EpisodesAllList from '../containers/EpisodesAllList';
 import Icon from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
- 
+
+const favStackNavigator = createStackNavigator({
+  fav: {
+    screen: FavoritesList,
+    navigationOptions: {
+      headerTransparent: true,
+      headerStyle: {
+        elevation: 0,
+        shadowOpacity: 0,
+        borderBottomWidth: 0,
+        backgroundColor: '#f2f2f2',
+      },
+      title: '',
+      headerTintColor: '#89C13D',
+    },
+  },
+  FilmDetail: {
+    screen: FilmDetail,
+    navigationOptions: {
+      
+      title: '',
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+});
 
 const SearchStackNavigator = createStackNavigator({
   Home: {
     screen: Home,
     navigationOptions: {
-     /*  headerRight: navigation => (
+      /*  headerRight: navigation => (
         <Header/>
       ), */
-     /*  headerTitle: (
+      /*  headerTitle: (
         <Image
           style={{width: 50, height: 50}}
           source={require('../images/logo.png')}
@@ -73,28 +99,25 @@ const SearchStackNavigator = createStackNavigator({
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        backgroundColor:"#f2f2f2"
+        backgroundColor: '#f2f2f2',
       },
       title: 'أفلام',
       headerTintColor: '#89C13D',
-     
     },
   },
   AnimeAllList: {
     screen: AnimeAllList,
-    
+
     navigationOptions: {
-       
       headerStyle: {
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        backgroundColor:"#f2f2f2"
+        backgroundColor: '#f2f2f2',
       },
-     headerTitleStyle:{
-        
-      fontFamily: 'JF Flat regular'
-},
+      headerTitleStyle: {
+        fontFamily: 'JF Flat regular',
+      },
       title: 'الأنميات',
       headerTintColor: '#89C13D',
       /* headerTransparent: true, */
@@ -107,27 +130,23 @@ const SearchStackNavigator = createStackNavigator({
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        backgroundColor:"#f2f2f2"
+        backgroundColor: '#f2f2f2',
       },
       title: 'الحلقات',
       headerTintColor: '#89C13D',
-       
     },
   },
   ByCategory: {
-
     screen: ByCategory,
     navigationOptions: {
       headerStyle: {
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        backgroundColor:"#f2f2f2"
+        backgroundColor: '#f2f2f2',
       },
-       
+
       headerTintColor: '#89C13D',
-       
-       
     },
   },
   BySeason: {
@@ -137,12 +156,10 @@ const SearchStackNavigator = createStackNavigator({
         elevation: 0,
         shadowOpacity: 0,
         borderBottomWidth: 0,
-        backgroundColor:"#f2f2f2"
+        backgroundColor: '#f2f2f2',
       },
-      
-      headerTintColor: '#89C13D',
-       
 
+      headerTintColor: '#89C13D',
     },
   },
   SearchPage: {
@@ -155,12 +172,12 @@ const SearchStackNavigator = createStackNavigator({
   },
 });
 
-SearchStackNavigator.navigationOptions = ({ navigation }) => {
-  console.log("@@", navigation);
+SearchStackNavigator.navigationOptions = ({navigation}) => {
+  console.log('@@', navigation);
 
   if (navigation.state.routes.length) {
     navigation.state.routes.map(route => {
-      if (route.routeName === "streamPage") {
+      if (route.routeName === 'streamPage') {
         tabBarVisible = false;
       } else {
         tabBarVisible = true;
@@ -169,10 +186,9 @@ SearchStackNavigator.navigationOptions = ({ navigation }) => {
   }
 
   return {
-    tabBarVisible
+    tabBarVisible,
   };
 };
-
 
 const TabNavigator = createBottomTabNavigator(
   {
@@ -180,47 +196,51 @@ const TabNavigator = createBottomTabNavigator(
       screen: SearchStackNavigator,
       navigationOptions: {
         tabBarLabel: 'الرئيسية',
-        tabBarIcon: ({tintColor})=>( <Icon name="home" size={17} color={tintColor}    />),
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="home" size={17} color={tintColor} />
+        ),
       },
     },
     search: {
       screen: SearchPage,
       navigationOptions: {
         tabBarLabel: 'بحث',
-        tabBarIcon: ({tintColor})=>( <Icon name="search1" size={17}   color={tintColor}  />),
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="search1" size={17} color={tintColor} />
+        ),
       },
     },
 
     fav: {
-      screen: SearchStackNavigator,
+      screen: favStackNavigator,
       navigationOptions: {
         tabBarLabel: 'قائمتي',
-        tabBarIcon: ({tintColor})=>( <Icon name="hearto" size={17}   color={tintColor}  />),
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="hearto" size={17} color={tintColor} />
+        ),
       },
     },
     setting: {
       screen: Account,
-      
+
       navigationOptions: {
-        
-       
         tabBarLabel: 'ضبط',
-        tabBarIcon:  ({tintColor})=>(<Icon name="smileo" size={17}  color={tintColor}   />),
+        tabBarIcon: ({tintColor}) => (
+          <Icon name="smileo" size={17} color={tintColor} />
+        ),
       },
     },
   },
   {
-    
     tabBarOptions: {
       labelStyle: {
         fontFamily: 'JF Flat regular',
       },
       style: {
-        
         borderTopWidth: 0,
-        backgroundColor:"#f8f5fa",
-    },
-     
+        backgroundColor: '#f8f5fa',
+      },
+
       activeTintColor: '#89C13D',
       inactiveTintColor: '#535353',
     },
