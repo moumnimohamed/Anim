@@ -4,15 +4,24 @@ import {connect} from 'react-redux';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {FilmCard} from '../components/FilmCard';
 import CategoryCard from '../components/CategoryCard';
+import Toast from 'react-native-simple-toast';
 
 import {toggleFavorites} from '../redux/FavoritesAnim';
 
 const _toggleFavorites = (anime, props) => {
   const index = props.favoritesAnim.findIndex(anim => anim.link === anime.link);
   if (index == -1) {
-    alert('added to favorites');
+    Toast.showWithGravity(
+      "تمت إضافتها إلى قائمتك",
+      Toast.LONG,
+      Toast.BOTTOM,
+    )
   } else {
-    alert('deleted from favorites');
+    Toast.showWithGravity(
+      "تمت إزالته إلى قائمتك",
+      Toast.LONG,
+      Toast.BOTTOM,
+    )
   }
 
   props.toggleFavorites(anime);

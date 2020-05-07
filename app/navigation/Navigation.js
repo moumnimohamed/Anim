@@ -38,7 +38,14 @@ const favStackNavigator = createStackNavigator({
   FilmDetail: {
     screen: FilmDetail,
     navigationOptions: {
-      
+      title: '',
+      headerTintColor: '#fff',
+      headerTransparent: true,
+    },
+  },
+  AnimeDetail: {
+    screen: AnimeDetail,
+    navigationOptions: {
       title: '',
       headerTintColor: '#fff',
       headerTransparent: true,

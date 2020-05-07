@@ -23,7 +23,7 @@ export default TextStyled = props => {
         
         {!props.hide && (
            <React.Fragment>
-         <Arrow name="ios-arrow-round-back" size={17} color="#89C13D" />
+         <Arrow name="ios-arrow-round-back" size={20} color="#535353" />
           <Text
             onPress={props.onClick && props.onClick}
             style={{
@@ -32,7 +32,7 @@ export default TextStyled = props => {
               textShadowRadius: 1,
               fontFamily: 'JF Flat regular',
               fontSize: 17,
-              color: '#89C13D',
+              color: '#fff',
               marginLeft: 5,
             }}>
             المزيد

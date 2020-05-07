@@ -1,6 +1,6 @@
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
-
+import Toast from 'react-native-simple-toast';
 import {toggleFavorites} from '../redux/FavoritesAnim';
 import React from 'react';
 import {
@@ -95,8 +95,9 @@ class SearchPage extends React.Component {
               href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
             });
           } 
-          
-          this.setState({epsHref: href});
+          const animeHrefLink=   $(".col-md-4.col-no-padding-right a").attr('href')
+      
+          this.setState({epsHref: href,animeHrefLink});
         }
       })
       .catch(error => {
@@ -110,9 +111,19 @@ class SearchPage extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      alert('added to favorites');
+      
+Toast.showWithGravity(
+  "تمت إضافتها إلى قائمتك",
+  Toast.LONG,
+  Toast.BOTTOM,
+)
+
     } else {
-      alert('deleted from favorites');
+      Toast.showWithGravity(
+        "تمت إزالته من قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
     }
 
     this.props.toggleFavorites(anime);
@@ -217,6 +228,7 @@ keyboardType={"default"}
         )}
 </View>
         <AnimeServers
+         animeHrefLink={this.state.animeHrefLink}
           hide={() => this.setState({showModal: false})}
           epsHref={this.state.epsHref}
           showModal={this.state.showModal}

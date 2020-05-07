@@ -87,7 +87,7 @@ class FilmDetail extends React.Component {
                   />
                 </View>
 
-                <FlatList
+                {!this.props.fetching && <FlatList
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   data={cat}
@@ -115,8 +115,8 @@ class FilmDetail extends React.Component {
                     </Chip>
                   )}
                   keyExtractor={item => item.title}
-                />
-                <View
+                />}
+               {!this.props.fetching && <View
                   style={{
                     paddingHorizontal: 20,
                     paddingTop: 20,
@@ -180,8 +180,8 @@ class FilmDetail extends React.Component {
                       </View>
                     )}
                   </View>
-                </View>
-                {story.map((p, i) => {
+                </View>}
+                {!this.props.fetching && story.map((p, i) => {
                   return p && p.text ? (
                     <Text
                       key={i}
@@ -196,7 +196,7 @@ class FilmDetail extends React.Component {
                 })}
               </View>
             </ImageBackground>
-            {streamLinks.map((video, i) => {
+            {!this.props.fetching && streamLinks.map((video, i) => {
               return video && video.text ? (
                 <Playeroo
                   key={i}
@@ -209,8 +209,7 @@ class FilmDetail extends React.Component {
                 />
               ) : null;
             })}
-          </ScrollView>
-        
+              
         {this.props.fetching && (
           <View style={styles.ActivityIndicator}>
             <Image
@@ -220,6 +219,8 @@ class FilmDetail extends React.Component {
             <ActivityIndicator animating={true} size={50} color={'#000'} />
           </View>
         )}
+          </ScrollView>
+      
       </SafeAreaView>
     );
   }
@@ -269,6 +270,7 @@ const styles = StyleSheet.create({
     elevation: 13,
   },
   image: {
+    zIndex:9,
     width: '100%',
     height: '100%',
   },

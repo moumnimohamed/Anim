@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import CategoryCard from '../components/CategoryCard';
 import {FilmCard} from '../components/FilmCard';
 import {toggleFavorites} from '../redux/FavoritesAnim';
+import Toast from 'react-native-simple-toast';
+
 const FlatListHeader = props => {
   return (
     <View>
@@ -37,9 +39,18 @@ const _toggleFavorites = (anime,props) => {
     anim => anim.link === anime.link,
   );
   if (index == -1) {
-    alert('added to favorites');
+    Toast.showWithGravity(
+      "تمت إضافتها إلى قائمتك",
+      Toast.LONG,
+      Toast.BOTTOM,
+    )
+   
   } else {
-    alert('deleted from favorites');
+    Toast.showWithGravity(
+      "تمت إزالته من قائمتك",
+      Toast.LONG,
+      Toast.BOTTOM,
+    )
   }
 
   props.toggleFavorites(anime);

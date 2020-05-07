@@ -1,4 +1,5 @@
 /* eslint-disable */
+import share from '../components/Share';
 import React from 'react';
 import {
   Image,
@@ -41,7 +42,7 @@ export class FilmCard extends React.Component {
               size={15}
             />
           </TouchableOpacity>}
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => share(this.props.item)}>
             <FontAwesome name="send-o" size={15} color="black" />
           </TouchableOpacity>
         </View>

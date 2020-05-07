@@ -6,6 +6,8 @@ import {connect} from 'react-redux';
 import {FilmCard} from '../components/FilmCard';
 import {toggleFavorites} from '../redux/FavoritesAnim';
 import {ActivityIndicator} from 'react-native-paper';
+import Toast from 'react-native-simple-toast';
+
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 class AnimeDetail extends React.Component {
@@ -81,9 +83,18 @@ class AnimeDetail extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      alert('added to favorites');
+      Toast.showWithGravity(
+        "تمت إضافتها إلى قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
+     
     } else {
-      alert('deleted from favorites');
+      Toast.showWithGravity(
+        "تمت إزالته من قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
     }
 
     this.props.toggleFavorites(anime);

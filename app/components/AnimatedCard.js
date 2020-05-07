@@ -54,7 +54,7 @@ export class AnimatedCard extends React.Component {
             </View>
           </View>
 
-          <Text style={styles.title}>{this.props.item.title}</Text>
+          <Text onPress={this.props.navigate} style={styles.title}>{this.props.item.title}</Text>
 
           <View style={styles.linkContainer}>
             <Text style={styles.link} onPress={this.props.navigate}>

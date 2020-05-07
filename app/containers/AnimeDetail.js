@@ -43,15 +43,20 @@ class AnimeDetail extends React.Component {
   };
 
   componentDidMount() {
+    console.log("mamamia",this.props.navigation.state.params.item)
     this.showEyes();
     this.props.AnimeDetailRequest(this.state.anime.link);
   }
 
-     componentWillUpdate  = (nextProps, nextState) => {
-     if(this.props.navigation.state.params.item !== nextProps.navigation.state.params.item){ 
-            this.setState({anime:nextProps.navigation.state.params.item})
-     nextProps.AnimeDetailRequest(nextProps.navigation.state.params.item.link);}
-  };  
+  componentWillUpdate = (nextProps, nextState) => {
+    if (
+      this.props.navigation.state.params.item !==
+      nextProps.navigation.state.params.item
+    ) {
+      this.setState({anime: nextProps.navigation.state.params.item});
+      nextProps.AnimeDetailRequest(nextProps.navigation.state.params.item.link);
+    }
+  };
 
   showEyes = async () => {
     const existingNames = await AsyncStorage.getItem('names');
@@ -126,6 +131,10 @@ episodesNbr
 story
 streamLinks
 relatedF */
+const posterImage =
+this.props.animeDetail && this.props.animeDetail.length > 0
+  ? this.props.animeDetail[0]['image']
+  : '';
 
     const season =
       this.props.animeDetail && this.props.animeDetail.length > 0
@@ -179,14 +188,16 @@ relatedF */
       <ScrollView style={styles.scroll}>
         <ImageBackground
           blurRadius={1}
-          source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
+          source={{uri: this.state.anime.img ? this.state.anime.img : posterImage ? posterImage : null}}
+             
           style={styles.bkg}>
           <View style={styles.viewDATA}>
+
             <View style={styles.imageContainer}>
               <Image
                 ImageResizeMode={'contain'}
                 style={styles.image}
-                source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
+                source={{uri: this.state.anime.img ? this.state.anime.img : posterImage ? posterImage : null}}
               />
             </View>
 

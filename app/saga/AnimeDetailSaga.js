@@ -32,7 +32,9 @@ export function* getAnime_PeaceDetail (action) {
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
               
-       
+            
+
+
           const cat=[];
            
          // cat.push( $(".details-section .details-content-info ul li:nth-child(3) label").text() )
@@ -88,7 +90,7 @@ export function* getAnime_PeaceDetail (action) {
 
         const objectAnim =  [
         { 
-           
+            image: $(".details-content-poster img").attr('src'),
           published :[
                       $(".details-section .details-content-info ul li:nth-child(1) label").text(),
                       $(".details-section .details-content-info ul li:nth-child(1) span").text()

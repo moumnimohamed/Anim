@@ -15,7 +15,8 @@ import {
   StyleSheet,
   View,
   Linking,
-  AsyncStorage
+  Text,
+  AsyncStorage,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {StatusBar} from 'react-native';
@@ -63,11 +64,6 @@ class Home extends React.Component {
     };
   }
 
-
-  
-  
-    
-
   // Subscribe
   unsubscribe = NetInfo.addEventListener(state => {
     /* alert("Connection type", state.type); */
@@ -98,9 +94,18 @@ class Home extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      alert('added to favorites');
+      Toast.showWithGravity(
+        "تمت إضافتها إلى قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
+      
     } else {
-      alert('deleted from favorites');
+      Toast.showWithGravity(
+                "تمت إزالته من قائمتك",
+                Toast.LONG,
+                Toast.BOTTOM,
+              )
     }
 
     this.props.toggleFavorites(anime);
@@ -128,10 +133,9 @@ class Home extends React.Component {
               href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
             });
           }
-          /*  const animeHrefLink=   $(".col-md-4.col-no-padding-right a").attr('href')
-     console.log(animeHrefLink,) */
-          console.log(href);
-          this.setState({epsHref: href});
+           const animeHrefLink=   $(".col-md-4.col-no-padding-right a").attr('href')
+      
+          this.setState({epsHref: href,animeHrefLink});
         }
       })
       .catch(error => {
@@ -174,7 +178,6 @@ class Home extends React.Component {
     });
   };
   componentDidMount() {
-     
     this.checkUpdateApp();
     this.unsubscribe();
     this.getData();
@@ -223,36 +226,246 @@ class Home extends React.Component {
         <LoaderModal visible={this.props.fetching} />
 
         <StatusBar translucent backgroundColor="transparent" />
-        <ScrollView>
-          <React.Fragment>
-            {/*  {this.props.fetching ?
+        {!this.state.showAlertDesigned ? (
+          <ScrollView>
+            <React.Fragment>
+              {/*  {this.props.fetching ?
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
 
-            <ImageBackground
-              blurRadius={1}
-              source={{uri: anim.img}}
-              style={{width: '100%'}}>
-              <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
-                <View>
-                  <Carousel
-                    loop
-                    autoplay
-                    enableMomentum={false}
-                    lockScrollWhileSnapping={true}
-                    autoplayInterval={5000}
-                    firstItem={1}
-                    layoutCardOffset={0}
-                    maxToRenderPerBatch={3}
-                    windowSize={10}
-                    onSnapToItem={index => this.setState({activeSlider: index})}
-                    inactiveSlideOpacity={1}
-                    layout={'default'}
-                    data={newAnime}
-                    renderItem={({item, index}) => {
-                      return (
-                        <AnimatedCard
+              <ImageBackground
+                blurRadius={1}
+                source={{uri: anim.img}}
+                style={{width: '100%'}}>
+                <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
+                  <View>
+                    <Carousel
+                      loop
+                      autoplay
+                      enableMomentum={false}
+                      lockScrollWhileSnapping={true}
+                      autoplayInterval={5000}
+                      firstItem={1}
+                      layoutCardOffset={0}
+                      maxToRenderPerBatch={3}
+                      windowSize={10}
+                      onSnapToItem={index =>
+                        this.setState({activeSlider: index})
+                      }
+                      inactiveSlideOpacity={1}
+                      layout={'default'}
+                      data={newAnime}
+                      renderItem={({item, index}) => {
+                        return (
+                          <AnimatedCard
+                            isFavorite={
+                              this.props.favoritesAnim.filter(
+                                animF => animF.link === item.link,
+                              ).length > 0
+                            }
+                            heartClick={() => this._toggleFavorites(item)}
+                            item={item}
+                            navigate={() => {
+                              item.title.includes('فيلم')
+                                ? this.props.navigation.navigate('FilmDetail', {
+                                    index: index,
+                                    item: item,
+                                  })
+                                : this.props.navigation.navigate(
+                                    'AnimeDetail',
+                                    {
+                                      index: index,
+                                      item: item,
+                                    },
+                                  );
+                            }}
+                          />
+                        );
+                      }}
+                      slideStyle={styles.slide}
+                      containerCustomStyle={{flex: 1}}
+                      slideStyle={{marginTop: 130, marginBottom: 20}}
+                      sliderWidth={screenWidth}
+                      itemWidth={itemWidth}
+                    />
+                  </View>
+                </LinearGradient>
+              </ImageBackground>
+
+              {!this.props.fetching && (
+                <TextStyled hide title={'أنميات الأسطورية'} />
+              )}
+              <Carousel
+                firstItem={legendAnime.length - 1}
+                inactiveSlideOpacity={1}
+                layout={'stack'}
+                data={legendAnime}
+                renderItem={({item, index}) => {
+                  return (
+                    <AnimatedCard
+                      heartClick={() => this._toggleFavorites(item)}
+                      isFavorite={
+                        this.props.favoritesAnim.filter(
+                          animF => animF.link === item.link,
+                        ).length > 0
+                      }
+                      key={index}
+                      item={item}
+                      navigate={() => {
+                        item.title.includes('فيلم')
+                          ? this.props.navigation.navigate('FilmDetail', {
+                              index: index,
+                              item: item,
+                            })
+                          : this.props.navigation.navigate('AnimeDetail', {
+                              index: index,
+                              item: item,
+                            });
+                      }}
+                    />
+                  );
+                }}
+                slideStyle={{
+                  marginTop: 20,
+                  paddingTop: 50,
+                  overflow: 'visible',
+                }}
+                sliderWidth={screenWidth}
+                itemWidth={itemWidth + 50}
+                containerCustomStyle={{overflow: 'visible'}}
+                contentContainerCustomStyle={{overflow: 'visible'}}
+                layoutCardOffset={16}
+              />
+
+              {/*  آخر الحلقات المضافة */}
+              {!this.props.fetching && (
+                <TextStyled
+                  title={' آخر الحلقات المضافة'}
+                  onClick={() => {
+                    this.props.navigation.navigate('EpisodesAllList');
+                  }}
+                />
+              )}
+              <View style={{position: 'relative'}}>
+                <View style={styles.view}>
+                  {!this.props.fetching && (
+                    <Image
+                      style={styles.animImage}
+                      source={require('../images/onepiese.png')}
+                    />
+                  )}
+                </View>
+
+                <FlatList
+                  style={styles.ScrollView}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  data={this.props.animeEpisodes.slice(0, 20)}
+                  renderItem={({item}) => (
+                    <FilmCard
+                    
+                      isFavorite={
+                        this.props.favoritesAnim.filter(
+                          animF => animF.link === item.link,
+                        ).length > 0
+                      }
+                      heartClick={() => this._toggleFavorites(item)}
+                      item={item}
+                      navigate={() => this.getEpsServers(item.link)}
+                    />
+                  )}
+                  keyExtractor={item => item.title}
+                />
+                <AnimeServers
+                  hide={() => this.setState({showModal: false})}
+                  epsHref={this.state.epsHref}
+                  animeHrefLink={this.state.animeHrefLink}
+                  showModal={this.state.showModal}
+                  navigation={this.props.navigation}
+                />
+              </View>
+
+              {/* آخر الأنميات المضافة */}
+              {!this.props.fetching && (
+                <TextStyled
+                  title={'آخر الأنميات المضافة'}
+                  onClick={() => {
+                    this.props.navigation.navigate('AnimeAllList');
+                  }}
+                />
+              )}
+
+              <View style={{position: 'relative'}}>
+                <View style={styles.view}>
+                  {!this.props.fetching && (
+                    <Image
+                      style={styles.animImage}
+                      source={require('../images/hero.png')}
+                    />
+                  )}
+                </View>
+                {/* <ScrollView
+              style={{paddingLeft: 10 , flex: 1}}
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+               this.props.categories &&
+                this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)*/}
+                {/*  </ScrollView> */}
+                <FlatList
+                  style={styles.ScrollView}
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  data={this.props.animeList.slice(0, 20)}
+                  renderItem={({item}) => (
+                    <FilmCard
+                      isFavorite={
+                        this.props.favoritesAnim.filter(
+                          animF => animF.link === item.link,
+                        ).length > 0
+                      }
+                      heartClick={() => this._toggleFavorites(item)}
+                      item={item}
+                      showTitle={true}
+                      navigate={() => {
+                        this.props.navigation.navigate('AnimeDetail', {
+                          item: item,
+                        });
+                      }}
+                    />
+                  )}
+                  keyExtractor={item => item.title}
+                />
+              </View>
+              {/*التصنيف*/}
+              {/* <TextStyled title={"التصنيف"}/> */}
+
+              {/*آخر أفلام الأنميات المضافة  */}
+              {!this.props.fetching && (
+                <TextStyled
+                  title={'آخر أفلام'}
+                  onClick={() => {
+                    this.props.navigation.navigate('FilmAllList');
+                  }}
+                />
+              )}
+              {!this.props.fetching && (
+                <View style={{position: 'relative'}}>
+                  <View style={styles.view}>
+                    <Image
+                      style={styles.animImage}
+                      source={require('../images/red.png')}
+                    />
+                  </View>
+
+                  <FlatList
+                    data={this.props.films.slice(0, 20)}
+                    style={styles.ScrollView}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({item, index}) =>
+                      item.img && (
+                        <FilmCard
                           isFavorite={
                             this.props.favoritesAnim.filter(
                               animF => animF.link === item.link,
@@ -260,270 +473,94 @@ class Home extends React.Component {
                           }
                           heartClick={() => this._toggleFavorites(item)}
                           item={item}
+                          showTitle={true}
                           navigate={() => {
-                            item.title.includes('فيلم')
-                              ? this.props.navigation.navigate('FilmDetail', {
-                                  index: index,
-                                  item: item,
-                                })
-                              : this.props.navigation.navigate('AnimeDetail', {
-                                  index: index,
-                                  item: item,
-                                });
+                            this.props.navigation.navigate('FilmDetail', {
+                              item: item,
+                            });
                           }}
                         />
-                      );
-                    }}
-                    slideStyle={styles.slide}
-                    containerCustomStyle={{flex: 1}}
-                    slideStyle={{marginTop: 130, marginBottom: 20}}
-                    sliderWidth={screenWidth}
-                    itemWidth={itemWidth}
+                      )
+                    }
+                    keyExtractor={(item, index) => index.toString()}
                   />
                 </View>
-              </LinearGradient>
-            </ImageBackground>
+              )}
+            </React.Fragment>
 
-            {!this.props.fetching && (
-              <TextStyled hide title={'أنميات الأسطورية'} />
-            )}
-            <Carousel
-              firstItem={legendAnime.length - 1}
-              inactiveSlideOpacity={1}
-              layout={'stack'}
-              data={legendAnime}
-              renderItem={({item, index}) => {
-                return (
-                  <AnimatedCard
-                    heartClick={() => this._toggleFavorites(item)}
-                    isFavorite={
-                      this.props.favoritesAnim.filter(
-                        animF => animF.link === item.link,
-                      ).length > 0
-                    }
-                    key={index}
-                    item={item}
-                    navigate={() => {
-                      item.title.includes('فيلم')
-                        ? this.props.navigation.navigate('FilmDetail', {
-                            index: index,
-                            item: item,
-                          })
-                        : this.props.navigation.navigate('AnimeDetail', {
-                            index: index,
-                            item: item,
-                          });
-                    }}
-                  />
-                );
-              }}
-              slideStyle={{
-                marginTop: 20,
-                paddingTop: 50,
-                overflow: 'visible',
-              }}
-              sliderWidth={screenWidth}
-              itemWidth={itemWidth + 50}
-              containerCustomStyle={{overflow: 'visible'}}
-              contentContainerCustomStyle={{overflow: 'visible'}}
-              layoutCardOffset={16}
-            />
-
-            {/*  آخر الحلقات المضافة */}
-            {!this.props.fetching && (
-              <TextStyled
-                title={' آخر الحلقات المضافة'}
-                onClick={() => {
-                  this.props.navigation.navigate('EpisodesAllList');
-                }}
-              />
-            )}
-            <View style={{position: 'relative'}}>
-              <View style={styles.view}>
-                {!this.props.fetching && (
-                  <Image
-                    style={styles.animImage}
-                    source={require('../images/onepiese.png')}
-                  />
-                )}
-              </View>
-
-              <FlatList
-                style={styles.ScrollView}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                data={this.props.animeEpisodes.slice(0, 20)}
-                renderItem={({item}) => (
-                  <FilmCard
-                    isFavorite={
-                      this.props.favoritesAnim.filter(
-                        animF => animF.link === item.link,
-                      ).length > 0
-                    }
-                    heartClick={() => this._toggleFavorites(item)}
-                    item={item}
-                    navigate={() => this.getEpsServers(item.link)}
-                  />
-                )}
-                keyExtractor={item => item.title}
-              />
-              <AnimeServers
-                hide={() => this.setState({showModal: false})}
-                epsHref={this.state.epsHref}
-                showModal={this.state.showModal}
-                navigation={this.props.navigation}
-              />
-            </View>
-
-            {/* آخر الأنميات المضافة */}
-            {!this.props.fetching && (
-              <TextStyled
-                title={'آخر الأنميات المضافة'}
-                onClick={() => {
-                  this.props.navigation.navigate('AnimeAllList');
-                }}
-              />
-            )}
-
-            <View style={{position: 'relative'}}>
-              <View style={styles.view}>
-                {!this.props.fetching && (
-                  <Image
-                    style={styles.animImage}
-                    source={require('../images/hero.png')}
-                  />
-                )}
-              </View>
-              {/* <ScrollView
-              style={{paddingLeft: 10 , flex: 1}}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-               this.props.categories &&
-                this.props.categories.map((cat, index) => cat.title && <Chip key={index} style={{marginTop:10,marginRight:10}}  onPress={() => console.log('Pressed')}>{cat.title}</Chip>)*/}
-              {/*  </ScrollView> */}
-              <FlatList
-                style={styles.ScrollView}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                data={this.props.animeList.slice(0, 20)}
-                renderItem={({item}) => (
-                  <FilmCard
-                    isFavorite={
-                      this.props.favoritesAnim.filter(
-                        animF => animF.link === item.link,
-                      ).length > 0
-                    }
-                    heartClick={() => this._toggleFavorites(item)}
-                    item={item}
-                    showTitle={false}
-                    navigate={() => {
-                      this.props.navigation.navigate('AnimeDetail', {
-                        item: item,
-                      });
-                    }}
-                  />
-                )}
-                keyExtractor={item => item.title}
-              />
-            </View>
-            {/*التصنيف*/}
-            {/* <TextStyled title={"التصنيف"}/> */}
-
-            {/*آخر أفلام الأنميات المضافة  */}
-            {!this.props.fetching && (
-              <TextStyled
-                title={'آخر أفلام'}
-                onClick={() => {
-                  this.props.navigation.navigate('FilmAllList');
-                }}
-              />
-            )}
-            {!this.props.fetching && (
-              <View style={{position: 'relative'}}>
-                <View style={styles.view}>
-                  <Image
-                    style={styles.animImage}
-                    source={require('../images/red.png')}
-                  />
-                </View>
-
-                <FlatList
-                  data={this.props.films.slice(0, 20)}
-                  style={styles.ScrollView}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({item, index}) =>
-                    item.img && (
-                      <FilmCard
-                        isFavorite={
-                          this.props.favoritesAnim.filter(
-                            animF => animF.link === item.link,
-                          ).length > 0
-                        }
-                        heartClick={() => this._toggleFavorites(item)}
-                        item={item}
-                        showTitle={false}
-                        navigate={() => {
-                          this.props.navigation.navigate('FilmDetail', {
-                            item: item,
-                          });
-                        }}
-                      />
+            {this.state.showAlertDesigned &&
+              Toast.showWithGravity(
+                'اتصال إنترنت بطيء أو معدوم. يرجى التحقق من إعدادات الإنترنت الخاصة بك',
+                Toast.LONG,
+                Toast.BOTTOM,
+              )}
+            <View style={styles.alertContainer}>
+              <SCLAlert
+                headerIconComponent={
+                  <Icon name="update" size={40} color="#fff" />
+                }
+                onRequestClose={() => {}}
+                theme="info"
+                show={this.state.updateKnow}
+                titleStyle={{fontFamily: 'JF Flat regular'}}
+                subtitleStyle={{lineHeight: 30, fontFamily: 'JF Flat regular'}}
+                title="مطلوب التحديث"
+                subtitle="لأسباب فنية نحتاج أن نطلب منك تحديث التطبيق. اسف بشأن ذلك">
+                <B
+                  mode="contained"
+                  style={{
+                    fontFamily: 'JF Flat regular',
+                    backgroundColor: '#027BFF',
+                  }}
+                  onPress={() =>
+                    Linking.canOpenURL(
+                      'https://play.google.com/store/apps/details?id=com.anim',
                     )
-                  }
-                  keyExtractor={(item, index) => index.toString()}
-                />
-              </View>
-            )}
-          </React.Fragment>
-
-          {this.state.showAlertDesigned &&
-            Toast.showWithGravity(
-              'اتصال إنترنت بطيء أو معدوم. يرجى التحقق من إعدادات الإنترنت الخاصة بك',
-              Toast.LONG,
-              Toast.BOTTOM,
-            )}
-          <View style={styles.alertContainer}>
-            <SCLAlert
-              headerIconComponent={
-                <Icon name="update" size={40} color="#fff" />
-              }
-              onRequestClose={() => {}}
-              theme="info"
-              show={this.state.updateKnow}
-              titleStyle={{fontFamily: 'JF Flat regular'}}
-              subtitleStyle={{lineHeight: 30, fontFamily: 'JF Flat regular'}}
-              title="مطلوب التحديث"
-              subtitle="لأسباب فنية نحتاج أن نطلب منك تحديث التطبيق. اسف بشأن ذلك">
-              <B
-                mode="contained"
-                style={{
-                  fontFamily: 'JF Flat regular',
-                  backgroundColor: '#027BFF',
-                }}
-                onPress={() =>
-                  Linking.canOpenURL(
-                    'https://play.google.com/store/apps/details?id=com.anim',
-                  )
-                    .then(supported => {
-                      if (!supported) {
-                        alert(
-                          "Can't handle url: " +
+                      .then(supported => {
+                        if (!supported) {
+                          alert(
+                            "Can't handle url: " +
+                              'https://play.google.com/store/apps/details?id=com.anim',
+                          );
+                        } else {
+                          return Linking.openURL(
                             'https://play.google.com/store/apps/details?id=com.anim',
-                        );
-                      } else {
-                        return Linking.openURL(
-                          'https://play.google.com/store/apps/details?id=com.anim',
-                        );
-                      }
-                    })
-                    .catch(err => alert('An error occurred', err))
-                }>
-                تحديث
-              </B>
-            </SCLAlert>
+                          );
+                        }
+                      })
+                      .catch(err => alert('An error occurred', err))
+                  }>
+                  تحديث
+                </B>
+              </SCLAlert>
+            </View>
+          </ScrollView>
+        ) : (
+          <View
+            style={{
+               paddingTop:screenHeight/2,
+              
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+            }}>
+            <Icon name="wifi-off" size={50} color="#000" />
+            <Text
+              style={{
+                fontFamily: 'JF Flat regular',
+                textAlign: 'center',
+                margin: 10,
+                flex: 1,
+              }}>
+              اتصال إنترنت بطيء أو معدوم. يرجى التحقق من إعدادات الإنترنت الخاصة
+              بك
+            </Text>
           </View>
-        </ScrollView>
+        )}
       </SafeAreaView>
     );
   }
@@ -544,7 +581,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   ScrollView: {
-    paddingLeft: 80,
+    paddingLeft: 40,
     overflow: 'visible',
   },
 

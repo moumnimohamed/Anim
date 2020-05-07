@@ -1,6 +1,7 @@
 import Heart from 'react-native-vector-icons/AntDesign';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Play from 'react-native-vector-icons/AntDesign';
+import share from '../components/Share';
 import {
   Image,
   ImageBackground,
@@ -25,11 +26,13 @@ export function CardEpisode(props) {
       style={styles.container}
       colors={['#fff', props.alreadyViewed ? 'red' : '#89C13D']}>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Image
-          ImageResizeMode={'contain'}
-          style={styles.image}
-          source={{uri: props.img ? props.img : ''}}
-        />
+        <TouchableOpacity onPress={props.navigate}>
+          <Image
+            ImageResizeMode={'contain'}
+            style={styles.image}
+            source={{uri: props.img ? props.img : ''}}
+          />
+        </TouchableOpacity>
         {props.alreadyViewed && (
           <View style={{...styles.eye}}>
             <Heart name="eyeo" size={20} color="red" />
@@ -37,6 +40,7 @@ export function CardEpisode(props) {
         )}
       </View>
       <Text
+        onPress={props.navigate}
         style={{
           width: '60%',
           fontFamily: 'JF Flat regular',
@@ -48,8 +52,10 @@ export function CardEpisode(props) {
       </Text>
 
       <View style={styles.name}>
-        <TouchableOpacity style={{...styles.btn, marginRight: 10}}>
-          <Heart name="hearto" size={20} color="white" />
+        <TouchableOpacity
+          style={{...styles.btn, marginRight: 10}}
+          onPress={() => share({title: props.video.text})}>
+          <FontAwesome name="send-o" size={20} color="white" />
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={props.navigate}>
           <Play name="play" size={20} color="white" />

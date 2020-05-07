@@ -9,6 +9,8 @@ import axios from 'axios';
 
 import Loader from '../components/Loader';
 import {ActivityIndicator} from 'react-native-paper';
+import Toast from 'react-native-simple-toast';
+
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 function BySeason(props) {
@@ -59,9 +61,18 @@ function BySeason(props) {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      alert('added to favorites');
+      Toast.showWithGravity(
+        "تمت إضافتها إلى قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
+     
     } else {
-      alert('deleted from favorites');
+      Toast.showWithGravity(
+        "تمت إزالته من قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
     }
 
     props.toggleFavorites(anime);

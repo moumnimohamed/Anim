@@ -2,6 +2,8 @@ import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import {Button as B} from 'react-native-paper';
 import React from 'react';
+import Toast from 'react-native-simple-toast';
+
 import {
   FlatList,
   SafeAreaView,
@@ -26,9 +28,18 @@ class FavoritesList extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      alert('added to favorites');
+      Toast.showWithGravity(
+        "تمت إضافتها إلى قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
+  
     } else {
-      alert('deleted from favorites');
+         Toast.showWithGravity(
+        "تمت إزالته من قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
     }
 
     this.props.toggleFavorites(anime);
@@ -109,7 +120,7 @@ class FavoritesList extends React.Component {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) =>
             item.img ? (
-              !item.title.includes('فيلم') ? (
+              item.title.includes('فيلم') ? (
                 <FilmCard
                   isFavorite={
                     this.props.favoritesAnim.filter(
@@ -135,7 +146,11 @@ class FavoritesList extends React.Component {
                   heartClick={() => this._toggleFavorites(item)}
                   item={item}
                   showTitle={true}
-                  navigate={() => this.getEpsServers(item.link)}
+                  navigate={() => {
+                    this.props.navigation.navigate('AnimeDetail', {
+                      item: item,
+                    });
+                  }}
                 />
               )
             ) : null
