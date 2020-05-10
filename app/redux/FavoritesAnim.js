@@ -1,5 +1,6 @@
  
 export const TOGGLE_FAVORITES = 'TOGGLE_FAVORITES';
+export const INITIAL_FAVORITES = 'INITIAL_FAVORITES';
 
 export const initialState = {
   data: [],
@@ -8,6 +9,11 @@ export const initialState = {
 // Actions
 export const toggleFavorites = data => ({
   type: TOGGLE_FAVORITES,
+  data,
+});
+
+export const initialFavorites = data => ({
+  type: INITIAL_FAVORITES,
   data,
 });
 
@@ -29,6 +35,11 @@ export const ToggleFavAnim = (state = initialState, action) => {
           data: state.data.filter(anim => anim.link !== action.data.link),
         };
       }
+      case INITIAL_FAVORITES :
+        return {
+          ...state,
+          data:action.data ,
+        };
 
      
     default:

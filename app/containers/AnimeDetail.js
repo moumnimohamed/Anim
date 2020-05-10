@@ -3,6 +3,9 @@ import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import TextStyled from '../components/TextStyled';
 import {FilmCard} from '../components/FilmCard';
+import {toggleFavorites} from '../redux/FavoritesAnim';
+import Toast from 'react-native-simple-toast';
+
 import {
   Dimensions,
   FlatList,
@@ -32,6 +35,9 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 let links = [];
 class AnimeDetail extends React.Component {
+
+
+  
   state = {
     epsHref: [],
     showModal: false,
@@ -65,6 +71,27 @@ class AnimeDetail extends React.Component {
 
     this.setState({alreadyViewed: AllNames});
   };
+  _toggleFavorites(anime) {
+    const index = this.props.favoritesAnim.findIndex(
+      anim => anim.link === anime.link,
+    );
+    if (index == -1) {
+      Toast.showWithGravity(
+        "تمت إضافتها إلى قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
+      
+    } else {
+      Toast.showWithGravity(
+                "تمت إزالته من قائمتك",
+                Toast.LONG,
+                Toast.BOTTOM,
+              )
+    }
+  
+    this.props.toggleFavorites(anime);
+  }
 
   getEpsServers = async (link, name) => {
     const nameToBeSaved = {name: name};
@@ -251,7 +278,7 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                 </View>
 
                 <View style={{flex: 1}}>
-                  {status[0] && (
+                  {status[0] ? (
                     <View
                       style={{
                         justifyContent: 'flex-end',
@@ -269,7 +296,7 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                         {status[0]}
                       </Text>
                     </View>
-                  )}
+                  ) : null}
                   {published[0] && (
                     <View
                       style={{
@@ -476,11 +503,18 @@ this.props.animeDetail && this.props.animeDetail.length > 0
             <TextStyled hide title={'أنميات ذات صلة'} />
             <FlatList
               style={styles.relatedF}
+            
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               data={relatedF}
               renderItem={({item}) => (
                 <FilmCard
+                isFavorite={
+                              this.props.favoritesAnim.filter(
+                                animF => animF.link === item.link,
+                              ).length > 0
+                            }
+                            heartClick={() => this._toggleFavorites(item)}
                   item={item}
                   navigate={() => {
                     this.props.navigation.push('AnimeDetail', {item: item});
@@ -581,11 +615,14 @@ const mapStateToProps = state => {
   return {
     animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
     fetching: state.animeDetail.fetching,
+    favoritesAnim: state.favoritesAnim.data || [],
+    
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    toggleFavorites: data => dispatch(toggleFavorites(data)),
     AnimeDetailRequest: data => dispatch(animeDetailRequest(data)),
   };
 };

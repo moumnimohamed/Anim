@@ -1,10 +1,13 @@
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import {detailRequest} from '../redux/filmDetailRedux';
-
+import TextStyled from '../components/TextStyled';
 import Play from 'react-native-vector-icons/AntDesign';
-
+import {FilmCard} from '../components/FilmCard';
 import {ActivityIndicator, Chip} from 'react-native-paper';
+import {toggleFavorites} from '../redux/FavoritesAnim';
+import Toast from 'react-native-simple-toast';
+
 import {
   Dimensions,
   TouchableOpacity,
@@ -45,6 +48,29 @@ class FilmDetail extends React.Component {
     }
   };
 
+  _toggleFavorites(anime) {
+    const index = this.props.favoritesAnim.findIndex(
+      anim => anim.link === anime.link,
+    );
+    if (index == -1) {
+      Toast.showWithGravity(
+        "تمت إضافتها إلى قائمتك",
+        Toast.LONG,
+        Toast.BOTTOM,
+      )
+      
+    } else {
+      Toast.showWithGravity(
+                "تمت إزالته من قائمتك",
+                Toast.LONG,
+                Toast.BOTTOM,
+              )
+    }
+
+    this.props.toggleFavorites(anime);
+  }
+
+
   render() {
     const cat =
       this.props.filmDetail && this.props.filmDetail.length > 0
@@ -67,27 +93,32 @@ class FilmDetail extends React.Component {
         ? this.props.filmDetail[0]['streamLinks']
         : [];
 
+    const relatedF =
+      this.props.filmDetail && this.props.filmDetail.length > 0
+        ? this.props.filmDetail[0]['relatedF']
+        : [];
+
     reactotron.log('ha streamLinks', streamLinks);
     return (
       <SafeAreaView style={styles.container}>
-        
-          <ScrollView style={styles.scroll}>
-            <ImageBackground
-              blurRadius={1}
-              source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
-              style={styles.bkg}>
-              <View style={styles.viewDATA}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    ImageResizeMode={'contain'}
-                    style={styles.image}
-                    source={{
-                      uri: this.state.anime.img ? this.state.anime.img : '',
-                    }}
-                  />
-                </View>
+        <ScrollView style={styles.scroll}>
+          <ImageBackground
+            blurRadius={1}
+            source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
+            style={styles.bkg}>
+            <View style={styles.viewDATA}>
+              <View style={styles.imageContainer}>
+                <Image
+                  ImageResizeMode={'contain'}
+                  style={styles.image}
+                  source={{
+                    uri: this.state.anime.img ? this.state.anime.img : '',
+                  }}
+                />
+              </View>
 
-                {!this.props.fetching && <FlatList
+              {!this.props.fetching && (
+                <FlatList
                   horizontal={true}
                   showsHorizontalScrollIndicator={false}
                   data={cat}
@@ -115,8 +146,10 @@ class FilmDetail extends React.Component {
                     </Chip>
                   )}
                   keyExtractor={item => item.title}
-                />}
-               {!this.props.fetching && <View
+                />
+              )}
+              {!this.props.fetching && (
+                <View
                   style={{
                     paddingHorizontal: 20,
                     paddingTop: 20,
@@ -180,8 +213,10 @@ class FilmDetail extends React.Component {
                       </View>
                     )}
                   </View>
-                </View>}
-                {!this.props.fetching && story.map((p, i) => {
+                </View>
+              )}
+              {!this.props.fetching &&
+                story.map((p, i) => {
                   return p && p.text ? (
                     <Text
                       key={i}
@@ -194,9 +229,10 @@ class FilmDetail extends React.Component {
                     </Text>
                   ) : null;
                 })}
-              </View>
-            </ImageBackground>
-            {!this.props.fetching && streamLinks.map((video, i) => {
+            </View>
+          </ImageBackground>
+          {!this.props.fetching &&
+            streamLinks.map((video, i) => {
               return video && video.text ? (
                 <Playeroo
                   key={i}
@@ -209,18 +245,42 @@ class FilmDetail extends React.Component {
                 />
               ) : null;
             })}
-              
-        {this.props.fetching && (
-          <View style={styles.ActivityIndicator}>
-            <Image
-              style={{width: 50, height: 50, position: 'absolute'}}
-              source={require('../images/logo.png')}
-            />
-            <ActivityIndicator animating={true} size={50} color={'#000'} />
-          </View>
-        )}
-          </ScrollView>
-      
+          {!this.props.fetching && (
+            <React.Fragment>
+              <TextStyled hide title={'أفلام ذات صلة'} />
+              <FlatList
+                style={styles.relatedF}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                data={relatedF}
+                renderItem={({item}) => (
+                  <FilmCard
+                  isFavorite={
+                              this.props.favoritesAnim.filter(
+                                animF => animF.link === item.link,
+                              ).length > 0
+                            }
+                            heartClick={() => this._toggleFavorites(item)}
+                    item={item}
+                    navigate={() => {
+                      this.props.navigation.push('FilmDetail', {item: item});
+                    }}
+                  />
+                )}
+                keyExtractor={item => item.title}
+              />
+            </React.Fragment>
+          )}
+          {this.props.fetching && (
+            <View style={styles.ActivityIndicator}>
+              <Image
+                style={{width: 50, height: 50, position: 'absolute'}}
+                source={require('../images/logo.png')}
+              />
+              <ActivityIndicator animating={true} size={50} color={'#000'} />
+            </View>
+          )}
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -249,7 +309,9 @@ const styles = StyleSheet.create({
     borderTopRightRadius: screenWidth / 2,
     alignItems: 'center',
   },
-
+  relatedF: {
+    paddingBottom: 10,
+  },
   imageContainer: {
     top: 0,
     marginBottom: 20,
@@ -270,7 +332,7 @@ const styles = StyleSheet.create({
     elevation: 13,
   },
   image: {
-    zIndex:9,
+    zIndex: 9,
     width: '100%',
     height: '100%',
   },
@@ -302,11 +364,15 @@ const mapStateToProps = state => {
   return {
     filmDetail: state.filmDetail.payload ? state.filmDetail.payload : [],
     fetching: state.filmDetail.fetching,
+    favoritesAnim: state.favoritesAnim.data || [],
+    
+    
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    toggleFavorites: data => dispatch(toggleFavorites(data)),
     filmDetailRequest: data => dispatch(detailRequest(data)),
   };
 };

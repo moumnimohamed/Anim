@@ -170,11 +170,28 @@ class Account extends React.Component {
             <Text style={styles.btnText}>قيم هذا التطبيق</Text>
             <Icon name={'star'} size={25} color="#89C13D" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('mailto:xman012312@gmail.com')} style={styles.btnBig}>
+          <TouchableOpacity onPress={() => Linking.openURL('mailto:animiaapp@gmail.com')} style={styles.btnBig}>
             <Text style={styles.btnText}>اتصل بنا (اقتراح ، خطأ في التطبيق ، طلب)</Text>
             <Icon name={'account'} size={25} color="#89C13D" />
           </TouchableOpacity>
-
+          <TouchableOpacity onPress={() =>
+              Linking.canOpenURL('https://www.paypal.me/animiaApp')
+                .then(supported => {
+                  if (!supported) {
+                    alert("Can't handle url: " + 'https://www.paypal.me/animiaApp');
+                  } else {
+                    return Linking.openURL('https://www.paypal.me/animiaApp');
+                  }
+                })
+                .catch(err => alert('An error occurred', err))
+            } style={styles.btnBig}>
+            <Text style={styles.btnText}>ادعم التطبيق</Text>
+            <Image
+              style={{width: 20, height: 20}}
+              source={require('../images/paypal.png')}
+            />
+          </TouchableOpacity>
+          <Login />
           {/*  {this.state.login && <Login />}
           {this.state.signUp && (
             <SignUp

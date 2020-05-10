@@ -8,13 +8,14 @@ import {
   ImageBackground,
 } from 'react-native';
 import Loader from '../components/Loader';
+import Toast from 'react-native-simple-toast';
 
 import SendIntentAndroid from 'react-native-send-intent';
 
 import cheerio from 'cheerio-without-node-native';
 import axios from 'axios';
 
-import {IconButton,Button, Switch} from 'react-native-paper';
+import {IconButton, Button, Switch} from 'react-native-paper';
 import {Playeroo} from '../components/Playeroo';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
@@ -24,6 +25,7 @@ export default function AnimeServers(props) {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
   const _onToggleSwitch = url => {
+    console.log(url);
     setIsSwitchOn(!isSwitchOn), !isSwitchOn && download(url);
   };
 
@@ -38,14 +40,27 @@ export default function AnimeServers(props) {
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          const dl = $('#player video source').attr('src');
+          const dl = $('#player .video-container video source').attr('src');
+
+          console.log('voila', dl);
+          if (!dl) {
+            setIsSwitchOn(false);
+            return Toast.showWithGravity(
+              'لا يمكنك تحميل هذه الحلقة ، رابط يحتوي على خطأ',
+              Toast.LONG,
+              Toast.BOTTOM,
+            );
+          }
           SendIntentAndroid.openAppWithData('com.dv.adm', dl, 'video/*', {
             position: {type: 'int', value: 60},
-          }).then(wasOpened => {});
+          }).then(wasOpened => {
+            setIsSwitchOn(false);
+          });
         }
       })
       .catch(error => {
-        error;
+        setIsSwitchOn(false);
+        console.log(error);
       });
   };
 
@@ -71,18 +86,18 @@ export default function AnimeServers(props) {
           <View style={{flexDirection: 'row'}}>
             {props.animeHrefLink && (
               <Button
-          style={{backgroundColor:"#89C13D"}}
-            icon="arrow-left"
-            color={"white"}
-            size={20}
-            onPress={() => {
+                style={{backgroundColor: '#89C13D'}}
+                icon="arrow-left"
+                color={'white'}
+                size={20}
+                onPress={() => {
                   props.hide();
                   props.navigation.navigate('AnimeDetail', {
                     item: {link: props.animeHrefLink},
                   });
-                }}
-          >أنمي</Button>
-               
+                }}>
+                أنمي
+              </Button>
             )}
             <Text
               style={{

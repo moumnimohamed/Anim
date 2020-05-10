@@ -35,14 +35,20 @@ export class FilmCard extends React.Component {
         }
 
         <View style={styles.Btncontainer}>
-          {!this.props.item.title.includes("الحلقة") && <TouchableOpacity style={styles.btn} onPress={this.props.heartClick}>
-            <Heart
-              name={this.props.isFavorite ? 'heart' : 'hearto'}
-              color={this.props.isFavorite ? 'red' : 'black'}
-              size={15}
-            />
-          </TouchableOpacity>}
-          <TouchableOpacity style={styles.btn} onPress={() => share(this.props.item)}>
+          {!this.props.item.title.includes('الحلقة') && (
+            <TouchableOpacity
+              style={styles.btn}
+              onPress={this.props.heartClick}>
+              <Heart
+                name={this.props.isFavorite ? 'heart' : 'hearto'}
+                color={this.props.isFavorite ? 'red' : 'black'}
+                size={15}
+              />
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => share(this.props.item)}>
             <FontAwesome name="send-o" size={15} color="black" />
           </TouchableOpacity>
         </View>

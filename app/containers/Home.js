@@ -2,6 +2,8 @@ import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import Toast from 'react-native-simple-toast';
+import AsyncStorage from '@react-native-community/async-storage';
+
 
 import VersionCheck from 'react-native-version-check';
 import {
@@ -16,7 +18,7 @@ import {
   View,
   Linking,
   Text,
-  AsyncStorage,
+   
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {StatusBar} from 'react-native';
@@ -31,7 +33,7 @@ import TextStyled from '../components/TextStyled';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {filmRequest} from '../redux/FilmRedux';
-import {toggleFavorites} from '../redux/FavoritesAnim';
+import {toggleFavorites ,initialFavorites} from '../redux/FavoritesAnim';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {Button as B} from 'react-native-paper';
 import {default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -88,6 +90,21 @@ class Home extends React.Component {
   handleClose = () => {
     this.setState({show: false});
   };
+
+    loadState =  async () => {
+    try {
+      const serializedState = await AsyncStorage.getItem('favoritesAnim');
+        let fav =JSON.parse(serializedState);
+             console.log("favoritesAnim10",fav)
+         this.props.initialFavorites(fav.data) 
+      if (serializedState === null) {
+        return undefined;
+      }
+      return json
+    } catch (err) {
+      return undefined;
+    }
+  }; 
 
   _toggleFavorites(anime) {
     const index = this.props.favoritesAnim.findIndex(
@@ -178,6 +195,7 @@ class Home extends React.Component {
     });
   };
   componentDidMount() {
+    this.loadState()
     this.checkUpdateApp();
     this.unsubscribe();
     this.getData();
@@ -633,6 +651,7 @@ const mapStateToProps = state => {
     filmCategories:
       state.films && state.films.categories ? state.films.categories : [],
     favoritesAnim: state.favoritesAnim.data || [],
+    
   };
 };
 
@@ -643,6 +662,7 @@ const mapDispatchToProps = dispatch => {
     aniEpisodeRequest: data => dispatch(aniEpisodeRequest(data)),
     filmRequest: data => dispatch(filmRequest(data)),
     toggleFavorites: data => dispatch(toggleFavorites(data)),
+    initialFavorites: data => dispatch(initialFavorites(data)),
   };
 };
 

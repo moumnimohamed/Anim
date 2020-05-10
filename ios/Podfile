@@ -61,6 +61,8 @@ target 'Anim' do
 
   pod 'react-native-version-check', :path => '../node_modules/react-native-version-check'
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'AnimTests' do
     inherit! :search_paths
     # Pods for testing

@@ -171,7 +171,7 @@ class FavoritesList extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-       marginTop:20,
+       marginTop:40,
        flex:1
   },
 });
