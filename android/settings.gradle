@@ -11,9 +11,7 @@ project(':react-native-onesignal').projectDir = new File(rootProject.projectDir,
 project(':react-native-permissions').projectDir = new File(rootProject.projectDir, '../../../../../AppData/Roaming/npm/node_modules/react-native-permissions/android')
  include ':react-native-send-intent'
 project(':react-native-send-intent').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-send-intent/android')
-include ':react-native-orientation'
-project(':react-native-orientation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-orientation/android')
- include ':react-native-safe-area-context'
+  include ':react-native-safe-area-context'
 project(':react-native-safe-area-context').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-safe-area-context/android')
 include ':react-native-screens'
 project(':react-native-screens').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-screens/android')

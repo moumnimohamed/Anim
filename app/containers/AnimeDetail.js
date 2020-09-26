@@ -16,8 +16,9 @@ import {
   Text,
   TouchableOpacity,
   View,
-  AsyncStorage,
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+
 import {
   TextInput,
   ActivityIndicator,
@@ -35,9 +36,6 @@ const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 let links = [];
 class AnimeDetail extends React.Component {
-
-
-  
   state = {
     epsHref: [],
     showModal: false,
@@ -49,7 +47,7 @@ class AnimeDetail extends React.Component {
   };
 
   componentDidMount() {
-    console.log("mamamia",this.props.navigation.state.params.item)
+    console.log('mamamia', this.props.navigation.state.params.item);
     this.showEyes();
     this.props.AnimeDetailRequest(this.state.anime.link);
   }
@@ -76,20 +74,11 @@ class AnimeDetail extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      Toast.showWithGravity(
-        "تمت إضافتها إلى قائمتك",
-        Toast.LONG,
-        Toast.BOTTOM,
-      )
-      
+      Toast.showWithGravity('تمت إضافتها إلى قائمتك', Toast.LONG, Toast.BOTTOM);
     } else {
-      Toast.showWithGravity(
-                "تمت إزالته من قائمتك",
-                Toast.LONG,
-                Toast.BOTTOM,
-              )
+      Toast.showWithGravity('تمت إزالته من قائمتك', Toast.LONG, Toast.BOTTOM);
     }
-  
+
     this.props.toggleFavorites(anime);
   }
 
@@ -107,7 +96,7 @@ class AnimeDetail extends React.Component {
     if (!alreadyExist) {
       newName.push(nameToBeSaved);
     }
-
+let href = [];
     await AsyncStorage.setItem('names', JSON.stringify(newName))
       .then(() => {
         console.log('‘It was saved successfully’');
@@ -125,17 +114,21 @@ class AnimeDetail extends React.Component {
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          href = [];
-          $('.embed-player-tabs .nav.nav-tabs  li').map((_, elm) => {
-            href.push({text: $(elm).text(), link: $(elm).attr('hrefa')});
+          
+
+
+          $('#episode-servers   li').map((_, elm) => {
+            href.push({text: $("a",elm).text(), link: $("a",elm).attr('data-ep-url')});
+            
           });
+
           console.log('count', href.length);
-          if (href.length <= 0) {
+         /*  if (href.length <= 0) {
             console.log('count2', href.length);
             $('.episode-videoplay ul li').map((_, elm) => {
               href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
             });
-          }
+          } */
           console.log(href);
           this.setState({epsHref: href}, () => {
             console.log('hahowa', this.state.epsHref);
@@ -158,10 +151,10 @@ episodesNbr
 story
 streamLinks
 relatedF */
-const posterImage =
-this.props.animeDetail && this.props.animeDetail.length > 0
-  ? this.props.animeDetail[0]['image']
-  : '';
+    const posterImage =
+      this.props.animeDetail && this.props.animeDetail.length > 0
+        ? this.props.animeDetail[0]['image']
+        : '';
 
     const season =
       this.props.animeDetail && this.props.animeDetail.length > 0
@@ -173,6 +166,8 @@ this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['status']
         : '';
 
+    console.log('hiastatus', status);
+
     const episodesNbr =
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['episodesNbr']
@@ -183,10 +178,14 @@ this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['category']
         : '';
 
+        console.log("voilacat",cat)
+
     const story =
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['story']
         : [];
+
+    console.log('storia', story);
     const published =
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['published']
@@ -215,16 +214,26 @@ this.props.animeDetail && this.props.animeDetail.length > 0
       <ScrollView style={styles.scroll}>
         <ImageBackground
           blurRadius={1}
-          source={{uri: this.state.anime.img ? this.state.anime.img : posterImage ? posterImage : null}}
-             
+          source={{
+            uri: this.state.anime.img
+              ? this.state.anime.img
+              : posterImage
+              ? posterImage
+              : null,
+          }}
           style={styles.bkg}>
           <View style={styles.viewDATA}>
-
             <View style={styles.imageContainer}>
               <Image
                 ImageResizeMode={'contain'}
                 style={styles.image}
-                source={{uri: this.state.anime.img ? this.state.anime.img : posterImage ? posterImage : null}}
+                source={{
+                  uri: this.state.anime.img
+                    ? this.state.anime.img
+                    : posterImage
+                    ? posterImage
+                    : null,
+                }}
               />
             </View>
 
@@ -296,8 +305,10 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                         {status[0]}
                       </Text>
                     </View>
-                  ) : null}
-                  {published[0] && (
+                  ) : (
+                    <></>
+                  )}
+                  {published[0] ? (
                     <View
                       style={{
                         justifyContent: 'flex-end',
@@ -315,8 +326,10 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                         {published[0]}
                       </Text>
                     </View>
+                  ) : (
+                    <></>
                   )}
-                  {duration[0] && (
+                  {duration[0] ? (
                     <View
                       style={{
                         justifyContent: 'flex-end',
@@ -334,8 +347,10 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                         {duration[0]}
                       </Text>
                     </View>
+                  ) : (
+                    <></>
                   )}
-                  {episodesNbr[0] && (
+                  {episodesNbr[0] ? (
                     <View
                       style={{
                         justifyContent: 'flex-end',
@@ -353,8 +368,10 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                         {episodesNbr[0]}
                       </Text>
                     </View>
+                  ) : (
+                    <></>
                   )}
-                  {season[0] && (
+                  {season[0] ? (
                     <View
                       style={{
                         justifyContent: 'flex-end',
@@ -376,28 +393,32 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                         }}>
                         {season[1]}
                       </Text>
-
                       <Text style={{fontFamily: 'JF Flat regular'}}>
                         {season[0]}
                       </Text>
                     </View>
+                  ) : (
+                    <></>
                   )}
                 </View>
               </View>
             )}
             {!this.props.fetching &&
               story.map((p, i) => {
-                return p && p.text ? (
+                return p ? (
                   <Text
                     key={i}
                     style={{
+                      lineHeight: 20,
                       fontFamily: 'JF Flat regular',
                       padding: 20,
                       color: '#9A999A',
                     }}>
-                    {p.text}
+                    {p}
                   </Text>
-                ) : null;
+                ) : (
+                  <></>
+                );
               })}
           </View>
         </ImageBackground>
@@ -478,7 +499,6 @@ this.props.animeDetail && this.props.animeDetail.length > 0
                 )}
                 <Text
                   style={{fontFamily: 'JF Flat regular', alignSelf: 'center'}}>
-                  {' '}
                   نعتذر، الحلقات في عملية التحضير
                 </Text>
                 <IconButton
@@ -498,33 +518,7 @@ this.props.animeDetail && this.props.animeDetail.length > 0
           showModal={this.state.showModal}
           navigation={this.props.navigation}
         />
-        {!this.props.fetching && (
-          <React.Fragment>
-            <TextStyled hide title={'أنميات ذات صلة'} />
-            <FlatList
-              style={styles.relatedF}
-            
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={relatedF}
-              renderItem={({item}) => (
-                <FilmCard
-                isFavorite={
-                              this.props.favoritesAnim.filter(
-                                animF => animF.link === item.link,
-                              ).length > 0
-                            }
-                            heartClick={() => this._toggleFavorites(item)}
-                  item={item}
-                  navigate={() => {
-                    this.props.navigation.push('AnimeDetail', {item: item});
-                  }}
-                />
-              )}
-              keyExtractor={item => item.title}
-            />
-          </React.Fragment>
-        )}
+
         {this.props.fetching && (
           <View style={styles.ActivityIndicator}>
             <Image
@@ -616,7 +610,6 @@ const mapStateToProps = state => {
     animeDetail: state.animeDetail.payload ? state.animeDetail.payload : [],
     fetching: state.animeDetail.fetching,
     favoritesAnim: state.favoritesAnim.data || [],
-    
   };
 };
 

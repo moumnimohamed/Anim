@@ -104,7 +104,7 @@ class FilmDetail extends React.Component {
         <ScrollView style={styles.scroll}>
           <ImageBackground
             blurRadius={1}
-            source={{uri: this.state.anime.img ? this.state.anime.img : ''}}
+            source={{uri: this.state.anime.img ? this.state.anime.img : null}}
             style={styles.bkg}>
             <View style={styles.viewDATA}>
               <View style={styles.imageContainer}>
@@ -112,7 +112,7 @@ class FilmDetail extends React.Component {
                   ImageResizeMode={'contain'}
                   style={styles.image}
                   source={{
-                    uri: this.state.anime.img ? this.state.anime.img : '',
+                    uri: this.state.anime.img ? this.state.anime.img : null,
                   }}
                 />
               </View>
@@ -263,7 +263,7 @@ class FilmDetail extends React.Component {
                             heartClick={() => this._toggleFavorites(item)}
                     item={item}
                     navigate={() => {
-                      this.props.navigation.push('FilmDetail', {item: item});
+                      this.props.navigation.push('AnimeDetail', {item: item});
                     }}
                   />
                 )}

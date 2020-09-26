@@ -14,7 +14,7 @@ export default function Header(props) {
   console.log("header props",props)
   return <View style={styles.container}>
   <Image
-          style={{width: 50, height:50 ,margin:10}}
+          style={{width: 80, height:80 }}
           source={require('../images/logo.png')}
         />
         <View style={styles.texts}>

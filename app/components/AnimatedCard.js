@@ -18,7 +18,7 @@ export class AnimatedCard extends React.Component {
               source={
                 this.props.item.img
                   ? {uri: this.props.item.img}
-                  : require('../images/splash.png')
+                  : null
               }
             />
           }

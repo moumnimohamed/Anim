@@ -8,9 +8,9 @@ function getAnimeListeApi(page) {
   console.log('page', page);
   let link = '';
   if (page > 0) {
-    link = `https://anime2001.com/anime_list/page/${page}`;
+    link = `https://apk.addanime.online/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa-%d8%a7%d9%86%d9%85%d9%8a/page/${page}/`;
   } else {
-    link = `https://anime2001.com/anime_list/`;
+    link = `https://apk.addanime.online/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa-%d8%a7%d9%86%d9%85%d9%8a`;
   }
   return axios({
     method: 'get',
@@ -48,11 +48,13 @@ export function* getAnimList(action) {
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
 
-      const liList = $('.col-list-padding > .hovereffect').map((_, hover) => ({
-        title: $('h2', hover).text(),
-        img: $('.img-responsive', hover).attr('src'),
+      const liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
+        // map to an list of objects
+        title: $('img', hover).attr('alt'),
+        img: $('img', hover).attr('src'),
         link: $('a', hover).attr('href'),
       }));
+
 
       var myData = Object.keys(liList).map(key => {
         return liList[key];

@@ -24,14 +24,26 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 export default function AnimeServers(props) {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const _onToggleSwitch = url => {
-    console.log(url);
-    setIsSwitchOn(!isSwitchOn), !isSwitchOn && download(url);
+  const _onToggleSwitch = urls => {
+    const url =
+      urls && urls.filter(l => l && l.link.toLowerCase().includes('4shared'));
+
+    setIsSwitchOn(!isSwitchOn),
+      !isSwitchOn && url?.length > 0
+        ? download(url[0].link)
+        : Toast.showWithGravity(
+            ' رابط يحتوي على خطأ',
+            Toast.LONG,
+            Toast.BOTTOM,
+          );
   };
 
   useEffect(() => {});
 
   const download = async url => {
+    if (!url && !url.length) return;
+
+    console.log('linkToDownloadFrom', url);
     axios({
       method: 'get',
       url: url,
@@ -40,9 +52,9 @@ export default function AnimeServers(props) {
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          const dl = $('#player .video-container video source').attr('src');
+          const dl = $('.video-container .vjs-tech');
 
-          console.log('voila', dl);
+          console.log('voila', `<div>${dl}</div>`);
           if (!dl) {
             setIsSwitchOn(false);
             return Toast.showWithGravity(
@@ -116,7 +128,7 @@ export default function AnimeServers(props) {
             />
           </View>
 
-          <View
+        {props.epsHref.length > 0 &&  <View
             style={{
               justifyContent: 'flex-end',
               flexDirection: 'row',
@@ -126,14 +138,7 @@ export default function AnimeServers(props) {
             <Switch
               color={'#89C13D'}
               value={isSwitchOn}
-              onValueChange={() =>
-                _onToggleSwitch(
-                  props.epsHref &&
-                    props.epsHref.filter(l =>
-                      l.link.toLowerCase().includes('4shared'),
-                    )[0].link,
-                )
-              }
+              onValueChange={() => _onToggleSwitch(props.epsHref)}
             />
             <Text
               style={{
@@ -143,8 +148,13 @@ export default function AnimeServers(props) {
               }}>
               تحميل
             </Text>
-          </View>
-          {props.epsHref.length <= 0 && <Loader />}
+          </View>}
+
+          {props.epsHref.length <= 0 && (
+            <View style={{height:"100%", position: 'relative', marginTop: 20}}>
+              <Loader />
+            </View>
+          )}
           <FlatList
             data={props.epsHref}
             renderItem={({item, i}) => (
@@ -152,7 +162,7 @@ export default function AnimeServers(props) {
                 video={item}
                 navigate={() => {
                   props.hide();
-                  props.navigation.push('streamPage', {
+                  props.navigation.navigate('streamPage', {
                     link: item.link,
                   });
                 }}

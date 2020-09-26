@@ -131,7 +131,7 @@ class FavoritesList extends React.Component {
                   item={item}
                   showTitle={true}
                   navigate={() => {
-                    this.props.navigation.navigate('FilmDetail', {
+                    this.props.navigation.navigate('AnimeDetail', {
                       item: item,
                     });
                   }}

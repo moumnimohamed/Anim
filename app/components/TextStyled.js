@@ -50,7 +50,7 @@ export default TextStyled = props => {
           {props.title}
         </Text>
         <Image
-          style={{marginLeft: 5, width: 30, height: 30}}
+          style={{marginLeft: 0, width: 60, height: 60}}
           source={require('../images/logo.png')}
         />
       </View>

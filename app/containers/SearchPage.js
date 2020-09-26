@@ -34,17 +34,18 @@ class SearchPage extends React.Component {
     this.setState({fetching: true});
     axios({
       method: 'get',
-      url: `https://anime2001.com/?s=${searchQuery}`,
+      url: `https://animekom.com/?search_param=animes&s=${searchQuery}`,
     })
       .then(response => {
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
 
-          const liList = $('.col-list-padding > .hovereffect').map(
+          const liList = $('.anime-card-container  .hover.ehover6').map(
             (_, hover) => ({
-              title: $('h2', hover).text(),
-              img: $('.img-responsive', hover).attr('src'),
+              // map to an list of objects
+              title: $('img', hover).attr('alt'),
+              img: $('img', hover).attr('src'),
               link: $('a', hover).attr('href'),
             }),
           );
@@ -54,16 +55,8 @@ class SearchPage extends React.Component {
           });
         }
 
-        let filmN = this.props.films.filter(
-          film =>
-            film.title &&
-            film.title.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
-
-        const concat = [...filmN, ...myData];
-
         this.setState({
-          anime: concat,
+          anime: myData,
           fetching: false,
         });
       })
@@ -87,17 +80,18 @@ class SearchPage extends React.Component {
             href.push({text: $(elm).text(), link: $(elm).attr('hrefa')});
             /* console.log("lala",$('a', elm).attr('href')) */
           });
-          
-          
-          if ( href.length <= 0  ) {
-            console.log("count2",href.length)
+
+          if (href.length <= 0) {
+            console.log('count2', href.length);
             $('.episode-videoplay ul li').map((_, elm) => {
               href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
             });
-          } 
-          const animeHrefLink=   $(".col-md-4.col-no-padding-right a").attr('href')
-      
-          this.setState({epsHref: href,animeHrefLink});
+          }
+          const animeHrefLink = $('.col-md-4.col-no-padding-right a').attr(
+            'href',
+          );
+
+          this.setState({epsHref: href, animeHrefLink});
         }
       })
       .catch(error => {
@@ -111,19 +105,9 @@ class SearchPage extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      
-Toast.showWithGravity(
-  "تمت إضافتها إلى قائمتك",
-  Toast.LONG,
-  Toast.BOTTOM,
-)
-
+      Toast.showWithGravity('تمت إضافتها إلى قائمتك', Toast.LONG, Toast.BOTTOM);
     } else {
-      Toast.showWithGravity(
-        "تمت إزالته من قائمتك",
-        Toast.LONG,
-        Toast.BOTTOM,
-      )
+      Toast.showWithGravity('تمت إزالته من قائمتك', Toast.LONG, Toast.BOTTOM);
     }
 
     this.props.toggleFavorites(anime);
@@ -140,7 +124,7 @@ Toast.showWithGravity(
             height: screenHeight / 4,
             flexDirection: 'row',
             backgroundColor: '#89C13D',
-            overflow:"hidden"
+            overflow: 'hidden',
           }}>
           <Text style={styles.message}>
             ابحث عن الأنمي المفضل لديك هنا واستمتع !!!
@@ -160,12 +144,11 @@ Toast.showWithGravity(
                 placeholder: '#89C13D',
                 text: 'gray',
                 primary: '#89C13D',
-                textAlign:"right"
+                textAlign: 'right',
               },
             }}
-             
-keyboardType={"default"}
-            style={{height:50,backgroundColor:"#fff"}}
+            keyboardType={'default'}
+            style={{height: 50, backgroundColor: '#fff'}}
             underlineColor="#89C13D"
             label="بحث"
             onChangeText={query => {
@@ -175,60 +158,50 @@ keyboardType={"default"}
             }}
           />
         </View>
-        <View style={{borderRadius:30,overflow:"hidden",backgroundColor:"#fff",height:screenHeight}}>
-        {this.state.fetching ? (
-          <Loader />
-        ) : (
-          this.state.anime &&
-          this.state.anime.length > 0 && (
-          
-            <FlatList
-               
-              data={this.state.anime}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) =>
-                item.img ? (
-                  item.title.includes('فيلم') ? (
+        <View
+          style={{
+            borderRadius: 30,
+            overflow: 'hidden',
+            backgroundColor: '#fff',
+            height: screenHeight,
+          }}>
+          {this.state.fetching ? (
+            <Loader />
+          ) : (
+            this.state.anime &&
+            this.state.anime.length > 0 && (
+              <FlatList
+                data={this.state.anime}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({item, index}) =>
+                  item.img ? (
                     <FilmCard
-                    isFavorite={
-                    this.props.favoritesAnim.filter(
-                      animF => animF.link === item.link,
-                    ).length > 0
-                  }
-                  heartClick={() => this._toggleFavorites(item)}
-                  
+                      isFavorite={
+                        this.props.favoritesAnim.filter(
+                          animF => animF.link === item.link,
+                        ).length > 0
+                      }
+                      heartClick={() => this._toggleFavorites(item)}
                       item={item}
                       showTitle={true}
                       navigate={() => {
-                        this.props.navigation.navigate('FilmDetail', {
+                        this.props.navigation.navigate('AnimeDetail', {
                           item: item,
                         });
                       }}
                     />
                   ) : (
-                    <FilmCard
-                    isFavorite={
-                    this.props.favoritesAnim.filter(
-                      animF => animF.link === item.link,
-                    ).length > 0
-                  }
-                  heartClick={() => this._toggleFavorites(item)}
-                  
-                      item={item}
-                      showTitle={true}
-                      navigate={() => this.getEpsServers(item.link)}
-                    />
+                    <></>
                   )
-                ) : null
-              }
-              numColumns={2}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          )
-        )}
-</View>
+                }
+                numColumns={2}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            )
+          )}
+        </View>
         <AnimeServers
-         animeHrefLink={this.state.animeHrefLink}
+          animeHrefLink={this.state.animeHrefLink}
           hide={() => this.setState({showModal: false})}
           epsHref={this.state.epsHref}
           showModal={this.state.showModal}
@@ -244,7 +217,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: '#89C13D',
     flex: 1,
-    
   },
   animImage: {
     width: null,
@@ -259,7 +231,7 @@ const styles = StyleSheet.create({
   },
   message: {
     padding: 20,
-    top:-20,
+    top: -20,
     lineHeight: 40,
     color: '#fff',
     fontFamily: 'JF Flat regular',
@@ -268,7 +240,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   textInputContainer: {
-    overflow:"hidden",
+    overflow: 'hidden',
     borderRadius: 50,
     alignSelf: 'center',
     position: 'absolute',

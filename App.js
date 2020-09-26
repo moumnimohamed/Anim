@@ -3,7 +3,7 @@ import OneSignal from 'react-native-onesignal'; // Import package from node modu
 import { configureFonts, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen';
 import { Provider } from 'react-redux';
-import PlayerProvider from './app/components/PlayerProvider';
+ 
 import Navigator from './app/navigation/Navigation';
 import { store } from './app/redux/index';
 
@@ -53,9 +53,9 @@ hideSplashScreen = () => {
     return (
       <Provider store={store}>
         <PaperProvider theme={theme}>
-          <PlayerProvider>
+           
             <Navigator />
-          </PlayerProvider>
+          
         </PaperProvider>
       </Provider>
     );

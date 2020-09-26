@@ -18,7 +18,7 @@ import {
   View,
   Linking,
   Text,
-   
+
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {StatusBar} from 'react-native';
@@ -96,7 +96,7 @@ class Home extends React.Component {
       const serializedState = await AsyncStorage.getItem('favoritesAnim');
         let fav =JSON.parse(serializedState);
              console.log("favoritesAnim10",fav)
-         this.props.initialFavorites(fav.data) 
+         this.props.initialFavorites(fav.data)
       if (serializedState === null) {
         return undefined;
       }
@@ -104,7 +104,7 @@ class Home extends React.Component {
     } catch (err) {
       return undefined;
     }
-  }; 
+  };
 
   _toggleFavorites(anime) {
     const index = this.props.favoritesAnim.findIndex(
@@ -116,7 +116,7 @@ class Home extends React.Component {
         Toast.LONG,
         Toast.BOTTOM,
       )
-      
+
     } else {
       Toast.showWithGravity(
                 "تمت إزالته من قائمتك",
@@ -129,6 +129,8 @@ class Home extends React.Component {
   }
 
   getEpsServers = async link => {
+
+   let href = [];
     this.setState({showModal: true});
     axios({
       method: 'get',
@@ -138,21 +140,17 @@ class Home extends React.Component {
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          href = [];
-          $('.embed-player-tabs .nav.nav-tabs  li').map((_, elm) => {
-            href.push({text: $(elm).text(), link: $(elm).attr('hrefa')});
-            /* console.log("lala",$('a', elm).attr('href')) */
+          
+          $('#episode-servers   li').map((_, elm) => {
+            href.push({text: $("a",elm).text(), link: $("a",elm).attr('data-ep-url')});
+            
           });
 
-          if (href.length <= 0) {
-            console.log('count2', href.length);
-            $('.episode-videoplay ul li').map((_, elm) => {
-              href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
-            });
-          }
-           const animeHrefLink=   $(".col-md-4.col-no-padding-right a").attr('href')
-      
-          this.setState({epsHref: href,animeHrefLink});
+const animeLink =  $('.anime-page-link a').attr('href');
+           
+          console.log("lala",href ) 
+         
+          this.setState({epsHref: href,animeHrefLink:animeLink});
         }
       })
       .catch(error => {
@@ -171,9 +169,10 @@ class Home extends React.Component {
 
   getData = () => {
     this.props.getAnimRequest();
-    this.getLegendAnime();
-    this.props.getAnimeList(0);
     this.props.aniEpisodeRequest();
+    this.props.getAnimeList(0);
+    this.getLegendAnime();
+
     this.props.filmRequest();
   };
 
@@ -202,34 +201,54 @@ class Home extends React.Component {
   }
 
   getLegendAnime = async () => {
+
+
     axios({
       method: 'get',
-      url:
-        'https://anime2001.com/anime_season/%d8%a7%d9%84%d8%a3%d9%86%d9%85%d9%8a%d8%a7%d8%aa-%d8%a7%d9%84%d8%a3%d8%b3%d8%b7%d9%88%d8%b1%d9%8a%d8%a9/',
-    })
-      .then(response => {
-        if (response.status === 200) {
-          const htmlString = response.data; // get response text
-          const $ = cheerio.load(htmlString); // parse HTML string
+      url:'https://apk.addanime.online',
+    }).then(response => {
+      if (response.status === 200) {
+        const htmlString = response.data; // get response text
+        const $ = cheerio.load(htmlString); // parse HTML string
 
-          const liList = $('.col-list-padding > .hovereffect').map(
-            (_, hover) => ({
-              title: $('h2', hover).text(),
-              img: $('.img-responsive', hover).attr('src'),
-              link: $('a', hover).attr('href'),
-            }),
-          );
 
-          var myData = Object.keys(liList).map(key => {
-            return liList[key];
-          });
-        }
+        const link = $('#menu-item-3508 a').attr('href')
 
-        this.setState({legendAnime: myData});
-      })
-      .catch(error => {
-        error;
-      });
+        axios({
+          method: 'get',
+          url: link,
+        })
+            .then(response => {
+              if (response.status === 200) {
+                const htmlString = response.data; // get response text
+                const $ = cheerio.load(htmlString); // parse HTML string
+
+                const liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
+                  // map to an list of objects
+                  title: $('img', hover).attr('alt'),
+                  img: $('img', hover).attr('src'),
+                  link: $('a', hover).attr('href'),
+                }));
+
+
+                var myData = Object.keys(liList).map(key => {
+                  return liList[key];
+                });
+              }
+
+              this.setState({legendAnime: myData});
+            })
+            .catch(error => {
+              error;
+            });
+
+
+      }}).catch(error => {
+      error;
+    });
+
+
+
   };
 
   render() {
@@ -243,7 +262,7 @@ class Home extends React.Component {
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
         <LoaderModal visible={this.props.fetching} />
 
-        <StatusBar translucent backgroundColor="transparent" />
+        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
         {!this.state.showAlertDesigned ? (
           <ScrollView>
             <React.Fragment>
@@ -260,7 +279,7 @@ class Home extends React.Component {
                   <View>
                     <Carousel
                       loop
-                      autoplay
+                      //autoplay
                       enableMomentum={false}
                       lockScrollWhileSnapping={true}
                       autoplayInterval={5000}
@@ -285,12 +304,7 @@ class Home extends React.Component {
                             heartClick={() => this._toggleFavorites(item)}
                             item={item}
                             navigate={() => {
-                              item.title.includes('فيلم')
-                                ? this.props.navigation.navigate('FilmDetail', {
-                                    index: index,
-                                    item: item,
-                                  })
-                                : this.props.navigation.navigate(
+                               this.props.navigation.navigate(
                                     'AnimeDetail',
                                     {
                                       index: index,
@@ -311,8 +325,8 @@ class Home extends React.Component {
                 </LinearGradient>
               </ImageBackground>
 
-              {!this.props.fetching && (
-                <TextStyled hide title={'أنميات الأسطورية'} />
+              { legendAnime?.length >0 && !this.props.fetching && (
+                <TextStyled hide title={'أنميات الموسم'} />
               )}
               <Carousel
                 firstItem={legendAnime.length - 1}
@@ -331,12 +345,7 @@ class Home extends React.Component {
                       key={index}
                       item={item}
                       navigate={() => {
-                        item.title.includes('فيلم')
-                          ? this.props.navigation.navigate('FilmDetail', {
-                              index: index,
-                              item: item,
-                            })
-                          : this.props.navigation.navigate('AnimeDetail', {
+                        this.props.navigation.navigate('AnimeDetail', {
                               index: index,
                               item: item,
                             });
@@ -382,7 +391,7 @@ class Home extends React.Component {
                   data={this.props.animeEpisodes.slice(0, 20)}
                   renderItem={({item}) => (
                     <FilmCard
-                    
+                    showTitle={true}
                       isFavorite={
                         this.props.favoritesAnim.filter(
                           animF => animF.link === item.link,
@@ -393,7 +402,7 @@ class Home extends React.Component {
                       navigate={() => this.getEpsServers(item.link)}
                     />
                   )}
-                  keyExtractor={item => item.title}
+                  keyExtractor={item => item.id}
                 />
                 <AnimeServers
                   hide={() => this.setState({showModal: false})}
@@ -493,7 +502,7 @@ class Home extends React.Component {
                           item={item}
                           showTitle={true}
                           navigate={() => {
-                            this.props.navigation.navigate('FilmDetail', {
+                            this.props.navigation.navigate('AnimeDetail', {
                               item: item,
                             });
                           }}
@@ -557,7 +566,7 @@ class Home extends React.Component {
           <View
             style={{
                paddingTop:screenHeight/2,
-              
+
               justifyContent: 'center',
               alignItems: 'center',
               position: 'absolute',
@@ -651,7 +660,7 @@ const mapStateToProps = state => {
     filmCategories:
       state.films && state.films.categories ? state.films.categories : [],
     favoritesAnim: state.favoritesAnim.data || [],
-    
+
   };
 };
 

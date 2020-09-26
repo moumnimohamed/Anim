@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {AdMobRewarded} from 'react-native-admob';
 import {PLAYER_STATES} from 'react-native-media-controls';
-import Orientation from 'react-native-orientation';
+ 
 import {WebView} from 'react-native-webview';
 import {ActivityIndicator} from 'react-native-paper';
 
@@ -113,8 +113,7 @@ export default class StreamPage extends React.Component {
 
   componentWillUnmount = () => {
     StatusBar.setHidden(false);
-    /* Orientation.lockToPortrait();  */
-
+    
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = 0;
@@ -128,8 +127,7 @@ export default class StreamPage extends React.Component {
       AdMobRewarded.setAdUnitID('ca-app-pub-4024120289306171/8777670113');
       AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd());
     }, 2000);
-
-    /* Orientation.lockToLandscape(); */
+ 
     /* if (this.props.navigation.state.params.link) {
   console.log("lala link",this.props.navigation.state.params.link)
   this.getVideoURL(this.props.navigation.state.params.link)
@@ -148,12 +146,13 @@ export default class StreamPage extends React.Component {
     fileUpload : in webview 
     google drive : in webview 
    */
-
+        console.log("linko",this.props.navigation.state.params.link)
     return (
       <View style={styles.container}>
         <WebView
           onLoadStart={() => this.setState({fetching: true})}
           onLoad={() => this.setState({fetching: false})}
+          
           source={{uri: this.props.navigation.state.params.link}}
           allowsFullscreenVideo={true}
           allowsInlineMediaPlayback={true}

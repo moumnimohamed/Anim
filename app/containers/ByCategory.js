@@ -17,6 +17,8 @@ class AnimeDetail extends React.Component {
   };
 
   getAnimeByCat = async link => {
+
+    console.log("catLink",link)
     this.setState({fetching:true})
     axios({
       method: 'get',
@@ -29,19 +31,19 @@ class AnimeDetail extends React.Component {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
 
-          const liList = $('.col-list-padding > .hovereffect').map(
-            (_, hover) => ({
-              title: $('h2', hover).text(),
-              img: $('.img-responsive', hover).attr('src'),
-              link: $('a', hover).attr('href'),
-            }),
-          );
+           const  liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
+            // map to an list of objects
+            title: $('img', hover).attr('alt'),
+            img: $('img', hover).attr('src'),
+            link: $('a', hover).attr('href'),
+          }));
 
           var myData = Object.keys(liList).map(key => {
             return liList[key];
           });
         }
 
+        console.log("catLinkmyData",myData)
         this.setState({
           fetching:false,
           anime: myData,
@@ -58,8 +60,8 @@ class AnimeDetail extends React.Component {
     const catName = this.props.navigation.state.params.title.replace(' ', '-');
     const link =
       type === 'anime'
-        ? `https://anime2001.com/anime_genre/${catName}`
-        : `https://anime2001.com/movie_genre/${catName}`;
+        ? `https://animekom.com/anime-genre/${catName}`
+        : `https://animekom.com/anime-genre/${catName}`;
     this.getAnimeByCat(link);
   }
 
@@ -120,9 +122,7 @@ class AnimeDetail extends React.Component {
                   showTitle={true}
                   item={item}
                   navigate={() => {
-                    item.title.includes('فيلم')
-                      ? this.props.navigation.navigate('FilmDetail', {item: item})
-                      : this.props.navigation.navigate('AnimeDetail', {item: item});
+                     this.props.navigation.navigate('AnimeDetail', {item: item});
                   }}
                 />
               )

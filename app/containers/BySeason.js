@@ -1,4 +1,11 @@
-import {SafeAreaView, FlatList, StyleSheet,Image,View,Dimensions} from 'react-native';
+import {
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  Image,
+  View,
+  Dimensions,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import {toggleFavorites} from '../redux/FavoritesAnim';
@@ -10,7 +17,6 @@ import axios from 'axios';
 import Loader from '../components/Loader';
 import {ActivityIndicator} from 'react-native-paper';
 import Toast from 'react-native-simple-toast';
-
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 function BySeason(props) {
@@ -25,7 +31,7 @@ function BySeason(props) {
   }, [props.navigation.state.params.link]);
 
   const getAnimeBySeason = async link => {
-    setFetching(true)
+    setFetching(true);
     axios({
       method: 'get',
       url: link,
@@ -35,23 +41,23 @@ function BySeason(props) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
 
-          const liList = $('.col-list-padding > .hovereffect').map(
-            (_, hover) => ({
-              title: $('h2', hover).text(),
-              img: $('.img-responsive', hover).attr('src'),
-              link: $('a', hover).attr('href'),
-            }),
-          );
+          const liList =  $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
+            // map to an list of objects
+            title: $('img', hover).attr('alt'),
+            img: $('img', hover).attr('src'),
+            link: $('a', hover).attr('href'),
+          }));
+    
 
           var myData = Object.keys(liList).map(key => {
             return liList[key];
           });
         }
-        setFetching(false)
+        setFetching(false);
         setAnime(myData);
       })
       .catch(error => {
-        setFetching(false)
+        setFetching(false);
         error;
       });
   };
@@ -61,18 +67,9 @@ function BySeason(props) {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      Toast.showWithGravity(
-        "تمت إضافتها إلى قائمتك",
-        Toast.LONG,
-        Toast.BOTTOM,
-      )
-     
+      Toast.showWithGravity('تمت إضافتها إلى قائمتك', Toast.LONG, Toast.BOTTOM);
     } else {
-      Toast.showWithGravity(
-        "تمت إزالته من قائمتك",
-        Toast.LONG,
-        Toast.BOTTOM,
-      )
+      Toast.showWithGravity('تمت إزالته من قائمتك', Toast.LONG, Toast.BOTTOM);
     }
 
     props.toggleFavorites(anime);
@@ -94,7 +91,7 @@ function BySeason(props) {
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) =>
             item &&
-            item.img && (
+            item.img ? (
               <FilmCard
                 showTitle={true}
                 isFavorite={
@@ -108,6 +105,7 @@ function BySeason(props) {
                 }}
               />
             )
+            : <></>
           }
           numColumns={2}
           ListFooterComponent={() => {
@@ -129,16 +127,13 @@ function BySeason(props) {
   );
 }
 
-
 const styles = StyleSheet.create({
-  
   ActivityIndicator: {
-    height: screenHeight/2,
+    height: screenHeight / 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
-
 
 BySeason.navigationOptions = screenProps => ({
   title: screenProps.navigation.state.params.title,

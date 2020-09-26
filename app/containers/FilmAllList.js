@@ -76,7 +76,7 @@ function FilmAllList(props) {
               showTitle={true}
               item={item}
               navigate={() => {
-                props.navigation.navigate('FilmDetail', {item: item});
+                props.navigation.navigate('AnimeDetail', {item: item});
               }}
             />
           )

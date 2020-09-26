@@ -7,7 +7,7 @@ import * as actionsAndType from '../redux/FilmRedux';
 function getFilmApi() {
   return axios({
     method: 'get',
-    url: 'https://anime2001.com/movie/',
+    url: 'https://apk.addanime.online/anime-type/movie',
   })
     .then(res => {
       return res;
@@ -23,11 +23,11 @@ function getCharacters() {
     url: 'https://api.jikan.moe/v3/anime/1/characters_staff',
   })
     .then(res => {
-      
+
       return res;
     })
     .catch(error => {
-       
+
       return error;
     });
 }
@@ -42,15 +42,16 @@ export function* getFilm(action) {
 
       characters.data.characters image_url
     } */
-     
+      console.log("characters", characters)
     if (response.status === 200) {
 
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
 
-      const liList = $('.col-list-padding > .hovereffect').map((_, hover) => ({
-        title: $('h2', hover).text(),
-        img: $('.img-responsive', hover).attr('src'),
+      const liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
+        // map to an list of objects
+        title: $('img', hover).attr('alt'),
+        img: $('img', hover).attr('src'),
         link: $('a', hover).attr('href'),
       }));
 
@@ -61,20 +62,22 @@ export function* getFilm(action) {
       yield put(actionsAndType.filmSuccess(myData));
 
       // make category list
-      let i=0
+      /* let i=0
       const categoryList = $('.catelist > li').map((_, li) => (
         i++,
         {
         img :characters.data.characters[i].image_url,
         title: $('a', li).text(),
-        
-      }));
 
-      var catData = Object.keys(categoryList).map(key => {
+      })); */
+
+    /*   var catData = Object.keys(categoryList).map(key => {
         return categoryList[key];
       });
 
-      yield put(actionsAndType.filmCategoriesSuccess(catData));
+      console.log("catData",catData) */
+
+      /* yield put(actionsAndType.filmCategoriesSuccess(catData)); */
     } else {
       yield put(actionsAndType.filmFailure(null));
       console.log('non connection');

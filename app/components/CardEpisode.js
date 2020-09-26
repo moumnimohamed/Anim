@@ -14,7 +14,7 @@ import {
 import {Switch} from 'react-native-paper';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import PlayerContext from './PlayerContext';
+ 
 
 export function CardEpisode(props) {
   console.log('hania', props.alreadyViewed);

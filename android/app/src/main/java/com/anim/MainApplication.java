@@ -13,7 +13,7 @@ import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 
 import com.burnweb.rnsendintent.RNSendIntentPackage;
-import com.github.yamill.orientation.OrientationPackage;
+
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
