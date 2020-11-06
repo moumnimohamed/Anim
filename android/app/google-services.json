@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "278346947408",
-    "firebase_url": "https://animia-2.firebaseio.com",
-    "project_id": "animia-2",
-    "storage_bucket": "animia-2.appspot.com"
+    "project_number": "503996050277",
+    "firebase_url": "https://animia3-608a8.firebaseio.com",
+    "project_id": "animia3-608a8",
+    "storage_bucket": "animia3-608a8.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:278346947408:android:df888445bc80a40b452a55",
+        "mobilesdk_app_id": "1:503996050277:android:79e8ffc210955979248f8c",
         "android_client_info": {
-          "package_name": "com.anima"
+          "package_name": "com.animia.app45215"
         }
       },
       "oauth_client": [
         {
-          "client_id": "278346947408-1630s8l75cod0mpbjbl74ul4oqaqch2s.apps.googleusercontent.com",
+          "client_id": "503996050277-l61dqrbtv787p5puujv7h3f1d8fqirie.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBVuVtcdcar1tFYDxw4YdbkKmkibj9rAys"
+          "current_key": "AIzaSyCH_n7XAhnwUzvhwrK5_ngx7Roci40UnLU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "278346947408-1630s8l75cod0mpbjbl74ul4oqaqch2s.apps.googleusercontent.com",
+              "client_id": "503996050277-l61dqrbtv787p5puujv7h3f1d8fqirie.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

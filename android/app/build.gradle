@@ -142,7 +142,7 @@ android {
 
     defaultConfig {
         multiDexEnabled true
-        applicationId "com.anima"
+        applicationId "com.animia.app45215"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 8
