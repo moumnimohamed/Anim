@@ -44,6 +44,9 @@ class AnimeDetail extends React.Component {
     firstQuery: '',
 
     alreadyViewed: [],
+
+    downloadUrls:[],
+    downloadModal:false
   };
 
   componentDidMount() {
@@ -209,6 +212,39 @@ relatedF */
       this.props.animeDetail && this.props.animeDetail.length > 0
         ? this.props.animeDetail[0]['relatedF']
         : [];
+
+const getDownloadLinks =(link)=>{
+      
+  let href = [];
+
+  this.setState({downloadModal: true});
+  axios({
+    method: 'get',
+    url: link,
+  })
+    .then(response => {
+      if (response.status === 200) {
+        const htmlString = response.data; // get response text
+        const $ = cheerio.load(htmlString); // parse HTML string
+        
+
+
+        $('.quality-list   li').map((_, elm) => {
+          href.push({text: $("a",elm).text(), link: $("a",elm).attr('href')});
+          
+        });
+
+        console.log('downloadUrls', href.length);
+      
+        console.log(href);
+        this.setState({downloadUrls: href} );
+      }
+    })
+    .catch(error => {
+      error;
+    });
+
+}
 
     return (
       <ScrollView style={styles.scroll}>
@@ -434,6 +470,7 @@ relatedF */
                   size={20}
                   onPress={() => this.setState({display: !this.state.display})}
                 />
+                
                 {this.state.display && (
                   <TextInput
                     style={{margin: 10}}
@@ -460,6 +497,7 @@ relatedF */
                 data={links.reverse()}
                 renderItem={({item, i}) => (
                   <CardEpisode
+                  getDownloadLinks={()=>   getDownloadLinks(item.link)}
                     alreadyViewed={
                       this.state.alreadyViewed &&
                       this.state.alreadyViewed.length
@@ -517,6 +555,13 @@ relatedF */
           epsHref={this.state.epsHref}
           showModal={this.state.showModal}
           navigation={this.props.navigation}
+        />
+
+<AnimeServers
+          hide={() => this.setState({downloadModal: false})}
+          epsHref={this.state.downloadUrls.slice(1,this.state.downloadUrls.length )}
+          showModal={this.state.downloadModal}
+            forDownload={true}
         />
 
         {this.props.fetching && (

@@ -1,5 +1,5 @@
 {
-  "name": "animia",
+  "name": "anima",
   "version": "0.0.1",
   "private": true,
   "rnpm": {
@@ -36,7 +36,6 @@
     "react-native-safe-area-view": "^1.0.0",
     "react-native-scl-alert": "^1.2.1",
     "react-native-screens": "^2.0.0-alpha.22",
-    "react-native-send-intent": "^1.2.2",
     "react-native-share": "^3.0.0",
     "react-native-simple-toast": "^1.1.0",
     "react-native-snap-carousel": "^3.8.4",

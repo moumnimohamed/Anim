@@ -1,22 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Modal,
+  Dimensions, FlatList,
+
+  Linking, Modal,
   Text,
-  FlatList,
-  Dimensions,
-  View,
-  ImageBackground,
+
+
+
+  View
 } from 'react-native';
+import { Button, IconButton } from 'react-native-paper';
 import Loader from '../components/Loader';
-import Toast from 'react-native-simple-toast';
+import { Playeroo } from '../components/Playeroo';
 
-import SendIntentAndroid from 'react-native-send-intent';
 
-import cheerio from 'cheerio-without-node-native';
-import axios from 'axios';
 
-import {IconButton, Button, Switch} from 'react-native-paper';
-import {Playeroo} from '../components/Playeroo';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -24,57 +22,14 @@ const screenHeight = Math.round(Dimensions.get('window').height);
 export default function AnimeServers(props) {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
-  const _onToggleSwitch = urls => {
-    const url =
-      urls && urls.filter(l => l && l.link.toLowerCase().includes('4shared'));
-
-    setIsSwitchOn(!isSwitchOn),
-      !isSwitchOn && url?.length > 0
-        ? download(url[0].link)
-        : Toast.showWithGravity(
-            ' رابط يحتوي على خطأ',
-            Toast.LONG,
-            Toast.BOTTOM,
-          );
-  };
-
-  useEffect(() => {});
+  useEffect(() => {}, [props.forDownload]);
 
   const download = async url => {
-    if (!url && !url.length) return;
+    Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
 
-    console.log('linkToDownloadFrom', url);
-    axios({
-      method: 'get',
-      url: url,
-    })
-      .then(response => {
-        if (response.status === 200) {
-          const htmlString = response.data; // get response text
-          const $ = cheerio.load(htmlString); // parse HTML string
-          const dl = $('.video-container .vjs-tech');
-
-          console.log('voila', `<div>${dl}</div>`);
-          if (!dl) {
-            setIsSwitchOn(false);
-            return Toast.showWithGravity(
-              'لا يمكنك تحميل هذه الحلقة ، رابط يحتوي على خطأ',
-              Toast.LONG,
-              Toast.BOTTOM,
-            );
-          }
-          SendIntentAndroid.openAppWithData('com.dv.adm', dl, 'video/*', {
-            position: {type: 'int', value: 60},
-          }).then(wasOpened => {
-            setIsSwitchOn(false);
-          });
-        }
-      })
-      .catch(error => {
-        setIsSwitchOn(false);
-        console.log(error);
-      });
   };
+
+  console.log('homa', props);
 
   return (
     <Modal transparent={true} animationType="fade" visible={props.showModal}>
@@ -118,7 +73,7 @@ export default function AnimeServers(props) {
                 marginVertical: 10,
                 flex: 1,
               }}>
-              روابط المشاهدة
+              {props.forDownload === true ? 'روابط  التحميل' : 'روابط المشاهدة'}
             </Text>
             <IconButton
               onPress={() => props.hide()}
@@ -128,30 +83,10 @@ export default function AnimeServers(props) {
             />
           </View>
 
-        {props.epsHref.length > 0 &&  <View
-            style={{
-              justifyContent: 'flex-end',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginRight: 15,
-            }}>
-            <Switch
-              color={'#89C13D'}
-              value={isSwitchOn}
-              onValueChange={() => _onToggleSwitch(props.epsHref)}
-            />
-            <Text
-              style={{
-                fontFamily: 'JF Flat regular',
-                color: 'gray',
-                marginLeft: 5,
-              }}>
-              تحميل
-            </Text>
-          </View>}
+           
 
           {props.epsHref.length <= 0 && (
-            <View style={{height:"100%", position: 'relative', marginTop: 20}}>
+            <View style={{height: '100%', position: 'relative', marginTop: 20}}>
               <Loader />
             </View>
           )}
@@ -162,9 +97,11 @@ export default function AnimeServers(props) {
                 video={item}
                 navigate={() => {
                   props.hide();
-                  props.navigation.navigate('streamPage', {
-                    link: item.link,
-                  });
+                  props.forDownload
+                    ? download(item.link)
+                    : props.navigation.navigate('streamPage', {
+                        link: item.link,
+                      });
                 }}
               />
             )}

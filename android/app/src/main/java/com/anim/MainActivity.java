@@ -1,4 +1,4 @@
-package com.anim;
+package com.anima;
 
 import com.facebook.react.ReactActivity;
   import android.content.Intent; // <--- import
@@ -15,7 +15,7 @@ public class MainActivity extends ReactActivity {
    */
   @Override
   protected String getMainComponentName() {
-    return "Anim";
+    return "Anima";
   }
 
      @Override

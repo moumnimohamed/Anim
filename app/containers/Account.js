@@ -174,7 +174,7 @@ class Account extends React.Component {
             <Text style={styles.btnText}>اتصل بنا (اقتراح ، خطأ في التطبيق ، طلب)</Text>
             <Icon name={'account'} size={25} color="#89C13D" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() =>
+         {/* <TouchableOpacity onPress={() =>
               Linking.canOpenURL('https://www.paypal.me/animiaApp')
                 .then(supported => {
                   if (!supported) {
@@ -190,7 +190,10 @@ class Account extends React.Component {
               style={{width: 20, height: 20}}
               source={require('../images/paypal.png')}
             />
-          </TouchableOpacity>
+          </TouchableOpacity>*/}
+          
+          
+          
           <Login />
           {/*  {this.state.login && <Login />}
           {this.state.signUp && (

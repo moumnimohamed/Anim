@@ -47,6 +47,8 @@ export function Playeroo(props) {
             fontFamily: 'JF Flat regular',
           }}>
           {props.video && props.video.text ? props.video.text : ''}
+          { props.video && props.video.link ? props.video.link.split('/')[2].replace(".com","") : ''}
+
         </Text>
         <V name="videocamera" size={20} color="#fff" />
       </View>

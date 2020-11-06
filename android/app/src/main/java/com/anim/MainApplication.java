@@ -1,4 +1,4 @@
-package com.anim;
+package com.anima;
 
 import android.app.Application;
 import android.content.Context;
@@ -12,11 +12,10 @@ import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 
 import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
 
-import com.burnweb.rnsendintent.RNSendIntentPackage;
-
+ 
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+
 import com.swmansion.reanimated.ReanimatedPackage;
 import iyegoroff.RNTextGradient.RNTextGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;

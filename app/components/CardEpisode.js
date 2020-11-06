@@ -26,7 +26,7 @@ export function CardEpisode(props) {
       style={styles.container}
       colors={['#fff', props.alreadyViewed ? 'red' : '#89C13D']}>
       <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity onPress={props.navigate}>
+        <TouchableOpacity  >
           <Image
             ImageResizeMode={'contain'}
             style={styles.image}
@@ -40,9 +40,9 @@ export function CardEpisode(props) {
         )}
       </View>
       <Text
-        onPress={props.navigate}
+        
         style={{
-          width: '60%',
+          width: '55%',
           fontFamily: 'JF Flat regular',
           paddingHorizontal: 10,
           textAlign: 'center',
@@ -52,6 +52,11 @@ export function CardEpisode(props) {
       </Text>
 
       <View style={styles.name}>
+      <TouchableOpacity
+          style={{...styles.btn, marginRight: 10}}
+          onPress={  props.getDownloadLinks}>
+          <FontAwesome name="download" size={20} color="white" />
+        </TouchableOpacity>
         <TouchableOpacity
           style={{...styles.btn, marginRight: 10}}
           onPress={() => share({title: props.video.text})}>
