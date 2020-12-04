@@ -261,11 +261,11 @@ class Home extends React.Component {
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
-              <AnimatedCarousel
-                newAnime={newAnime}
-                favoritesAnim={this.props.favoritesAnim}
-                _toggleFavorites={anime => this._toggleFavorites(anime)}
-              />
+              {/*<AnimatedCarousel*/}
+              {/*  newAnime={newAnime}*/}
+              {/*  favoritesAnim={this.props.favoritesAnim}*/}
+              {/*  _toggleFavorites={anime => this._toggleFavorites(anime)}*/}
+              {/*/>*/}
 
               <ImageBackground
                 blurRadius={1}
