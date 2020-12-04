@@ -4,28 +4,27 @@ import React from 'react';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
 import VersionCheck from 'react-native-version-check';
 import {
-  Button,
+  Animated,
   Dimensions,
   FlatList,
   Image,
   ImageBackground,
+  Linking,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
-  View,
-  Linking,
   Text,
-
+  View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {StatusBar} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import {connect} from 'react-redux';
 import {AnimatedCard} from '../components/AnimatedCard';
 import AnimeServers from '../components/AnimeServers';
+import AnimatedCarousel from '../components/AnimatedCarousel';
 import {FilmCard} from '../components/FilmCard';
 import Header from '../components/Header';
 import LoaderModal from '../components/LoaderModal';
@@ -33,14 +32,14 @@ import TextStyled from '../components/TextStyled';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
 import {filmRequest} from '../redux/FilmRedux';
-import {toggleFavorites ,initialFavorites} from '../redux/FavoritesAnim';
+import {initialFavorites, toggleFavorites} from '../redux/FavoritesAnim';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {Button as B} from 'react-native-paper';
 import {default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as NetInfo from '@react-native-community/netinfo';
 
-import {SCLAlert, SCLAlertButton} from 'react-native-scl-alert';
+import {SCLAlert} from 'react-native-scl-alert';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -91,16 +90,16 @@ class Home extends React.Component {
     this.setState({show: false});
   };
 
-    loadState =  async () => {
+  loadState = async () => {
     try {
       const serializedState = await AsyncStorage.getItem('favoritesAnim');
-        let fav =JSON.parse(serializedState);
-             console.log("favoritesAnim10",fav)
-         this.props.initialFavorites(fav.data)
+      let fav = JSON.parse(serializedState);
+      console.log('favoritesAnim10', fav);
+      this.props.initialFavorites(fav.data);
       if (serializedState === null) {
         return undefined;
       }
-      return json
+      return json;
     } catch (err) {
       return undefined;
     }
@@ -111,26 +110,16 @@ class Home extends React.Component {
       anim => anim.link === anime.link,
     );
     if (index == -1) {
-      Toast.showWithGravity(
-        "تمت إضافتها إلى قائمتك",
-        Toast.LONG,
-        Toast.BOTTOM,
-      )
-
+      Toast.showWithGravity('تمت إضافتها إلى قائمتك', Toast.LONG, Toast.BOTTOM);
     } else {
-      Toast.showWithGravity(
-                "تمت إزالته من قائمتك",
-                Toast.LONG,
-                Toast.BOTTOM,
-              )
+      Toast.showWithGravity('تمت إزالته من قائمتك', Toast.LONG, Toast.BOTTOM);
     }
 
     this.props.toggleFavorites(anime);
   }
 
   getEpsServers = async link => {
-
-   let href = [];
+    let href = [];
     this.setState({showModal: true});
     axios({
       method: 'get',
@@ -140,17 +129,19 @@ class Home extends React.Component {
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          
+
           $('#episode-servers   li').map((_, elm) => {
-            href.push({text: $("a",elm).text(), link: $("a",elm).attr('data-ep-url')});
-            
+            href.push({
+              text: $('a', elm).text(),
+              link: $('a', elm).attr('data-ep-url'),
+            });
           });
 
-const animeLink =  $('.anime-page-link a').attr('href');
-           
-          console.log("lala",href ) 
-         
-          this.setState({epsHref: href,animeHrefLink:animeLink});
+          const animeLink = $('.anime-page-link a').attr('href');
+
+          console.log('lala', href);
+
+          this.setState({epsHref: href, animeHrefLink: animeLink});
         }
       })
       .catch(error => {
@@ -194,42 +185,41 @@ const animeLink =  $('.anime-page-link a').attr('href');
     });
   };
   componentDidMount() {
-    this.loadState()
+    this.loadState();
     this.checkUpdateApp();
     this.unsubscribe();
     this.getData();
   }
 
   getLegendAnime = async () => {
-
-
     axios({
       method: 'get',
-      url:'https://apk.addanime.online',
-    }).then(response => {
-      if (response.status === 200) {
-        const htmlString = response.data; // get response text
-        const $ = cheerio.load(htmlString); // parse HTML string
+      url: 'https://apk.addanime.online',
+    })
+      .then(response => {
+        if (response.status === 200) {
+          const htmlString = response.data; // get response text
+          const $ = cheerio.load(htmlString); // parse HTML string
 
+          const link = $('#menu-item-3508 a').attr('href');
 
-        const link = $('#menu-item-3508 a').attr('href')
-
-        axios({
-          method: 'get',
-          url: link,
-        })
+          axios({
+            method: 'get',
+            url: link,
+          })
             .then(response => {
               if (response.status === 200) {
                 const htmlString = response.data; // get response text
                 const $ = cheerio.load(htmlString); // parse HTML string
 
-                const liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
-                  // map to an list of objects
-                  title: $('img', hover).attr('alt'),
-                  img: $('img', hover).attr('src'),
-                  link: $('a', hover).attr('href'),
-                }));
-
+                const liList = $('.anime-card-container  .hover.ehover6').map(
+                  (_, hover) => ({
+                    // map to an list of objects
+                    title: $('img', hover).attr('alt'),
+                    img: $('img', hover).attr('src'),
+                    link: $('a', hover).attr('href'),
+                  }),
+                );
 
                 var myData = Object.keys(liList).map(key => {
                   return liList[key];
@@ -241,14 +231,11 @@ const animeLink =  $('.anime-page-link a').attr('href');
             .catch(error => {
               error;
             });
-
-
-      }}).catch(error => {
-      error;
-    });
-
-
-
+        }
+      })
+      .catch(error => {
+        error;
+      });
   };
 
   render() {
@@ -262,7 +249,11 @@ const animeLink =  $('.anime-page-link a').attr('href');
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
         <LoaderModal visible={this.props.fetching} />
 
-        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         {!this.state.showAlertDesigned ? (
           <ScrollView>
             <React.Fragment>
@@ -270,6 +261,11 @@ const animeLink =  $('.anime-page-link a').attr('href');
             <View style={styles.container}>
       <ActivityIndicator animating={true} color={'#89C13D'} />
       </View>} */}
+              <AnimatedCarousel
+                newAnime={newAnime}
+                favoritesAnim={this.props.favoritesAnim}
+                _toggleFavorites={anime => this._toggleFavorites(anime)}
+              />
 
               <ImageBackground
                 blurRadius={1}
@@ -304,13 +300,10 @@ const animeLink =  $('.anime-page-link a').attr('href');
                             heartClick={() => this._toggleFavorites(item)}
                             item={item}
                             navigate={() => {
-                               this.props.navigation.navigate(
-                                    'AnimeDetail',
-                                    {
-                                      index: index,
-                                      item: item,
-                                    },
-                                  );
+                              this.props.navigation.navigate('AnimeDetail', {
+                                index: index,
+                                item: item,
+                              });
                             }}
                           />
                         );
@@ -325,7 +318,7 @@ const animeLink =  $('.anime-page-link a').attr('href');
                 </LinearGradient>
               </ImageBackground>
 
-              { legendAnime?.length >0 && !this.props.fetching && (
+              {legendAnime?.length > 0 && !this.props.fetching && (
                 <TextStyled hide title={'أنميات الموسم'} />
               )}
               <Carousel
@@ -346,9 +339,9 @@ const animeLink =  $('.anime-page-link a').attr('href');
                       item={item}
                       navigate={() => {
                         this.props.navigation.navigate('AnimeDetail', {
-                              index: index,
-                              item: item,
-                            });
+                          index: index,
+                          item: item,
+                        });
                       }}
                     />
                   );
@@ -391,7 +384,7 @@ const animeLink =  $('.anime-page-link a').attr('href');
                   data={this.props.animeEpisodes.slice(0, 20)}
                   renderItem={({item}) => (
                     <FilmCard
-                    showTitle={true}
+                      showTitle={true}
                       isFavorite={
                         this.props.favoritesAnim.filter(
                           animF => animF.link === item.link,
@@ -565,7 +558,7 @@ const animeLink =  $('.anime-page-link a').attr('href');
         ) : (
           <View
             style={{
-               paddingTop:screenHeight/2,
+              paddingTop: screenHeight / 2,
 
               justifyContent: 'center',
               alignItems: 'center',
@@ -660,7 +653,6 @@ const mapStateToProps = state => {
     filmCategories:
       state.films && state.films.categories ? state.films.categories : [],
     favoritesAnim: state.favoritesAnim.data || [],
-
   };
 };
 

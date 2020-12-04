@@ -7,7 +7,7 @@ import {
   Colors,
   ActivityIndicator,
 } from 'react-native-paper';
-import auth from '@react-native-firebase/auth';
+// import auth from '@react-native-firebase/auth';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 import Toast from 'react-native-simple-toast';
@@ -19,37 +19,38 @@ export default function Login(props) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
   const signUp = () => {
-    setFetching(true);
-    auth()
-      .createUserWithEmailAndPassword(email, 'animiarondompassword!')
-      .then(() => {
-        setFetching(false);
-        Toast.showWithGravity(
-          'شكرا لك على الاشتراك 😍🙏',
-          Toast.LONG,
-          Toast.BOTTOM,
-        );
-      })
-      .catch(error => {
-        setFetching(false);
-        if (error.code === 'auth/email-already-in-use') {
-          Toast.showWithGravity(
-            'انت مشترك اصلا 😅🥰',
-            Toast.LONG,
-            Toast.BOTTOM,
-          );
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          Toast.showWithGravity(
-            'هذا عنوان الإلكتروني غير صالح ',
-            Toast.LONG,
-            Toast.BOTTOM,
-          );
-        }
-
-        console.log(error);
-      });
+    alert("khasera")
+    // setFetching(true);
+    // auth()
+    //   .createUserWithEmailAndPassword(email, 'animiarondompassword!')
+    //   .then(() => {
+    //     setFetching(false);
+    //     Toast.showWithGravity(
+    //       'شكرا لك على الاشتراك 😍🙏',
+    //       Toast.LONG,
+    //       Toast.BOTTOM,
+    //     );
+    //   })
+    //   .catch(error => {
+    //     setFetching(false);
+    //     if (error.code === 'auth/email-already-in-use') {
+    //       Toast.showWithGravity(
+    //         'انت مشترك اصلا 😅🥰',
+    //         Toast.LONG,
+    //         Toast.BOTTOM,
+    //       );
+    //     }
+    //
+    //     if (error.code === 'auth/invalid-email') {
+    //       Toast.showWithGravity(
+    //         'هذا عنوان الإلكتروني غير صالح ',
+    //         Toast.LONG,
+    //         Toast.BOTTOM,
+    //       );
+    //     }
+    //
+    //     console.log(error);
+    //   });
   };
   return (
     <View contentContainerStyle={styles.container}>
@@ -140,8 +141,8 @@ export default function Login(props) {
         {/*  <Text style={{...styles.allText,textAlign:"center"}}>أو</Text>
          <View
           style={{
-              
-             
+
+
             flexDirection: 'row',
             justifyContent: 'space-around',
           }}>
@@ -170,14 +171,14 @@ export default function Login(props) {
 
         {/*  <View
           style={{
-             
+
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Text style={{...styles.allText,color:"red"}} >سجل</Text>
           <Text style={styles.allText} >ليس لديك حساب؟ </Text>
-          
+
         </View> */}
       </View>
     </View>
@@ -186,7 +187,7 @@ export default function Login(props) {
 
 const styles = StyleSheet.create({
   container: {
-     
+
   },
   inputContainer: {
     height: '90%',

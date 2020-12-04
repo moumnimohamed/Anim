@@ -1,13 +1,10 @@
 import React from 'react';
-import {Image, TouchableOpacity} from 'react-native';
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Home from '../containers/Home';
 import StreamPage from '../containers/StreamPage';
 import FavoritesList from '../containers/FavoritesList';
-import Header from '../components/Header';
-import TabBarButton from '../components/TabBarButton';
 import FilmDetail from '../containers/FilmDetail';
 import FilmAllList from '../containers/FilmAllList';
 import AnimeAllList from '../containers/AnimeAllList';
@@ -18,7 +15,6 @@ import SearchPage from '../containers/SearchPage';
 import Account from '../containers/Account';
 import EpisodesAllList from '../containers/EpisodesAllList';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 
 const favStackNavigator = createStackNavigator({
   fav: {

@@ -1,4 +1,4 @@
-package com.anima;
+package com.anim;
 
 import android.app.Application;
 import android.content.Context;
@@ -10,12 +10,11 @@ import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 
-import com.reactnativecommunity.rnpermissions.RNPermissionsPackage;
-
  
+import com.github.yamill.orientation.OrientationPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
-
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import iyegoroff.RNTextGradient.RNTextGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;

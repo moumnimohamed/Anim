@@ -46,7 +46,8 @@ target 'Anim' do
 
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
- 
+  pod 'react-native-orientation', :path => '../node_modules/react-native-orientation'
+
  
   pod 'RNPermissions', :path => '../node_modules/react-native-permissions'
 
