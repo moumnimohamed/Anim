@@ -1,7 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {Text, ScrollView,ActivityIndicator, StyleSheet, View, Dimensions} from 'react-native';
+import {
+  Text,
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  Dimensions,
+} from 'react-native';
 import {TextInput, Button, IconButton, Colors} from 'react-native-paper';
-// import auth from '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 import Toast from 'react-native-simple-toast';
@@ -11,38 +18,36 @@ export default function SignUp(props) {
   useEffect(() => {}, []);
 
   const signUp = () => {
-    alert("khasera")
+    setLoading(true);
+    auth()
+      .createUserWithEmailAndPassword(
+        'xman012312@gmail.com',
+        'SuperSecassword!',
+      )
+      .then(() => {
+        setLoading(false);
+        Toast.showWithGravity(
+          ' تم إنشاء حساب المستخدم !',
+          Toast.LONG,
+          Toast.BOTTOM,
+        );
+      })
+      .catch(error => {
+        setLoading(false);
+        if (error.code === 'auth/email-already-in-use') {
+          Toast.showWithGravity(
+            'هذا البريد الإلكتروني قيد الاستخدام !',
+            Toast.LONG,
+            Toast.BOTTOM,
+          );
+        }
 
-    // setLoading(true)
-    // auth()
-    //   .createUserWithEmailAndPassword(
-    //     'xman012312@gmail.com',
-    //     'SuperSecassword!',
-    //   )
-    //   .then(() => {
-    //     setLoading(false)
-    //     Toast.showWithGravity(
-    //       ' تم إنشاء حساب المستخدم !',
-    //       Toast.LONG,
-    //       Toast.BOTTOM,
-    //     );
-    //   })
-    //   .catch(error => {
-    //     setLoading(false)
-    //     if (error.code === 'auth/email-already-in-use') {
-    //       Toast.showWithGravity(
-    //         'هذا البريد الإلكتروني قيد الاستخدام !',
-    //         Toast.LONG,
-    //         Toast.BOTTOM,
-    //       );
-    //     }
-    //
-    //     if (error.code === 'auth/invalid-email') {
-    //       Toast.showWithGravity('', Toast.LONG, Toast.BOTTOM);
-    //     }
-    //
-    //     console.log(error);
-    //   });
+        if (error.code === 'auth/invalid-email') {
+          Toast.showWithGravity('', Toast.LONG, Toast.BOTTOM);
+        }
+
+        console.log(error);
+      });
   };
   return (
     <View contentContainerStyle={styles.container}>
@@ -109,7 +114,7 @@ export default function SignUp(props) {
           }}
         />
 
-        {loading  ? (
+        {loading ? (
           <ActivityIndicator size="large" color="#89C13D" />
         ) : (
           <Button
@@ -154,12 +159,12 @@ export default function SignUp(props) {
           />
         </View> */}
         <IconButton
-          style={{backgroundColor:"#89C13D"}}
-            icon="arrow-left"
-            color={Colors.white}
-            size={20}
-            onPress={() =>  props.return()}
-          />
+          style={{backgroundColor: '#89C13D'}}
+          icon="arrow-left"
+          color={Colors.white}
+          size={20}
+          onPress={() => props.return()}
+        />
       </View>
     </View>
   );

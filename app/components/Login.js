@@ -1,61 +1,83 @@
-import React, {useState, useEffect} from 'react';
-import {Text, ScrollView, StyleSheet, View, Dimensions} from 'react-native';
-import {
-  TextInput,
-  Button,
-  IconButton,
-  Colors,
-  ActivityIndicator,
-} from 'react-native-paper';
-// import auth from '@react-native-firebase/auth';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {ActivityIndicator, Button, TextInput} from 'react-native-paper';
+import auth from '@react-native-firebase/auth';
+import Toast from 'react-native-simple-toast';
+import {GoogleSignin} from '@react-native-community/google-signin';
+
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
-import Toast from 'react-native-simple-toast';
+
 export default function Login(props) {
   const [email, setEmail] = useState('');
   const [fetching, setFetching] = useState(false);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '740341936507-v83sre8aeq6nanjhrfd07oenv8f7qsj8.apps.googleusercontent.com',
+    });
+  }, []);
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+  async function onGoogleButtonPress() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
   const signUp = () => {
-    alert("khasera")
-    // setFetching(true);
-    // auth()
-    //   .createUserWithEmailAndPassword(email, 'animiarondompassword!')
-    //   .then(() => {
-    //     setFetching(false);
-    //     Toast.showWithGravity(
-    //       'شكرا لك على الاشتراك 😍🙏',
-    //       Toast.LONG,
-    //       Toast.BOTTOM,
-    //     );
-    //   })
-    //   .catch(error => {
-    //     setFetching(false);
-    //     if (error.code === 'auth/email-already-in-use') {
-    //       Toast.showWithGravity(
-    //         'انت مشترك اصلا 😅🥰',
-    //         Toast.LONG,
-    //         Toast.BOTTOM,
-    //       );
-    //     }
-    //
-    //     if (error.code === 'auth/invalid-email') {
-    //       Toast.showWithGravity(
-    //         'هذا عنوان الإلكتروني غير صالح ',
-    //         Toast.LONG,
-    //         Toast.BOTTOM,
-    //       );
-    //     }
-    //
-    //     console.log(error);
-    //   });
+    setFetching(true);
+    auth()
+      .createUserWithEmailAndPassword(email, 'animiarondompassword!')
+      .then(() => {
+        setFetching(false);
+        Toast.showWithGravity(
+          'شكرا لك على الاشتراك 😍🙏',
+          Toast.LONG,
+          Toast.BOTTOM,
+        );
+      })
+      .catch(error => {
+        setFetching(false);
+        if (error.code === 'auth/email-already-in-use') {
+          Toast.showWithGravity(
+            'انت مشترك اصلا 😅🥰',
+            Toast.LONG,
+            Toast.BOTTOM,
+          );
+        }
+
+        if (error.code === 'auth/invalid-email') {
+          Toast.showWithGravity(
+            'هذا عنوان الإلكتروني غير صالح ',
+            Toast.LONG,
+            Toast.BOTTOM,
+          );
+        }
+
+        console.log(error);
+      });
   };
   return (
     <View contentContainerStyle={styles.container}>
-    <Text style={{...styles.allText,fontSize:20,color:"gray",marginBottom:10}}>اشترك</Text>
-    <Text style={styles.allText}>ابق على اطلاع! احصل على جميع أحدث وأفضل الأنميات مباشرة إلى بريدك</Text>
+      <Text
+        style={{
+          ...styles.allText,
+          fontSize: 20,
+          color: 'gray',
+          marginBottom: 10,
+        }}>
+        اشترك
+      </Text>
+      <Text style={styles.allText}>
+        ابق على اطلاع! احصل على جميع أحدث وأفضل الأنميات مباشرة إلى بريدك
+      </Text>
       <View style={styles.inputContainer}>
         <TextInput
           theme={{
@@ -74,15 +96,15 @@ export default function Login(props) {
           onChangeText={query => {
             setEmail(query);
           }}
-          onSubmitEditing= {() =>
-              !email.length
-                ? Toast.showWithGravity(
-                    'يرجى إدخال بريد إلكتروني صالح',
-                    Toast.LONG,
-                    Toast.BOTTOM,
-                  )
-                : signUp()
-            }
+          onSubmitEditing={() =>
+            !email.length
+              ? Toast.showWithGravity(
+                  'يرجى إدخال بريد إلكتروني صالح',
+                  Toast.LONG,
+                  Toast.BOTTOM,
+                )
+              : signUp()
+          }
         />
 
         {/*  <TextInput
@@ -115,28 +137,42 @@ export default function Login(props) {
             color={'#89C13D'}
           />
         ) : (
-          <Button
-            style={{
-              marginTop: 20,
-              borderRadius: 20,
-              backgroundColor: '#89C13D',
-              fontFamily: 'JF Flat regular',
-            }}
-            mode="contained"
-            onPress={() =>
-              !email.length
-                ? Toast.showWithGravity(
-                    'يرجى إدخال بريد إلكتروني صالح',
-                    Toast.LONG,
-                    Toast.BOTTOM,
-                  )
-                : signUp()
-            }
-            >
-
-
-            تسجيل
-          </Button>
+          <>
+            <Button
+              style={{
+                marginTop: 20,
+                borderRadius: 20,
+                backgroundColor: '#89C13D',
+                fontFamily: 'JF Flat regular',
+              }}
+              mode="contained"
+              onPress={() =>
+                !email.length
+                  ? Toast.showWithGravity(
+                      'يرجى إدخال بريد إلكتروني صالح',
+                      Toast.LONG,
+                      Toast.BOTTOM,
+                    )
+                  : signUp()
+              }>
+              تسجيل
+            </Button>
+            <Button
+              style={{
+                marginTop: 20,
+                borderRadius: 20,
+                backgroundColor: '#89C13D',
+                fontFamily: 'JF Flat regular',
+              }}
+              mode="contained"
+              onPress={() =>
+                onGoogleButtonPress().then(() =>
+                  console.log('Signed in with Google!'),
+                )
+              }>
+              google
+            </Button>
+          </>
         )}
         {/*  <Text style={{...styles.allText,textAlign:"center"}}>أو</Text>
          <View
@@ -186,9 +222,7 @@ export default function Login(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
   inputContainer: {
     height: '90%',
     padding: 20,
@@ -196,10 +230,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   allText: {
-    lineHeight:25,
+    lineHeight: 25,
     fontFamily: 'JF Flat regular',
     fontSize: 17,
     color: '#89C13D',
-    textAlign:"center",
+    textAlign: 'center',
   },
 });

@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "740341936507-v83sre8aeq6nanjhrfd07oenv8f7qsj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anim",
+            "certificate_hash": "04523afa711d463caa8904aff9fa213b793064fc"
+          }
+        },
+        {
           "client_id": "740341936507-odqds172r329jcskdfarq8b83oq87f0k.apps.googleusercontent.com",
           "client_type": 3
         }
