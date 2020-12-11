@@ -157,21 +157,21 @@ export default function Login(props) {
               }>
               تسجيل
             </Button>
-            <Button
-              style={{
-                marginTop: 20,
-                borderRadius: 20,
-                backgroundColor: '#89C13D',
-                fontFamily: 'JF Flat regular',
-              }}
-              mode="contained"
-              onPress={() =>
-                onGoogleButtonPress().then(() =>
-                  console.log('Signed in with Google!'),
-                )
-              }>
-              google
-            </Button>
+            {/*<Button*/}
+            {/*  style={{*/}
+            {/*    marginTop: 20,*/}
+            {/*    borderRadius: 20,*/}
+            {/*    backgroundColor: '#89C13D',*/}
+            {/*    fontFamily: 'JF Flat regular',*/}
+            {/*  }}*/}
+            {/*  mode="contained"*/}
+            {/*  onPress={() =>*/}
+            {/*    onGoogleButtonPress().then(() =>*/}
+            {/*      console.log('Signed in with Google!'),*/}
+            {/*    )*/}
+            {/*  }>*/}
+            {/*  google*/}
+            {/*</Button>*/}
           </>
         )}
         {/*  <Text style={{...styles.allText,textAlign:"center"}}>أو</Text>

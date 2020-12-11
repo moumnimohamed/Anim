@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Anim</string>
-</resources>
+    <string moduleConfig="true" name="CodePushDeploymentKey">hA4oxNatay_QZmCh7qfn9mKw4iy826VQNVuMm</string>
+     </resources>
+
+<!-- production       hA4oxNatay_QZmCh7qfn9mKw4iy826VQNVuMm   -->
+
+<!--staging uzPSO1etY-3ARU8ZnWeDRmMUD7uu3tMfzHWBN  -->

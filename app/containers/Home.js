@@ -308,7 +308,6 @@ class Home extends React.Component {
                           />
                         );
                       }}
-                      slideStyle={styles.slide}
                       containerCustomStyle={{flex: 1}}
                       slideStyle={{marginTop: 130, marginBottom: 20}}
                       sliderWidth={screenWidth}
