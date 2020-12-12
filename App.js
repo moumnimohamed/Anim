@@ -25,8 +25,6 @@ const theme = {
   fonts: configureFonts(fontConfig),
 };
 
-let codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
-
 class App extends React.Component {
   constructor(properties) {
     super(properties);
@@ -44,10 +42,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    codePush.sync({
-      updateDialog: true,
-      installMode: codePush.InstallMode.IMMEDIATE,
-    });
+    codePush
+      .sync({
+        updateDialog: true,
+        installMode: codePush.InstallMode.IMMEDIATE,
+      })
+      .then(res => {
+        console.log('resoonad', res);
+      });
 
     let splashScreenTimer = setInterval(this.hideSplashScreen, 3000); // hide splash screen after 3s
     this.setState({splashScreenTimer});
@@ -74,4 +76,6 @@ class App extends React.Component {
   }
 }
 
-export default (App = codePush(codePushOptions)(App));
+let codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
+
+export default codePush(codePushOptions)(App);

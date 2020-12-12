@@ -360,7 +360,7 @@ class Home extends React.Component {
               {/*  آخر الحلقات المضافة */}
               {!this.props.fetching && (
                 <TextStyled
-                  title={' آخر الحلقات المضافة'}
+                  title={'  آخر الحلقات المضافة'}
                   onClick={() => {
                     this.props.navigation.navigate('EpisodesAllList');
                   }}
