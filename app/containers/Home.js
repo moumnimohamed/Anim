@@ -151,6 +151,8 @@ class Home extends React.Component {
 
   componentDidUpdate(nextProps, nextState) {
     console.log('halola', nextProps.newAnime);
+    console.log('halola', nextProps.newAnime);
+    console.log('halola', nextProps.newAnime);
     console.log('favoritesAnim', nextProps.favoritesAnim);
     /* this.allImages=[];
     if (this.props.newAnimeFailure) {
@@ -159,12 +161,12 @@ class Home extends React.Component {
   }
 
   getData = () => {
-    this.props.getAnimRequest();
-    this.props.aniEpisodeRequest();
-    this.props.getAnimeList(0);
-    this.getLegendAnime();
-
-    this.props.filmRequest();
+    // this.props.getAnimRequest();
+    // this.props.aniEpisodeRequest();
+    // this.props.getAnimeList(0);
+    // this.getLegendAnime();
+    //
+    // this.props.filmRequest();
   };
 
   checkUpdateApp = async () => {
@@ -185,10 +187,10 @@ class Home extends React.Component {
     });
   };
   componentDidMount() {
-    this.loadState();
-    this.checkUpdateApp();
-    this.unsubscribe();
-    this.getData();
+    // this.loadState();
+    // this.checkUpdateApp();
+    // this.unsubscribe();
+    // this.getData();
   }
 
   getLegendAnime = async () => {

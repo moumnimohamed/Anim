@@ -48,7 +48,7 @@ class App extends React.Component {
         installMode: codePush.InstallMode.IMMEDIATE,
       })
       .then(res => {
-        console.log('resoonad', res);
+        console.log('cwew', res);
       });
 
     let splashScreenTimer = setInterval(this.hideSplashScreen, 3000); // hide splash screen after 3s

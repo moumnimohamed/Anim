@@ -1,4 +1,4 @@
-package com.anim;
+package com.medanimiamoumni;
 
 import android.app.Application;
 import android.content.Context;
@@ -11,7 +11,7 @@ import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
 
- 
+
 import com.github.yamill.orientation.OrientationPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.swmansion.rnscreens.RNScreensPackage;
@@ -44,8 +44,8 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-           
-          
+
+
           return packages;
         }
 

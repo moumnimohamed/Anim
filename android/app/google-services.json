@@ -1,42 +1,33 @@
 {
   "project_info": {
-    "project_number": "740341936507",
-    "firebase_url": "https://anime-app-d10c6.firebaseio.com",
-    "project_id": "anime-app-d10c6",
-    "storage_bucket": "anime-app-d10c6.appspot.com"
+    "project_number": "778729628256",
+    "project_id": "animia1218",
+    "storage_bucket": "animia1218.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:740341936507:android:56e6f3604044d92f758dde",
+        "mobilesdk_app_id": "1:778729628256:android:3e9490ce15f55aff709905",
         "android_client_info": {
-          "package_name": "com.anim"
+          "package_name": "com.medanimiamoumni"
         }
       },
       "oauth_client": [
         {
-          "client_id": "740341936507-v83sre8aeq6nanjhrfd07oenv8f7qsj8.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.anim",
-            "certificate_hash": "04523afa711d463caa8904aff9fa213b793064fc"
-          }
-        },
-        {
-          "client_id": "740341936507-odqds172r329jcskdfarq8b83oq87f0k.apps.googleusercontent.com",
+          "client_id": "778729628256-khtq8edm5kif9fjfs3kvva4u1ihbf083.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDVC1NCMs36OKQE7m7qCnl8IDMi2yQFLxA"
+          "current_key": "AIzaSyBhMryUi1gdqAVTlSdCOIeFQgBKGu8o2Gk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "740341936507-odqds172r329jcskdfarq8b83oq87f0k.apps.googleusercontent.com",
+              "client_id": "778729628256-khtq8edm5kif9fjfs3kvva4u1ihbf083.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

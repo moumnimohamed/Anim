@@ -1,4 +1,4 @@
-package com.anim;
+package com.medanimiamoumni;
 
 import com.facebook.react.ReactActivity;
   import android.content.Intent; // <--- import
@@ -29,7 +29,7 @@ public class MainActivity extends ReactActivity {
 
       @Override
     protected void onCreate(Bundle savedInstanceState) {
-      SplashScreen.show(this); 
+      SplashScreen.show(this);
       super.onCreate(savedInstanceState);
 
     }
@@ -37,5 +37,5 @@ public class MainActivity extends ReactActivity {
 
 
 
-    
+
 }
