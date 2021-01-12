@@ -150,10 +150,6 @@ class Home extends React.Component {
   };
 
   componentDidUpdate(nextProps, nextState) {
-    console.log('halola', nextProps.newAnime);
-    console.log('halola', nextProps.newAnime);
-    console.log('halola', nextProps.newAnime);
-    console.log('favoritesAnim', nextProps.favoritesAnim);
     /* this.allImages=[];
     if (this.props.newAnimeFailure) {
       this.setState({show: true});
@@ -161,12 +157,11 @@ class Home extends React.Component {
   }
 
   getData = () => {
-    // this.props.getAnimRequest();
-    // this.props.aniEpisodeRequest();
-    // this.props.getAnimeList(0);
-    // this.getLegendAnime();
-    //
-    // this.props.filmRequest();
+    this.props.getAnimRequest();
+    this.props.aniEpisodeRequest();
+    this.props.getAnimeList(0);
+    this.getLegendAnime();
+    this.props.filmRequest();
   };
 
   checkUpdateApp = async () => {
@@ -183,14 +178,15 @@ class Home extends React.Component {
       latestVersion: latestVer,
     }).then(res => {
       this.setState({updateKnow: res.isNeeded});
-      console.log('ned update', res); // false
+      // console.log('ned update', res);
+      // false
     });
   };
   componentDidMount() {
-    // this.loadState();
-    // this.checkUpdateApp();
-    // this.unsubscribe();
-    // this.getData();
+    this.loadState();
+    this.checkUpdateApp();
+    this.unsubscribe();
+    this.getData();
   }
 
   getLegendAnime = async () => {
@@ -250,7 +246,6 @@ class Home extends React.Component {
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
         <LoaderModal visible={this.props.fetching} />
-
         <StatusBar
           translucent
           backgroundColor="transparent"
