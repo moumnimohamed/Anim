@@ -197,6 +197,10 @@ release {
 }
 
 dependencies {
+    implementation project(':react-native-fbads')
+     implementation 'com.facebook.android:facebook-android-sdk:5.4.0'
+    implementation project(':react-native-fbsdk')
+
     implementation project(':react-native-code-push')
     implementation project(':@react-native-community_async-storage')
     implementation project(':react-native-version-check')

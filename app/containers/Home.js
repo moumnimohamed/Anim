@@ -3,10 +3,10 @@ import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
+import {BannerView} from 'react-native-fbads';
 
 import VersionCheck from 'react-native-version-check';
 import {
-  Animated,
   Dimensions,
   FlatList,
   Image,
@@ -24,7 +24,6 @@ import Carousel from 'react-native-snap-carousel';
 import {connect} from 'react-redux';
 import {AnimatedCard} from '../components/AnimatedCard';
 import AnimeServers from '../components/AnimeServers';
-import AnimatedCarousel from '../components/AnimatedCarousel';
 import {FilmCard} from '../components/FilmCard';
 import Header from '../components/Header';
 import LoaderModal from '../components/LoaderModal';
@@ -245,6 +244,15 @@ class Home extends React.Component {
         : {};
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
+        <View>
+          <BannerView
+            placementId="234935237770660_421729359091246"
+            type="standard"
+            onPress={() => console.log('click')}
+            onLoad={() => console.log('loaded')}
+            onError={err => console.log('error', err)}
+          />
+        </View>
         <LoaderModal visible={this.props.fetching} />
         <StatusBar
           translucent

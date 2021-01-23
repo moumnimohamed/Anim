@@ -2,18 +2,18 @@ import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import {
+  Dimensions,
+  Image,
   StatusBar,
   StyleSheet,
   Text,
   View,
-  Image,
-  Dimensions,
 } from 'react-native';
-import {AdMobRewarded} from 'react-native-admob';
 import {PLAYER_STATES} from 'react-native-media-controls';
- 
+
 import {WebView} from 'react-native-webview';
 import {ActivityIndicator} from 'react-native-paper';
+import UnityAdss from '../components/UnityAdss';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
@@ -95,9 +95,11 @@ export default class StreamPage extends React.Component {
   enterFullScreen = () => {};
 
   onFullScreen = () => {
-    if (this.state.screenType == 'content')
+    if (this.state.screenType == 'content') {
       this.setState({screenType: 'cover'});
-    else this.setState({screenType: 'content'});
+    } else {
+      this.setState({screenType: 'content'});
+    }
   };
   renderToolbar = () => (
     <View>
@@ -113,7 +115,7 @@ export default class StreamPage extends React.Component {
 
   componentWillUnmount = () => {
     StatusBar.setHidden(false);
-    
+
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = 0;
@@ -123,11 +125,6 @@ export default class StreamPage extends React.Component {
   componentDidMount() {
     StatusBar.setHidden(true);
 
-    this.timer = setTimeout(() => {
-      AdMobRewarded.setAdUnitID('ca-app-pub-4024120289306171/8777670113');
-      AdMobRewarded.requestAd().then(() => AdMobRewarded.showAd());
-    }, 2000);
- 
     /* if (this.props.navigation.state.params.link) {
   console.log("lala link",this.props.navigation.state.params.link)
   this.getVideoURL(this.props.navigation.state.params.link)
@@ -137,22 +134,21 @@ export default class StreamPage extends React.Component {
   componentWillUpdate = (nextState, nextProps) => {};
 
   render() {
-    /* mega      :  in webview 
-   Let's Upload : in webview 
-   4 shared: in webview 
-    go unlimeted show ads : in video player 
-    ok.ru: in webview 
+    /* mega      :  in webview
+   Let's Upload : in webview
+   4 shared: in webview
+    go unlimeted show ads : in video player
+    ok.ru: in webview
     vibbom : not working (loading)
-    fileUpload : in webview 
-    google drive : in webview 
+    fileUpload : in webview
+    google drive : in webview
    */
-        console.log("linko",this.props.navigation.state.params.link)
+    console.log('linko', this.props.navigation.state.params.link);
     return (
       <View style={styles.container}>
         <WebView
           onLoadStart={() => this.setState({fetching: true})}
           onLoad={() => this.setState({fetching: false})}
-          
           source={{uri: this.props.navigation.state.params.link}}
           allowsFullscreenVideo={true}
           allowsInlineMediaPlayback={true}
@@ -164,7 +160,6 @@ export default class StreamPage extends React.Component {
               source={require('../images/logo.png')}
             />
             <ActivityIndicator animating={true} size={50} color={'#000'} />
-           
           </View>
         )}
       </View>
@@ -180,7 +175,7 @@ export default class StreamPage extends React.Component {
           resizeMode={this.state.screenType}
           onFullScreen={this.state.isFullScreen}
           fullscreen={true}
-     
+
           source={{ uri: 'https://mega.nz/embed#!T08DFQgL!6wjwvCOv_XmDkYWD4p7YXk9o8DJA9_nFwsDxq9ZcbE4' }}
           style={styles.mediaPlayer}
           volume={10}
@@ -230,6 +225,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     position: 'absolute',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });

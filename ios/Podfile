@@ -65,6 +65,12 @@ target 'Anim' do
 
   pod 'CodePush', :path => '../node_modules/react-native-code-push'
 
+  pod 'react-native-unity-ads', :path => '../node_modules/react-native-unity-ads-moon'
+
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
+  pod 'ReactNativeAdsFacebook', :path => '../node_modules/react-native-fbads'
+
   target 'AnimTests' do
     inherit! :search_paths
     # Pods for testing
