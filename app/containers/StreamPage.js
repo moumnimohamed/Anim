@@ -13,7 +13,6 @@ import {PLAYER_STATES} from 'react-native-media-controls';
 
 import {WebView} from 'react-native-webview';
 import {ActivityIndicator} from 'react-native-paper';
-import UnityAdss from '../components/UnityAdss';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 

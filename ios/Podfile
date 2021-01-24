@@ -71,6 +71,8 @@ target 'Anim' do
 
   pod 'ReactNativeAdsFacebook', :path => '../node_modules/react-native-fbads'
 
+  pod 'RNAppodeal', :path => '../node_modules/react-native-appodeal'
+
   target 'AnimTests' do
     inherit! :search_paths
     # Pods for testing

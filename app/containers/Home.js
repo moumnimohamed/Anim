@@ -3,7 +3,6 @@ import cheerio from 'cheerio-without-node-native';
 import React from 'react';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
-import {BannerView} from 'react-native-fbads';
 
 import VersionCheck from 'react-native-version-check';
 import {
@@ -35,10 +34,10 @@ import {initialFavorites, toggleFavorites} from '../redux/FavoritesAnim';
 import {getNewRequest} from '../redux/newAnimRedux';
 import {Button as B} from 'react-native-paper';
 import {default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import * as NetInfo from '@react-native-community/netinfo';
 
 import {SCLAlert} from 'react-native-scl-alert';
+import Ads from '../components/Ads';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -244,15 +243,7 @@ class Home extends React.Component {
         : {};
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
-        <View>
-          <BannerView
-            placementId="234935237770660_421729359091246"
-            type="standard"
-            onPress={() => console.log('click')}
-            onLoad={() => console.log('loaded')}
-            onError={err => console.log('error', err)}
-          />
-        </View>
+        <Ads />
         <LoaderModal visible={this.props.fetching} />
         <StatusBar
           translucent
@@ -371,6 +362,7 @@ class Home extends React.Component {
                   }}
                 />
               )}
+
               <View style={{position: 'relative'}}>
                 <View style={styles.view}>
                   {!this.props.fetching && (

@@ -4,9 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import suraj.tiwari.reactnativefbads.FBAdsPackage;
-import com.facebook.reactnative.androidsdk.FBSDKPackage;
- 
+import com.appodeal.rnappodeal.RNAppodealPackage;
+
+
 import com.microsoft.codepush.react.CodePush;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
@@ -48,7 +48,6 @@ public class MainApplication extends Application implements ReactApplication {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
 
-          new FBAdsPackage();
           return packages;
         }
 

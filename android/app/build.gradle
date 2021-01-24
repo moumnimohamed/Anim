@@ -197,9 +197,8 @@ release {
 }
 
 dependencies {
-    implementation project(':react-native-fbads')
-     implementation 'com.facebook.android:facebook-android-sdk:5.4.0'
-    implementation project(':react-native-fbsdk')
+    implementation project(':react-native-appodeal')
+  implementation 'com.appodeal.ads:sdk:2.8.1.+'
 
     implementation project(':react-native-code-push')
     implementation project(':@react-native-community_async-storage')
