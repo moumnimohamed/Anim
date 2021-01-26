@@ -37,7 +37,6 @@ import {default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as NetInfo from '@react-native-community/netinfo';
 
 import {SCLAlert} from 'react-native-scl-alert';
-import Ads from '../components/Ads';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
@@ -243,7 +242,6 @@ class Home extends React.Component {
         : {};
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
-        <Ads />
         <LoaderModal visible={this.props.fetching} />
         <StatusBar
           translucent
@@ -262,7 +260,7 @@ class Home extends React.Component {
               {/*  favoritesAnim={this.props.favoritesAnim}*/}
               {/*  _toggleFavorites={anime => this._toggleFavorites(anime)}*/}
               {/*/>*/}
-
+              <Text>ads v:002</Text>
               <ImageBackground
                 blurRadius={1}
                 source={{uri: anim.img}}

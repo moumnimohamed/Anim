@@ -14,6 +14,7 @@ class Ads extends React.Component {
     super(props);
     this.state = {
       adsLoaded: false,
+      showAds: false,
     };
   }
   componentDidMount() {
@@ -21,6 +22,32 @@ class Ads extends React.Component {
       'b03f892844816579286f39e650a84c4055c9d2866af72395',
       adTypes,
       consent,
+    );
+
+    Appodeal.addEventListener(AppodealRewardedEvent.LOADED, (event: any) => {
+      console.log('Rewarded video loaded. Precache: ', event.isPrecache),
+        this.setState({showAds: true});
+    });
+    Appodeal.addEventListener(AppodealRewardedEvent.SHOWN, () =>
+      console.log('Rewarded video shown'),
+    );
+    Appodeal.addEventListener(AppodealRewardedEvent.EXPIRED, () =>
+      console.log('Rewarded video expired'),
+    );
+    Appodeal.addEventListener(AppodealRewardedEvent.REWARD, (event: any) =>
+      console.log(
+        'Rewarded video finished. Amount: ',
+        event.amount + ', currency: ' + event.currency,
+      ),
+    );
+    Appodeal.addEventListener(AppodealRewardedEvent.CLOSED, (event: any) =>
+      console.log('Rewarded video closed, is finished: ', event.isFinished),
+    );
+    Appodeal.addEventListener(AppodealRewardedEvent.FAILED_TO_LOAD, () =>
+      console.log('Rewarded video failed to load'),
+    );
+    Appodeal.addEventListener(AppodealRewardedEvent.FAILED_TO_SHOW, () =>
+      console.log('Rewarded video failed to show'),
     );
 
     Appodeal.isLoaded(adTypes, result =>
@@ -33,8 +60,20 @@ class Ads extends React.Component {
     );
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    // if (prevState.adsLoaded !== this.state.adsLoaded) {
+    //   this.setState({showAds: true});
+    //   console.log('MUST SHOW ADS', this.state.adsLoaded);
+    //   // re-render x <-- not sure how to do this
+    // }
+  }
+
   render() {
-    return <View>{Appodeal.show(AppodealAdType.INTERSTITIAL)}</View>;
+    return this.state.showAds ? (
+      <View>{Appodeal.show(AppodealAdType.REWARDED_VIDEO)}</View>
+    ) : (
+      <View />
+    );
   }
 }
 

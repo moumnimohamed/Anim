@@ -13,6 +13,7 @@ import {PLAYER_STATES} from 'react-native-media-controls';
 
 import {WebView} from 'react-native-webview';
 import {ActivityIndicator} from 'react-native-paper';
+import Ads from '../components/Ads';
 
 const screenHeight = Math.round(Dimensions.get('window').height);
 
@@ -145,6 +146,7 @@ export default class StreamPage extends React.Component {
     console.log('linko', this.props.navigation.state.params.link);
     return (
       <View style={styles.container}>
+        <Ads />
         <WebView
           onLoadStart={() => this.setState({fetching: true})}
           onLoad={() => this.setState({fetching: false})}
