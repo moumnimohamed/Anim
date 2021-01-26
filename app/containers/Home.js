@@ -260,7 +260,7 @@ class Home extends React.Component {
               {/*  favoritesAnim={this.props.favoritesAnim}*/}
               {/*  _toggleFavorites={anime => this._toggleFavorites(anime)}*/}
               {/*/>*/}
-              <Text>ads v:002</Text>
+              {/*<Text>ads v:002</Text>*/}
               <ImageBackground
                 blurRadius={1}
                 source={{uri: anim.img}}
