@@ -237,15 +237,6 @@ class Home extends React.Component {
         {!this.state.showAlertDesigned ? (
           <ScrollView>
             <React.Fragment>
-              {/*  {this.props.fetching ?
-            <View style={styles.container}>
-      <ActivityIndicator animating={true} color={'#89C13D'} />
-      </View>} */}
-              {/*<AnimatedCarousel*/}
-              {/*  newAnime={newAnime}*/}
-              {/*  favoritesAnim={this.props.favoritesAnim}*/}
-              {/*  _toggleFavorites={anime => this._toggleFavorites(anime)}*/}
-              {/*/>*/}
               {newAnime && newAnime?.length > 0 && (
                 <ImageBackground
                   blurRadius={1}
