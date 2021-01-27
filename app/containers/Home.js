@@ -246,7 +246,6 @@ class Home extends React.Component {
               {/*  favoritesAnim={this.props.favoritesAnim}*/}
               {/*  _toggleFavorites={anime => this._toggleFavorites(anime)}*/}
               {/*/>*/}
-              <Text>ads v:002</Text>
               {newAnime && newAnime?.length > 0 && (
                 <ImageBackground
                   blurRadius={1}
