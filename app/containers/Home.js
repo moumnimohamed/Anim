@@ -4,7 +4,6 @@ import React from 'react';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import VersionCheck from 'react-native-version-check';
 import {
   Dimensions,
   FlatList,
@@ -161,29 +160,16 @@ class Home extends React.Component {
     this.props.filmRequest();
   };
 
-  checkUpdateApp = async () => {
-    let latestVer = '';
-    VersionCheck.getLatestVersion({
-      provider: 'playStore', // for Android
-    }).then(latestVersion => {
-      latestVer = latestVersion; // 0.1.2
-    });
-
-    VersionCheck.needUpdate({
-      depth: 1,
-      currentVersion: VersionCheck.getCurrentVersion(),
-      latestVersion: latestVer,
-    }).then(res => {
-      this.setState({updateKnow: res.isNeeded});
-      // console.log('ned update', res);
-      // false
-    });
-  };
   componentDidMount() {
     this.loadState();
-    this.checkUpdateApp();
+
+    this.props.getAnimRequest();
+    this.props.aniEpisodeRequest();
+    this.props.getAnimeList(0);
+    this.getLegendAnime();
+    this.props.filmRequest();
+
     this.unsubscribe();
-    this.getData();
   }
 
   getLegendAnime = async () => {
@@ -261,56 +247,57 @@ class Home extends React.Component {
               {/*  _toggleFavorites={anime => this._toggleFavorites(anime)}*/}
               {/*/>*/}
               <Text>ads v:002</Text>
-              <ImageBackground
-                blurRadius={1}
-                source={{uri: anim.img}}
-                style={{width: '100%'}}>
-                <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
-                  <View>
-                    <Carousel
-                      loop
-                      //autoplay
-                      enableMomentum={false}
-                      lockScrollWhileSnapping={true}
-                      autoplayInterval={5000}
-                      firstItem={1}
-                      layoutCardOffset={0}
-                      maxToRenderPerBatch={3}
-                      windowSize={10}
-                      onSnapToItem={index =>
-                        this.setState({activeSlider: index})
-                      }
-                      inactiveSlideOpacity={1}
-                      layout={'default'}
-                      data={newAnime}
-                      renderItem={({item, index}) => {
-                        return (
-                          <AnimatedCard
-                            isFavorite={
-                              this.props.favoritesAnim.filter(
-                                animF => animF.link === item.link,
-                              ).length > 0
-                            }
-                            heartClick={() => this._toggleFavorites(item)}
-                            item={item}
-                            navigate={() => {
-                              this.props.navigation.navigate('AnimeDetail', {
-                                index: index,
-                                item: item,
-                              });
-                            }}
-                          />
-                        );
-                      }}
-                      containerCustomStyle={{flex: 1}}
-                      slideStyle={{marginTop: 130, marginBottom: 20}}
-                      sliderWidth={screenWidth}
-                      itemWidth={itemWidth}
-                    />
-                  </View>
-                </LinearGradient>
-              </ImageBackground>
-
+              {newAnime && newAnime?.length > 0 && (
+                <ImageBackground
+                  blurRadius={1}
+                  source={{uri: anim.img}}
+                  style={{width: '100%'}}>
+                  <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
+                    <View>
+                      <Carousel
+                        loop
+                        //autoplay
+                        enableMomentum={false}
+                        lockScrollWhileSnapping={true}
+                        autoplayInterval={5000}
+                        firstItem={1}
+                        layoutCardOffset={0}
+                        maxToRenderPerBatch={3}
+                        windowSize={10}
+                        onSnapToItem={index =>
+                          this.setState({activeSlider: index})
+                        }
+                        inactiveSlideOpacity={1}
+                        layout={'default'}
+                        data={newAnime}
+                        renderItem={({item, index}) => {
+                          return (
+                            <AnimatedCard
+                              isFavorite={
+                                this.props.favoritesAnim.filter(
+                                  animF => animF.link === item.link,
+                                ).length > 0
+                              }
+                              heartClick={() => this._toggleFavorites(item)}
+                              item={item}
+                              navigate={() => {
+                                this.props.navigation.navigate('AnimeDetail', {
+                                  index: index,
+                                  item: item,
+                                });
+                              }}
+                            />
+                          );
+                        }}
+                        containerCustomStyle={{flex: 1}}
+                        slideStyle={{marginTop: 130, marginBottom: 20}}
+                        sliderWidth={screenWidth}
+                        itemWidth={itemWidth}
+                      />
+                    </View>
+                  </LinearGradient>
+                </ImageBackground>
+              )}
               {legendAnime?.length > 0 && !this.props.fetching && (
                 <TextStyled hide title={'أنميات الموسم'} />
               )}
@@ -389,7 +376,7 @@ class Home extends React.Component {
                       navigate={() => this.getEpsServers(item.link)}
                     />
                   )}
-                  keyExtractor={item => item.id}
+                  keyExtractor={item => item.link}
                 />
                 <AnimeServers
                   hide={() => this.setState({showModal: false})}

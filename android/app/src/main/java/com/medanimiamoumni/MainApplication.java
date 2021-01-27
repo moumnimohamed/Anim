@@ -9,7 +9,6 @@ import com.appodeal.rnappodeal.RNAppodealPackage;
 
 import com.microsoft.codepush.react.CodePush;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import io.xogus.reactnative.versioncheck.RNVersionCheckPackage;
 
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;

@@ -5,11 +5,13 @@ import * as actionsAndType from '../redux/AnimeEpisodes';
 
 /** function that returns an axios call */
 function getAnimeEpisodesApi(page) {
+  console.log('🤣🤣', page);
   let link = '';
   if (page > 0) {
     link = `https://apk.addanime.online/episode/page/${page}/`;
+    console.log('🤣🤣 link', link);
   } else {
-    link = `https://apk.addanime.online/episode`;
+    link = 'https://apk.addanime.online/episode';
   }
 
   return axios({
@@ -32,20 +34,22 @@ export function* getAnimeEpisodes(action) {
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
 
-      const liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
-        // map to an list of objects
-        title: `${ $('img', hover).attr('alt')}   ${ $('a', hover).text()}`,
-        img: $('img', hover).attr('src'),
-        link: $('a', hover).attr('href'),
-      }));
+      const liList = $('.anime-card-container  .hover.ehover6').map(
+        (_, hover) => ({
+          // map to an list of objects
+          title: `${$('img', hover).attr('alt')}   ${$('a', hover).text()}`,
+          img: $('img', hover).attr('src'),
+          link: $('a', hover).attr('href'),
+        }),
+      );
 
-     /*  console.log("jar😂", `<div>${$('.anime-card-container').html()}</div>` )
- */
+      /*  console.log("jar😂", `<div>${$('.anime-card-container').html()}</div>` )
+       */
       var myData = Object.keys(liList).map(key => {
         return liList[key];
       });
 
-        console.log("allepisodes",myData)
+      console.log('allepisodes', myData);
 
       yield put(actionsAndType.aniEpisodeSuccess(myData));
     } else {

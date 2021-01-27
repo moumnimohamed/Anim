@@ -5,7 +5,7 @@ export const ANI_EPISODE_FAILURE = 'ANI_EPISODE_FAILURE';
 export const initialState = {
   data: null,
   fetching: false,
-  payload: null,
+  payload: [],
   error: false,
   success: false,
 };
@@ -37,16 +37,14 @@ export const aniEpisodes = (state = initialState, action) => {
         success: false,
       };
     case ANI_EPISODE_SUCCESS:
-        
       return {
         ...state,
         fetching: false,
-        payload:  action.payload,
+        payload: [...state.payload, ...action.payload],
         error: false,
         success: true,
       };
     case ANI_EPISODE_FAILURE:
-      
       return {
         ...state,
         fetching: false,

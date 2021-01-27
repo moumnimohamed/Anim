@@ -10,13 +10,20 @@ import AnimeServers from '../components/AnimeServers';
 import Loader from '../components/Loader';
 import axios from 'axios';
 import cheerio from 'cheerio-without-node-native';
+import {Text} from 'react-native-paper';
 function EpisodesAllList(props) {
   const [epsHref, setEpsHref] = useState([]);
   const [animeHrefLink, setAnimeHrefLink] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  const [page, setPage] = useState(2);
+
+  const _loadAnime = () => {
+    props.aniEpisodeRequest(page);
+    setPage(page + 1);
+  };
+
   const getEpsServers = async link => {
-     
     setShowModal(true);
     axios({
       method: 'get',
@@ -53,15 +60,6 @@ function EpisodesAllList(props) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <FlatList
-              style={{ marginLeft:5,marginTop:10,marginBottom:10 }}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              data={props.categories}
-              renderItem={({ item }) => item.title && <CategoryCard title={ item.title}  navigate={()=> {  props.navigation.push('ByCategory',{title:item.title,type:"anime"})}}/>}
-        keyExtractor={item => (Math.random() * (0.120 - 0.0200) + 0.0200).toFixed(8)}
-        /> */}
-
       <FlatList
         data={props.animeEpisodes}
         style={styles.FlatList}
@@ -77,12 +75,18 @@ function EpisodesAllList(props) {
         }
         numColumns={2}
         ListFooterComponent={() => {
-          if (!props.fetching) return null;
+          if (!props.fetching) {
+            return null;
+          }
           return <Loader />;
         }}
         keyExtractor={(item, index) => index.toString()}
+        onEndReachedThreshold={0.5}
+        onEndReached={() => {
+          _loadAnime();
+        }}
       />
-      {/*   {props.fetching && <Loader/>} */}
+      {props.fetching && <Loader />}
 
       <AnimeServers
         animeHrefLink={animeHrefLink}
