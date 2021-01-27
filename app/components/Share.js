@@ -3,8 +3,7 @@ import Share from 'react-native-share';
 
 export default (share = anim => {
   console.log('bo3oq', anim);
-  const url =
-    'https://play.google.com/store/apps/details?id=com.medanimiamoumni';
+  const url = 'http://animia.co';
   const title = anim.title;
   const message = `شاهد ${anim.title} فقط على`;
   const options = Platform.select({
