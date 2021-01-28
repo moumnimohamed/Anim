@@ -505,19 +505,12 @@ class Home extends React.Component {
                     backgroundColor: '#027BFF',
                   }}
                   onPress={() =>
-                    Linking.canOpenURL(
-                      'https://play.google.com/store/apps/details?id=com.anim',
-                    )
+                    Linking.canOpenURL('http://animia.co')
                       .then(supported => {
                         if (!supported) {
-                          alert(
-                            "Can't handle url: " +
-                              'https://play.google.com/store/apps/details?id=com.anim',
-                          );
+                          alert("Can't handle url: " + 'http://animia.co');
                         } else {
-                          return Linking.openURL(
-                            'https://play.google.com/store/apps/details?id=com.anim',
-                          );
+                          return Linking.openURL('http://animia.co');
                         }
                       })
                       .catch(err => alert('An error occurred', err))
