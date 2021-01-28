@@ -76,6 +76,6 @@ class App extends React.Component {
   }
 }
 
-let codePushOptions = {checkFrequency: codePush.CheckFrequency.MANUAL};
+let codePushOptions = {checkFrequency: codePush.CheckFrequency.ON_APP_START};
 
 export default codePush(codePushOptions)(App);
