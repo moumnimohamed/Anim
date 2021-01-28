@@ -140,6 +140,9 @@ android {
     }
 
     defaultConfig {
+    resValue 'string',
+     "CODE_PUSH_APK_BUILD_TIME",
+      String.format("\"%d\"", System.currentTimeMillis())
         multiDexEnabled true
         applicationId "com.medanimiamoumni"
         minSdkVersion rootProject.ext.minSdkVersion

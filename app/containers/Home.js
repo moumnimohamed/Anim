@@ -229,7 +229,6 @@ class Home extends React.Component {
     return (
       <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
         <LoaderModal visible={this.props.fetching} />
-        <Text>moumni</Text>
         <StatusBar
           translucent
           backgroundColor="transparent"
