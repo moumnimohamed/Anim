@@ -236,7 +236,6 @@ class Home extends React.Component {
         />
         {!this.state.showAlertDesigned ? (
           <ScrollView>
-            <Text>moumni</Text>
             <React.Fragment>
               {newAnime && newAnime?.length > 0 && (
                 <ImageBackground
