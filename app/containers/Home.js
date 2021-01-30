@@ -237,57 +237,55 @@ class Home extends React.Component {
         {!this.state.showAlertDesigned ? (
           <ScrollView>
             <React.Fragment>
-              {newAnime && newAnime?.length > 0 && (
-                <ImageBackground
-                  blurRadius={1}
-                  source={{uri: anim.img}}
-                  style={{width: '100%'}}>
-                  <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
-                    <View>
-                      <Carousel
-                        loop
-                        //autoplay
-                        enableMomentum={false}
-                        lockScrollWhileSnapping={true}
-                        autoplayInterval={5000}
-                        firstItem={1}
-                        layoutCardOffset={0}
-                        maxToRenderPerBatch={3}
-                        windowSize={10}
-                        onSnapToItem={index =>
-                          this.setState({activeSlider: index})
-                        }
-                        inactiveSlideOpacity={1}
-                        layout={'default'}
-                        data={newAnime}
-                        renderItem={({item, index}) => {
-                          return (
-                            <AnimatedCard
-                              isFavorite={
-                                this.props.favoritesAnim.filter(
-                                  animF => animF.link === item.link,
-                                ).length > 0
-                              }
-                              heartClick={() => this._toggleFavorites(item)}
-                              item={item}
-                              navigate={() => {
-                                this.props.navigation.navigate('AnimeDetail', {
-                                  index: index,
-                                  item: item,
-                                });
-                              }}
-                            />
-                          );
-                        }}
-                        containerCustomStyle={{flex: 1}}
-                        slideStyle={{marginTop: 130, marginBottom: 20}}
-                        sliderWidth={screenWidth}
-                        itemWidth={itemWidth}
-                      />
-                    </View>
-                  </LinearGradient>
-                </ImageBackground>
-              )}
+              <ImageBackground
+                blurRadius={1}
+                source={{uri: anim.img}}
+                style={{width: '100%'}}>
+                <LinearGradient colors={['#ffffff00', '#f8f5fa']}>
+                  <View>
+                    <Carousel
+                      loop
+                      //autoplay
+                      enableMomentum={false}
+                      lockScrollWhileSnapping={true}
+                      autoplayInterval={5000}
+                      firstItem={1}
+                      layoutCardOffset={0}
+                      maxToRenderPerBatch={3}
+                      windowSize={10}
+                      onSnapToItem={index =>
+                        this.setState({activeSlider: index})
+                      }
+                      inactiveSlideOpacity={1}
+                      layout={'default'}
+                      data={newAnime}
+                      renderItem={({item, index}) => {
+                        return (
+                          <AnimatedCard
+                            isFavorite={
+                              this.props.favoritesAnim.filter(
+                                animF => animF.link === item.link,
+                              ).length > 0
+                            }
+                            heartClick={() => this._toggleFavorites(item)}
+                            item={item}
+                            navigate={() => {
+                              this.props.navigation.navigate('AnimeDetail', {
+                                index: index,
+                                item: item,
+                              });
+                            }}
+                          />
+                        );
+                      }}
+                      containerCustomStyle={{flex: 1}}
+                      slideStyle={{marginTop: 130, marginBottom: 20}}
+                      sliderWidth={screenWidth}
+                      itemWidth={itemWidth}
+                    />
+                  </View>
+                </LinearGradient>
+              </ImageBackground>
               {legendAnime?.length > 0 && !this.props.fetching && (
                 <TextStyled hide title={'أنميات الموسم'} />
               )}

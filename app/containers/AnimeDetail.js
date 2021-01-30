@@ -45,8 +45,8 @@ class AnimeDetail extends React.Component {
 
     alreadyViewed: [],
 
-    downloadUrls:[],
-    downloadModal:false
+    downloadUrls: [],
+    downloadModal: false,
   };
 
   componentDidMount() {
@@ -99,7 +99,7 @@ class AnimeDetail extends React.Component {
     if (!alreadyExist) {
       newName.push(nameToBeSaved);
     }
-let href = [];
+    let href = [];
     await AsyncStorage.setItem('names', JSON.stringify(newName))
       .then(() => {
         console.log('‘It was saved successfully’');
@@ -117,16 +117,16 @@ let href = [];
         if (response.status === 200) {
           const htmlString = response.data; // get response text
           const $ = cheerio.load(htmlString); // parse HTML string
-          
-
 
           $('#episode-servers   li').map((_, elm) => {
-            href.push({text: $("a",elm).text(), link: $("a",elm).attr('data-ep-url')});
-            
+            href.push({
+              text: $('a', elm).text(),
+              link: $('a', elm).attr('data-ep-url'),
+            });
           });
 
           console.log('count', href.length);
-         /*  if (href.length <= 0) {
+          /*  if (href.length <= 0) {
             console.log('count2', href.length);
             $('.episode-videoplay ul li').map((_, elm) => {
               href.push({text: $(elm).text(), link: $(elm).attr('data-href')});
@@ -145,7 +145,7 @@ let href = [];
   render() {
     console.log('@@animeDetail', this.props.animeDetail);
     console.log('@@anime name', this.props.navigation.state.params.item.title);
-    /* 
+    /*
     published
 season
 category
@@ -156,42 +156,42 @@ streamLinks
 relatedF */
     const posterImage =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['image']
+        ? this.props.animeDetail[0].image
         : '';
 
     const season =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['season']
+        ? this.props.animeDetail[0].season
         : '';
 
     const status =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['status']
+        ? this.props.animeDetail[0].status
         : '';
 
     console.log('hiastatus', status);
 
     const episodesNbr =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['episodesNbr']
+        ? this.props.animeDetail[0].episodesNbr
         : '';
 
     const cat =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['category']
+        ? this.props.animeDetail[0].category
         : '';
 
-        console.log("voilacat",cat)
+    console.log('voilacat', cat);
 
     const story =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['story']
+        ? this.props.animeDetail[0].story
         : [];
 
     console.log('storia', story);
     const published =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['published']
+        ? this.props.animeDetail[0].published
         : [];
     const duration = '';
     /* this.props.animeDetail && this.props.animeDetail.length > 0
@@ -199,7 +199,7 @@ relatedF */
         : []; */
     const streamLinks =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['streamLinks']
+        ? this.props.animeDetail[0].streamLinks
         : [];
 
     links = streamLinks.filter(video =>
@@ -210,41 +210,39 @@ relatedF */
 
     const relatedF =
       this.props.animeDetail && this.props.animeDetail.length > 0
-        ? this.props.animeDetail[0]['relatedF']
+        ? this.props.animeDetail[0].relatedF
         : [];
 
-const getDownloadLinks =(link)=>{
-      
-  let href = [];
+    const getDownloadLinks = link => {
+      let href = [];
 
-  this.setState({downloadModal: true});
-  axios({
-    method: 'get',
-    url: link,
-  })
-    .then(response => {
-      if (response.status === 200) {
-        const htmlString = response.data; // get response text
-        const $ = cheerio.load(htmlString); // parse HTML string
-        
+      this.setState({downloadModal: true});
+      axios({
+        method: 'get',
+        url: link,
+      })
+        .then(response => {
+          if (response.status === 200) {
+            const htmlString = response.data; // get response text
+            const $ = cheerio.load(htmlString); // parse HTML string
 
+            $('.quality-list   li').map((_, elm) => {
+              href.push({
+                text: $('a', elm).text(),
+                link: $('a', elm).attr('href'),
+              });
+            });
 
-        $('.quality-list   li').map((_, elm) => {
-          href.push({text: $("a",elm).text(), link: $("a",elm).attr('href')});
-          
+            console.log('downloadUrls', href.length);
+
+            console.log(href);
+            this.setState({downloadUrls: href});
+          }
+        })
+        .catch(error => {
+          error;
         });
-
-        console.log('downloadUrls', href.length);
-      
-        console.log(href);
-        this.setState({downloadUrls: href} );
-      }
-    })
-    .catch(error => {
-      error;
-    });
-
-}
+    };
 
     return (
       <ScrollView style={styles.scroll}>
@@ -470,7 +468,7 @@ const getDownloadLinks =(link)=>{
                   size={20}
                   onPress={() => this.setState({display: !this.state.display})}
                 />
-                
+
                 {this.state.display && (
                   <TextInput
                     style={{margin: 10}}
@@ -494,10 +492,10 @@ const getDownloadLinks =(link)=>{
             <View style={{flex: 1}} />
             {links.length > 0 ? (
               <FlatList
-                data={links.reverse()}
+                data={links}
                 renderItem={({item, i}) => (
                   <CardEpisode
-                  getDownloadLinks={()=>   getDownloadLinks(item.link)}
+                    getDownloadLinks={() => getDownloadLinks(item.link)}
                     alreadyViewed={
                       this.state.alreadyViewed &&
                       this.state.alreadyViewed.length
@@ -557,11 +555,14 @@ const getDownloadLinks =(link)=>{
           navigation={this.props.navigation}
         />
 
-<AnimeServers
+        <AnimeServers
           hide={() => this.setState({downloadModal: false})}
-          epsHref={this.state.downloadUrls.slice(1,this.state.downloadUrls.length )}
+          epsHref={this.state.downloadUrls.slice(
+            1,
+            this.state.downloadUrls.length,
+          )}
           showModal={this.state.downloadModal}
-            forDownload={true}
+          forDownload={true}
         />
 
         {this.props.fetching && (
