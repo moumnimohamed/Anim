@@ -15,6 +15,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@justalk/anime-api": "^3.0.0",
     "@react-native-community/async-storage": "^1.10.0",
     "@react-native-community/google-signin": "^5.0.0",
     "@react-native-community/masked-view": "^0.1.5",
@@ -23,9 +24,9 @@
     "@react-native-firebase/auth": "^10.1.1",
     "axios": "^0.19.0",
     "cheerio-without-node-native": "^0.20.2",
+    "events": "^3.3.0",
     "react": "16.9.0",
     "react-native": "0.61.4",
-    "react-native-admob": "^2.0.0-beta.6",
     "react-native-appodeal": "^2.8.2",
     "react-native-code-push": "^6.4.0",
     "react-native-gesture-handler": "^1.5.3",
@@ -49,7 +50,7 @@
     "react-native-text-gradient": "^0.1.7",
     "react-native-vector-icons": "^6.6.0",
     "react-native-video": "^5.0.2",
-    "react-native-webview": "^8.0.3",
+    "react-native-webview": "^8.2.1",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^2.0.7",
     "react-navigation-tabs": "^2.7.0",

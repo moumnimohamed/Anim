@@ -57,7 +57,7 @@ export class AnimatedCard extends React.Component {
 
           <View style={styles.linkContainer}>
             <Text style={styles.link} onPress={this.props.navigate}>
-              {this.props.item.title.includes('فيلم')
+              {this.props?.item?.title?.includes('فيلم')
                 ? 'مشاهدة الفيلم'
                 : 'الحلقات'}
             </Text>

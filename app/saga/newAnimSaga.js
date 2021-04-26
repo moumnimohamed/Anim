@@ -4,6 +4,7 @@ import axios from 'axios';
 import * as actionsAndType from '../redux/newAnimRedux';
 
 /** function that returns an axios call */
+
 function getRoomsApi() {
   return axios({
     method: 'get',
@@ -19,19 +20,21 @@ function getRoomsApi() {
 
 export function* getNewAnimes(action) {
   try {
+    // const response = yield getRoomsApi(); // fetch page
     const response = yield getRoomsApi(); // fetch page
-
+    console.log('bitch', response);
     if (response.status === 200) {
       const htmlString = yield response.data; // get response text
       const $ = cheerio.load(htmlString); // parse HTML string
 
-
-      const liList = $('.anime-card-container  .hover.ehover6').map((_, hover) => ({
-        // map to an list of objects
-        title: $('img', hover).attr('alt'),
-        img: $('img', hover).attr('src'),
-        link: $('a', hover).attr('href'),
-      }));
+      const liList = $('.anime-card-container  .hover.ehover6').map(
+        (_, hover) => ({
+          // map to an list of objects
+          title: $('img', hover).attr('alt'),
+          img: $('img', hover).attr('src'),
+          link: $('a', hover).attr('href'),
+        }),
+      );
 
       console.log('story22', liList);
 

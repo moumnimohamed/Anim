@@ -1,4 +1,3 @@
- 
 export const TOGGLE_FAVORITES = 'TOGGLE_FAVORITES';
 export const INITIAL_FAVORITES = 'INITIAL_FAVORITES';
 
@@ -23,7 +22,7 @@ export const ToggleFavAnim = (state = initialState, action) => {
       const index = state.data.findIndex(
         anim => anim.link === action.data.link,
       );
-      console.log('index', index);
+      console.log('actionaction', action);
       if (index == -1) {
         return {
           ...state,
@@ -35,13 +34,12 @@ export const ToggleFavAnim = (state = initialState, action) => {
           data: state.data.filter(anim => anim.link !== action.data.link),
         };
       }
-      case INITIAL_FAVORITES :
-        return {
-          ...state,
-          data:action.data ,
-        };
+    case INITIAL_FAVORITES:
+      return {
+        ...state,
+        data: action.data,
+      };
 
-     
     default:
       return state;
   }

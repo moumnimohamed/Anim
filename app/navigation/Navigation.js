@@ -3,6 +3,7 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Home from '../containers/Home';
+import Home2 from '../containers/Home2';
 import StreamPage from '../containers/StreamPage';
 import FavoritesList from '../containers/FavoritesList';
 import FilmDetail from '../containers/FilmDetail';
@@ -51,7 +52,7 @@ const favStackNavigator = createStackNavigator({
 
 const SearchStackNavigator = createStackNavigator({
   Home: {
-    screen: Home,
+    screen: Home2,
     navigationOptions: {
       /*  headerRight: navigation => (
         <Header/>

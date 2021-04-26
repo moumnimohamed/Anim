@@ -1,35 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Dimensions, FlatList,
-
-  Linking, Modal,
-  Text,
-
-
-
-  View
-} from 'react-native';
-import { Button, IconButton } from 'react-native-paper';
+import React, {useEffect, useState} from 'react';
+import {Dimensions, FlatList, Linking, Modal, Text, View} from 'react-native';
+import {Button, IconButton} from 'react-native-paper';
 import Loader from '../components/Loader';
-import { Playeroo } from '../components/Playeroo';
-
-
-
+import {Playeroo} from '../components/Playeroo';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const screenHeight = Math.round(Dimensions.get('window').height);
 
-export default function AnimeServers(props) {
+const AnimeServers = props => {
+  const {epsHref} = props;
+
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
   useEffect(() => {}, [props.forDownload]);
 
   const download = async url => {
     Linking.openURL(url).catch(err => console.error("Couldn't load page", err));
-
   };
 
-  console.log('homa', props);
+  console.log('animeServer000', epsHref);
 
   return (
     <Modal transparent={true} animationType="fade" visible={props.showModal}>
@@ -51,7 +40,7 @@ export default function AnimeServers(props) {
             height: screenHeight / 2,
           }}>
           <View style={{flexDirection: 'row'}}>
-            {props.animeHrefLink && (
+            {props?.animeHrefLink ? (
               <Button
                 style={{backgroundColor: '#89C13D'}}
                 icon="arrow-left"
@@ -65,7 +54,7 @@ export default function AnimeServers(props) {
                 }}>
                 أنمي
               </Button>
-            )}
+            ) : null}
             <Text
               style={{
                 fontFamily: 'JF Flat regular',
@@ -82,14 +71,11 @@ export default function AnimeServers(props) {
               size={20}
             />
           </View>
-
-           
-
-          {props.epsHref.length <= 0 && (
+          {props?.epsHref?.length <= 0 ? (
             <View style={{height: '100%', position: 'relative', marginTop: 20}}>
               <Loader />
             </View>
-          )}
+          ) : null}
           <FlatList
             data={props.epsHref}
             renderItem={({item, i}) => (
@@ -111,4 +97,6 @@ export default function AnimeServers(props) {
       </View>
     </Modal>
   );
-}
+};
+
+export default AnimeServers;
