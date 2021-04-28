@@ -1,18 +1,17 @@
 import {
-  View,
-  Text,
-  StatusBar,
+  Dimensions,
+  FlatList,
+  Image,
+  ImageBackground,
   SafeAreaView,
   ScrollView,
-  ImageBackground,
-  Image,
-  FlatList,
-  Linking,
-  Dimensions,
+  StatusBar,
   StyleSheet,
+  Text,
+  View,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {getNewRequest} from '../redux/newAnimRedux';
 import LoaderModal from '../components/LoaderModal';
 import LinearGradient from 'react-native-linear-gradient';
@@ -22,9 +21,7 @@ import TextStyled from '../components/TextStyled';
 import {FilmCard} from '../components/FilmCard';
 import AnimeServers from '../components/AnimeServers';
 import Toast from 'react-native-simple-toast';
-import {SCLAlert} from 'react-native-scl-alert';
 import {default as Icon} from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Button as B} from 'react-native-paper';
 import {aniEpisodeRequest} from '../redux/AnimeEpisodes';
 import {filmRequest} from '../redux/FilmRedux';
 import {getAnimeListRequest} from '../redux/AnimeListRedux';
@@ -63,6 +60,8 @@ const Home2 = props => {
     animeHrefLink: '',
   });
 
+
+
   const [showAlertDesigned, setShowAlertDesigned] = useState(false);
   const dispatch = useDispatch();
 
@@ -81,6 +80,20 @@ const Home2 = props => {
       return undefined;
     }
   };
+
+
+  useEffect(() => {
+    NetInfo.addEventListener(state => {
+      /* alert("Connection type", state.type); */
+
+      if (!state.isConnected) {
+        setShowAlertDesigned (true)
+      } else {
+        setShowAlertDesigned (false)
+
+      }
+    });
+  },[])
 
 
   useEffect(() => {
@@ -146,6 +159,12 @@ const Home2 = props => {
 
   return (
     <SafeAreaView style={{backgroundColor: '#f8f5fa', flex: 1}}>
+      { showAlertDesigned &&
+      Toast.showWithGravity(
+          'اتصال إنترنت بطيء أو معدوم. يرجى التحقق من إعدادات الإنترنت الخاصة بك',
+          Toast.LONG,
+          Toast.BOTTOM,
+      )}
       <LoaderModal visible={fetching} />
       <StatusBar
         translucent
@@ -419,7 +438,7 @@ const styles = StyleSheet.create({
 
 Home2.navigationOptions = ({navigation}) => {
   return {
-    header: <Header navigation={navigation} />,
+    header:   <Header navigation={navigation} />,
   };
 };
 
